@@ -2,10 +2,12 @@ import { useState, useCallback } from "react";
 import Preloader from "@/components/Preloader";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import AboutPreview from "@/components/AboutPreview";
 import ServiceProcessSection from "@/components/ServiceProcessSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
-
+import FeaturedServicesSection from "@/components/FeaturedServicesSection";
 import ProductsSection from "@/components/ProductsSection";
+import WhyChooseSection from "@/components/WhyChooseSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
@@ -26,11 +28,13 @@ const Index = () => {
         <Navbar />
         <main>
           <HeroSection />
+          <AboutPreview />
           <ServiceProcessSection />
           <HowItWorksSection />
+          <FeaturedServicesSection />
           <ProductsSection />
+          <WhyChooseSection />
           <ReviewsSection />
-          
           <FAQSection />
           <ContactSection />
         </main>
