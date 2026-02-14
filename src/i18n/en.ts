@@ -20,6 +20,53 @@ const en = {
     cta1: "Request a Quote",
     cta2: "Book a Consultation",
   },
+  aboutPreview: {
+    tag: "Who We Are",
+    title: "About Us",
+    body: "Almonesi Global Trade (OMT) is a leading international trade company specializing in import and export solutions, professional logistics management, and trusted sourcing partnerships in China. We help businesses grow globally by connecting them with verified suppliers, ensuring reliability, quality, and transparency at every step. With a strong supplier network, competitive pricing, and global shipping capabilities, we are committed to building long-term partnerships and delivering exceptional value to our clients across more than 50 countries worldwide.",
+    learnMore: "Learn More →",
+  },
+  aboutPage: {
+    tag: "About Us",
+    title: "Almonesi Global Trade",
+    companyName: "OMT — Your Trusted Partner in International Trade",
+    missionTitle: "Our Mission",
+    missionText: "Delivering integrated import and export solutions distinguished by quality and professionalism, and helping our clients grow and expand in global markets through reliable and innovative logistics and sourcing services.",
+    visionTitle: "Our Vision",
+    visionText: "To become the most trusted and leading partner in international trade and import-export services, building strong and sustainable commercial bridges between local and global markets.",
+    valuesTitle: "Our Core Values",
+    values: {
+      quality: { title: "Quality & Excellence", desc: "We commit to the highest quality standards in all import and export services." },
+      trust: { title: "Trust & Transparency", desc: "We build long-term partnerships based on honesty and credibility." },
+      connectivity: { title: "Global Connectivity", desc: "We provide integrated logistics solutions connecting global markets." },
+      innovation: { title: "Innovation & Development", desc: "We use modern technologies to enhance shipping and customs services." },
+    },
+    storyTitle: "Our Success Story",
+    story: {
+      founded: { title: "The Beginning", desc: "Almonesi Global Trade was founded with a vision to simplify international trade and create reliable bridges between markets." },
+      growth: { title: "Rapid Growth", desc: "Through dedication and excellence, we quickly expanded our operations, building a vast network of verified suppliers and partners." },
+      expansion: { title: "Global Expansion", desc: "We expanded into multiple countries, establishing offices and partnerships across continents to serve our growing client base." },
+      clients: { title: "Supporting Clients Worldwide", desc: "Today, we serve hundreds of businesses across 50+ countries, providing end-to-end trade solutions with unwavering commitment." },
+    },
+  },
+  featuredServices: {
+    tag: "Our Services",
+    title: "Our Featured Services",
+    subtitle: "We provide comprehensive logistics and trade solutions tailored to meet all your international business needs.",
+    requestQuote: "Request a Quote",
+  },
+  whyChoose: {
+    tag: "Why Us",
+    title: "Why Choose Almonesi",
+    items: {
+      experience: { title: "Extensive Experience", desc: "Over 15 years of expertise in international trade and import-export." },
+      pricing: { title: "Competitive Pricing", desc: "We provide the best market prices through our extensive supplier network." },
+      reliability: { title: "Reliability & Security", desc: "We ensure safe cargo handling through partnerships with top global shipping and insurance companies." },
+      execution: { title: "Fast Execution", desc: "We respect timelines and deliver shipments on schedule." },
+      support: { title: "Continuous Support", desc: "Our customer service team is available 24/7." },
+      coverage: { title: "Global Coverage", desc: "Serving over 50 countries worldwide with a strong partner network." },
+    },
+  },
   serviceProcess: {
     tag: "Our Operational Strength",
     title: "Service Process Highlights",
@@ -45,8 +92,10 @@ const en = {
   },
   products: {
     tag: "Our Products",
-    title: "What We Offer",
+    title: "Our Diverse Products",
+    subtitle: "We offer a wide range of high-quality products sourced from trusted suppliers worldwide.",
     noImage: "No image",
+    requestQuote: "Request a Quote",
   },
   reviews: {
     title: "Customer Reviews",
@@ -106,6 +155,8 @@ const en = {
     rights: "All rights reserved.",
     privacy: "Privacy Policy",
     terms: "Terms of Service",
+    tagline: "We strive to provide the best shipping, sourcing, import, and export services to our clients worldwide.",
+    partner: "Your trusted partner in international trade.",
   },
 };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { List } from "@phosphor-icons/react";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import ProductManager from "@/components/admin/ProductManager";
+import ServiceManager from "@/components/admin/ServiceManager";
 import SocialMediaManager from "@/components/admin/SocialMediaManager";
 import AdminAccountManager from "@/components/admin/AdminAccountManager";
 import UserManager from "@/components/admin/UserManager";
@@ -11,6 +12,7 @@ import ReviewManager from "@/components/admin/ReviewManager";
 
 const titles: Record<string, { title: string; subtitle: string }> = {
   products: { title: "Products", subtitle: "Manage your product catalog" },
+  services: { title: "Services", subtitle: "Manage your featured services" },
   social: { title: "Social Media", subtitle: "Manage social media links" },
   users: { title: "User Management", subtitle: "Manage user accounts and permissions" },
   reviews: { title: "Review Moderation", subtitle: "Approve, reject, or manage customer reviews" },
@@ -50,6 +52,7 @@ const AdminDashboard = () => {
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-4xl">
           {activeTab === "products" && <ProductManager />}
+          {activeTab === "services" && <ServiceManager />}
           {activeTab === "social" && <SocialMediaManager />}
           {activeTab === "users" && <UserManager />}
           {activeTab === "reviews" && <ReviewManager />}

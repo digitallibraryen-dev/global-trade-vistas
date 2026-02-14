@@ -4,79 +4,90 @@ import { useTranslation } from "react-i18next";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { motion } from "framer-motion";
 import { WhatsappLogo } from "@phosphor-icons/react";
+import * as PhosphorIcons from "@phosphor-icons/react";
 
-interface Product {
+interface Service {
   id: string;
-  name: string;
+  title: string;
   description: string | null;
   image_url: string | null;
+  icon: string | null;
 }
 
-const ProductsSection = () => {
+const FeaturedServicesSection = () => {
   const { t } = useTranslation();
   const { data: socialLinks = [] } = useSocialLinks();
   const whatsapp = socialLinks.find((l) => l.platform === "whatsapp" && l.enabled);
 
-  const { data: products = [] } = useQuery({
-    queryKey: ["public-products"],
+  const { data: services = [] } = useQuery({
+    queryKey: ["public-services"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("products")
-        .select("id, name, description, image_url")
+        .from("services")
+        .select("id, title, description, image_url, icon")
         .eq("published", true)
-        .order("created_at", { ascending: false });
+        .order("sort_order");
       if (error) throw error;
-      return data as Product[];
+      return data as Service[];
     },
   });
 
-  if (products.length === 0) return null;
+  if (services.length === 0) return null;
 
-  const getWhatsAppLink = (productName: string) => {
+  const getWhatsAppLink = (serviceTitle: string) => {
     if (!whatsapp) return "#";
     const number = whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "");
     const message = encodeURIComponent(
-      `Hello Almonesi Global Trade (OMT),\nI am interested in your product: ${productName}.\nPlease send me pricing and details.`
+      `Hello Almonesi Global Trade (OMT),\nI would like to request a quotation for your service: ${serviceTitle}.\nPlease provide more details.`
     );
     return `https://wa.me/${number}?text=${message}`;
   };
 
+  const getIcon = (iconName: string | null) => {
+    if (!iconName) return null;
+    const Icon = (PhosphorIcons as unknown as Record<string, React.ElementType>)[iconName];
+    return Icon ? <Icon size={18} weight="duotone" className="text-primary" /> : null;
+  };
+
   return (
-    <section id="products" className="section-padding">
+    <section id="featured-services" className="section-padding gradient-dark">
       <div className="container-narrow">
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("products.tag")}</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("products.title")}</h2>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">{t("products.subtitle")}</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("featuredServices.tag")}</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("featuredServices.title")}</h2>
+          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">{t("featuredServices.subtitle")}</p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p, i) => (
+          {services.map((s, i) => (
             <motion.div
-              key={p.id}
+              key={s.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
               className="glass-strong rounded-xl overflow-hidden group hover:scale-[1.02] transition-transform duration-300"
             >
-              {p.image_url ? (
-                <img src={p.image_url} alt={p.name} className="w-full h-48 object-cover" loading="lazy" />
+              {s.image_url ? (
+                <img src={s.image_url} alt={s.title} className="w-full h-48 object-cover" loading="lazy" />
               ) : (
                 <div className="w-full h-48 bg-muted flex items-center justify-center">
                   <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
                 </div>
               )}
               <div className="p-5 space-y-3">
-                <h3 className="text-lg font-semibold text-foreground">{p.name}</h3>
-                {p.description && <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{p.description}</p>}
+                <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
+                {s.description && (
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{s.description}</p>
+                )}
                 <a
-                  href={getWhatsAppLink(p.name)}
+                  href={getWhatsAppLink(s.title)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-[#20bd5a] hover:shadow-lg"
                 >
+                  {getIcon(s.icon)}
                   <WhatsappLogo size={16} weight="fill" />
-                  {t("products.requestQuote")}
+                  {t("featuredServices.requestQuote")}
                 </a>
               </div>
             </motion.div>
@@ -87,4 +98,4 @@ const ProductsSection = () => {
   );
 };
 
-export default ProductsSection;
+export default FeaturedServicesSection;
