@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "@phosphor-icons/react";
 import {
   Accordion,
   AccordionContent,
@@ -30,6 +32,15 @@ const FAQSection = () => {
             </AccordionItem>
           ))}
         </Accordion>
+        <div className="mt-12 text-center">
+          <Link
+            to="/faq"
+            className="group inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-transparent px-6 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-primary hover:shadow-lg hover:shadow-primary/10"
+          >
+            {t("aboutPreview.learnMore")}
+            <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
     </section>
   );
