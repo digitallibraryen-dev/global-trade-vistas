@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Package, ShareNetwork, UserPlus, SignOut, House } from "@phosphor-icons/react";
+import { Package, ShareNetwork, UserPlus, SignOut, House, Users, GoogleLogo, ChartLine } from "@phosphor-icons/react";
 import logo from "@/assets/logo.png";
 
 type NavItem = { key: string; label: string; icon: React.ElementType };
@@ -8,6 +8,9 @@ type NavItem = { key: string; label: string; icon: React.ElementType };
 const navItems: NavItem[] = [
   { key: "products", label: "Products", icon: Package },
   { key: "social", label: "Social Media", icon: ShareNetwork },
+  { key: "users", label: "Users", icon: Users },
+  { key: "oauth", label: "Google OAuth", icon: GoogleLogo },
+  { key: "analytics", label: "Analytics", icon: ChartLine },
   { key: "admins", label: "Add Admin", icon: UserPlus },
 ];
 
@@ -24,7 +27,6 @@ const AdminSidebar = ({ activeTab, onTabChange, open, onClose }: AdminSidebarPro
 
   return (
     <>
-      {/* Overlay for mobile */}
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-40 lg:hidden"
@@ -37,13 +39,11 @@ const AdminSidebar = ({ activeTab, onTabChange, open, onClose }: AdminSidebarPro
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Brand */}
         <div className="flex items-center gap-3 px-5 py-5 border-b border-sidebar-border">
           <img src={logo} alt="Logo" className="h-8 w-8 rounded-full object-cover" />
           <span className="text-base font-bold text-sidebar-foreground">Admin</span>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
           <button
             onClick={() => navigate("/")}
@@ -77,7 +77,6 @@ const AdminSidebar = ({ activeTab, onTabChange, open, onClose }: AdminSidebarPro
           })}
         </nav>
 
-        {/* Footer */}
         <div className="border-t border-sidebar-border px-4 py-4 space-y-3">
           <p className="text-xs text-sidebar-foreground/50 truncate">
             {user?.email}
