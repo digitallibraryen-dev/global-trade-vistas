@@ -29,17 +29,7 @@ const AuthPage = () => {
         setLoading(false);
         return;
       }
-      // Check admin role to decide redirect
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", user.id)
-          .eq("role", "admin")
-          .maybeSingle();
-        navigate(data ? "/admin" : "/");
-      }
+      navigate("/");
     } else {
       if (password !== confirmPassword) {
         toast({ title: "Passwords don't match", description: "Please make sure both passwords are identical.", variant: "destructive" });

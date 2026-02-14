@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { List, X, Sun, Moon, SignIn } from "@phosphor-icons/react";
+import { List, X, Sun, Moon, SignIn, SignOut, GearSix } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
+import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.png";
 import SocialIcons from "./SocialIcons";
 
@@ -18,6 +19,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+  const { user, isAdmin, signOut } = useAuth();
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
@@ -60,12 +62,31 @@ const Navbar = () => {
           >
             Get a Quote
           </button>
-          <button
-            onClick={() => navigate("/login")}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
-          >
-            <SignIn size={16} /> Sign In
-          </button>
+          {user ? (
+            <>
+              {isAdmin && (
+                <button
+                  onClick={() => navigate("/admin")}
+                  className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                >
+                  <GearSix size={16} /> Dashboard
+                </button>
+              )}
+              <button
+                onClick={() => signOut()}
+                className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+              >
+                <SignOut size={16} /> Sign Out
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+            >
+              <SignIn size={16} /> Sign In
+            </button>
+          )}
           <SocialIcons size={18} />
         </div>
 
@@ -107,12 +128,31 @@ const Navbar = () => {
             >
               Get a Quote
             </button>
-            <button
-              onClick={() => { setOpen(false); navigate("/login"); }}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <SignIn size={16} /> Sign In
-            </button>
+            {user ? (
+              <>
+                {isAdmin && (
+                  <button
+                    onClick={() => { setOpen(false); navigate("/admin"); }}
+                    className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                  >
+                    <GearSix size={16} /> Dashboard
+                  </button>
+                )}
+                <button
+                  onClick={() => { setOpen(false); signOut(); }}
+                  className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <SignOut size={16} /> Sign Out
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => { setOpen(false); navigate("/login"); }}
+                className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <SignIn size={16} /> Sign In
+              </button>
+            )}
           </div>
         </div>
       )}
