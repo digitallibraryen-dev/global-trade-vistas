@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
-import { WhatsappLogo } from "@phosphor-icons/react";
+import { WhatsappLogo, CheckCircle } from "@phosphor-icons/react";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -36,12 +35,16 @@ const ServicesPage = () => {
       });
   }, []);
 
-  const getWhatsAppLink = (title: string) => {
+  const getWhatsAppLink = (title?: string) => {
     if (!whatsapp) return "#";
     const number = whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "");
-    const message = encodeURIComponent(`Hello Almonesi Global Trade (OMT),\nI would like to request a quotation for your service: ${title}.\nPlease provide more details.`);
+    const message = title
+      ? encodeURIComponent(`Hello Almonesi Global Trade (OMT),\nI would like to request a quotation for your service: ${title}.\nPlease provide more details.`)
+      : encodeURIComponent("Hello Almonesi Global Trade (OMT),\nI would like to request a quotation.\nPlease provide more details.");
     return `https://wa.me/${number}?text=${message}`;
   };
+
+  const trustBadges = t("servicesPage.trustBadges", { returnObjects: true }) as string[];
 
   return (
     <>
@@ -64,8 +67,8 @@ const ServicesPage = () => {
                   {s.image_url ? (
                     <img src={s.image_url} alt={s.title} className="h-48 w-full object-cover" />
                   ) : (
-                    <div className="h-48 w-full flex items-center justify-center" style={{ backgroundColor: '#003f7f' }}>
-                      <span className="text-white/50 text-sm">Service</span>
+                    <div className="h-48 w-full flex items-center justify-center gradient-primary">
+                      <span className="text-primary-foreground/50 text-sm">Service</span>
                     </div>
                   )}
                   <div className="p-5">
@@ -86,6 +89,32 @@ const ServicesPage = () => {
               ))}
             </div>
           )}
+
+          {/* CTA Section */}
+          <div className="mt-20 text-center">
+            <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{t("servicesPage.ctaTitle")}</h2>
+            <a
+              href={getWhatsAppLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 shadow-lg"
+            >
+              <WhatsappLogo size={22} /> {t("servicesPage.requestQuote")}
+            </a>
+          </div>
+
+          {/* Why Businesses Choose OMT */}
+          <div className="mt-20 glass rounded-2xl p-8 sm:p-12">
+            <h3 className="text-xl font-bold text-foreground text-center sm:text-2xl">{t("servicesPage.whyTitle")}</h3>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {trustBadges?.map((badge: string, i: number) => (
+                <div key={i} className="flex items-center gap-3">
+                  <CheckCircle size={22} weight="fill" className="text-primary shrink-0" />
+                  <span className="text-sm font-medium text-foreground">{badge}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
