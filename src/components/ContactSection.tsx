@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { EnvelopeSimple, MapPin, Phone } from "@phosphor-icons/react";
+import ParallaxOrbs from "./ParallaxOrbs";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -9,8 +10,9 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="section-padding gradient-dark">
-      <div className="container-narrow">
+    <section id="contact" className="relative section-padding gradient-dark">
+      <ParallaxOrbs variant="primary" />
+      <div className="container-narrow relative z-10">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Contact

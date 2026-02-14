@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight } from "@phosphor-icons/react";
+import ParallaxOrbs from "./ParallaxOrbs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,8 +42,9 @@ const BlogSection = () => {
   }, []);
 
   return (
-    <section id="blog" ref={ref} className="section-padding gradient-dark">
-      <div className="container-narrow">
+    <section id="blog" ref={ref} className="relative section-padding gradient-dark">
+      <ParallaxOrbs variant="accent" />
+      <div className="container-narrow relative z-10">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Resources</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
