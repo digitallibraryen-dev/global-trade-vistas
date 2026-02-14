@@ -12,6 +12,12 @@ import AuthCallback from "./pages/AuthCallback";
 import AdminDashboard from "./pages/AdminDashboard";
 import MyAccountPage from "./pages/MyAccountPage";
 import AboutUsPage from "./pages/AboutUsPage";
+import ContactPage from "./pages/ContactPage";
+import BlogPage from "./pages/BlogPage";
+import BlogPostPage from "./pages/BlogPostPage";
+import HowItWorksPage from "./pages/HowItWorksPage";
+import ServicesPage from "./pages/ServicesPage";
+import FAQPage from "./pages/FAQPage";
 import AdminGuard from "./components/AdminGuard";
 
 const queryClient = new QueryClient();
@@ -27,6 +33,12 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about-us" element={<AboutUsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/how-it-works" element={<HowItWorksPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/faq" element={<FAQPage />} />
               <Route path="/login" element={<AuthPage />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/account" element={<MyAccountPage />} />
