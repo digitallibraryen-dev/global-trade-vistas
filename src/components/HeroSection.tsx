@@ -60,8 +60,8 @@ const HeroSection = () => {
         {/* Gradient overlay for readability */}
         {/* Solid black bar to fully hide Spline branding */}
         <div
-          className="absolute bottom-0 right-0 w-[200px] h-[60px] pointer-events-none z-[5]"
-          style={{ background: "radial-gradient(circle at bottom right, rgba(10,80,200,1) 0%, rgba(50,150,255,0.7) 40%, rgba(135,200,255,0.3) 70%, rgba(255,255,255,0) 100%)" }}
+          className="absolute bottom-0 right-0 w-[150px] h-[40px] pointer-events-none z-[5]"
+          style={{ backgroundColor: "#003f7f" }}
         />
       </div>
 
