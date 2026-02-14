@@ -2,17 +2,11 @@ import { useState, useCallback } from "react";
 import Preloader from "@/components/Preloader";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-// WhyChooseUsSection is now integrated into AboutSection
-import ServicesSection from "@/components/ServicesSection";
 import ServiceProcessSection from "@/components/ServiceProcessSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import QuoteSection from "@/components/QuoteSection";
-import BlogSection from "@/components/BlogSection";
 import ProductsSection from "@/components/ProductsSection";
 import ReviewsSection from "@/components/ReviewsSection";
-import KnowledgeHubSection from "@/components/KnowledgeHubSection";
-import TrustedBySection from "@/components/TrustedBySection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -32,17 +26,11 @@ const Index = () => {
         <Navbar />
         <main>
           <HeroSection />
-          <AboutSection />
-          {/* WhyChooseUs is now part of AboutSection */}
-          <ServicesSection />
           <ServiceProcessSection />
           <HowItWorksSection />
           <ProductsSection />
           <ReviewsSection />
           <QuoteSection />
-          <KnowledgeHubSection />
-          <TrustedBySection />
-          <BlogSection />
           <FAQSection />
           <ContactSection />
         </main>
