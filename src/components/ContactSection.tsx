@@ -35,8 +35,8 @@ const ContactSection = () => {
               { icon: MapPin, text: "Guangzhou, China" },
             ].map((c) => (
               <div key={c.text} className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <c.icon size={20} weight="light" className="text-primary" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg gradient-primary shadow-lg">
+                  <c.icon size={20} weight="light" className="text-primary-foreground" />
                 </div>
                 <span className="text-sm text-foreground">{c.text}</span>
               </div>

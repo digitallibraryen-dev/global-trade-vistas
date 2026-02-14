@@ -87,7 +87,9 @@ const AboutSection = () => {
               key={s.label}
               className="stat-card glass rounded-xl p-6 text-center transition-all hover:glow-primary"
             >
-              <s.icon size={28} weight="light" className="mx-auto mb-3 text-primary" />
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl gradient-primary shadow-lg">
+                <s.icon size={24} weight="light" className="text-primary-foreground" />
+              </div>
               <div className="text-2xl font-bold text-foreground">{s.value}</div>
               <div className="mt-1 text-xs text-muted-foreground">{s.label}</div>
             </div>
