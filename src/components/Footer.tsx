@@ -18,6 +18,14 @@ const Footer = () => {
           </p>
         </div>
 
+        {/* Legal Entity */}
+        <div className="text-center mb-6 border-t border-white/10 pt-6">
+          <p className="text-xs text-white/50">{t("footer.operatedBy")}</p>
+          <p className="text-sm font-semibold text-white/80 mt-1">杭州穆尼溪科技有限公司</p>
+          <p className="text-xs text-white/60">HANGZHOU ALMONESI TECHNOLOGY CO., LTD.</p>
+          <p className="text-xs text-white/40 mt-1">{t("footer.legalNote")}</p>
+        </div>
+
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-3 text-sm text-white/70">
             <img src={logo} alt="Almonesi Logo" className="h-8 w-auto object-contain" />

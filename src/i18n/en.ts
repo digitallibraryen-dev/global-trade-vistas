@@ -48,6 +48,18 @@ const en = {
       expansion: { title: "Global Expansion", desc: "We expanded into multiple countries, establishing offices and partnerships across continents to serve our growing client base." },
       clients: { title: "Supporting Clients Worldwide", desc: "Today, we serve hundreds of businesses across 50+ countries, providing end-to-end trade solutions with unwavering commitment." },
     },
+    legalTitle: "Legal Identity & Corporate Registration",
+    legalEntityCn: "杭州穆尼溪科技有限公司",
+    legalEntityEn: "HANGZHOU ALMONESI TECHNOLOGY CO., LTD.",
+    legalText: "Registered in Hangzhou, People's Republic of China, the company operates in full compliance with Chinese commercial laws and international trade regulations. We maintain transparent business practices and adhere strictly to contractual, financial, and export compliance standards.",
+    legalNote: "Business registration documents and official license information can be provided to verified partners and clients upon request.",
+    trust: {
+      registered: "Officially Registered Chinese Company",
+      compliant: "International Trade Compliant",
+      verified: "Verified Supplier Network",
+      transparent: "Transparent Commission Structure",
+      secure: "Secure Global Logistics Partnerships",
+    },
   },
   featuredServices: {
     tag: "Our Services",
@@ -211,6 +223,8 @@ const en = {
     terms: "Terms of Service",
     tagline: "We strive to provide the best shipping, sourcing, import, and export services to our clients worldwide.",
     partner: "Your trusted partner in international trade.",
+    operatedBy: "Operated by",
+    legalNote: "A legally registered company in the People's Republic of China. Business license available upon request.",
   },
 };
 
