@@ -4,6 +4,8 @@ import {
   TiktokLogo,
   SnapchatLogo,
   WechatLogo,
+  TelegramLogo,
+  FacebookLogo,
 } from "@phosphor-icons/react";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
 
@@ -13,6 +15,8 @@ const platformIcon: Record<string, React.ElementType> = {
   tiktok: TiktokLogo,
   snapchat: SnapchatLogo,
   wechat: WechatLogo,
+  telegram: TelegramLogo,
+  facebook: FacebookLogo,
 };
 
 const platformUrl = (platform: string, value: string): string => {
@@ -26,7 +30,11 @@ const platformUrl = (platform: string, value: string): string => {
     case "snapchat":
       return value.startsWith("http") ? value : `https://snapchat.com/add/${value}`;
     case "wechat":
-      return "#"; // WeChat doesn't have direct web links
+      return "#";
+    case "telegram":
+      return value.startsWith("http") ? value : `https://t.me/${value.replace(/^@/, "")}`;
+    case "facebook":
+      return value.startsWith("http") ? value : `https://facebook.com/${value}`;
     default:
       return "#";
   }
