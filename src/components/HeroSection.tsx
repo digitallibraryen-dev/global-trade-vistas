@@ -57,8 +57,8 @@ const HeroSection = () => {
           title="3D Hero Background"
           loading="lazy" />
 
-        {/* Gradient overlay for readability */}
-        <div className="absolute inset-0 bg-background/60 dark:bg-transparent pointer-events-none z-[2]" />
+        {/* Subtle overlay for text readability only */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-transparent pointer-events-none z-[2]" />
         {/* Solid black bar to fully hide Spline branding */}
         <div
           className="absolute bottom-0 right-0 w-[220px] h-[60px] pointer-events-none z-[5]"
