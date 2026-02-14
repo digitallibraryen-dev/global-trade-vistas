@@ -1,0 +1,2 @@
+ALTER TABLE public.social_media_links DROP CONSTRAINT social_media_links_platform_check;
+ALTER TABLE public.social_media_links ADD CONSTRAINT social_media_links_platform_check CHECK (platform = ANY (ARRAY['instagram'::text, 'whatsapp'::text, 'tiktok'::text, 'snapchat'::text, 'wechat'::text, 'telegram'::text, 'facebook'::text]));
