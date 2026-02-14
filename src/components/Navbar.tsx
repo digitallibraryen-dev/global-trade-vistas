@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { List, X } from "@phosphor-icons/react";
+import logo from "@/assets/logo.jpg";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -22,9 +23,10 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-strong">
       <div className="container-narrow flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href="#" className="text-lg font-bold tracking-tight text-foreground">
+        <a href="#" className="flex items-center gap-2 text-lg font-bold tracking-tight text-foreground">
+          <img src={logo} alt="Almonesi Logo" className="h-9 w-auto object-contain rounded-sm" />
           <span className="gradient-primary bg-clip-text text-transparent">Almonesi</span>
-          <span className="ml-1 text-sm font-normal text-muted-foreground">Global Trade</span>
+          <span className="text-sm font-normal text-muted-foreground">Global Trade</span>
         </a>
 
         {/* Desktop nav */}
