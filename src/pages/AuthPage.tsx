@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { GoogleLogo } from "@phosphor-icons/react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -107,6 +109,31 @@ const AuthPage = () => {
           )}
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Please wait…" : isLogin ? "Sign In" : "Sign Up"}
+          </Button>
+
+          <div className="relative my-2">
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
+            <div className="relative flex justify-center text-xs uppercase"><span className="bg-background px-2 text-muted-foreground">Or</span></div>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full gap-2"
+            disabled={loading}
+            onClick={async () => {
+              setLoading(true);
+              const { error } = await lovable.auth.signInWithOAuth("google", {
+                redirect_uri: window.location.origin,
+              });
+              if (error) {
+                toast({ title: "Google sign-in failed", description: String(error), variant: "destructive" });
+                setLoading(false);
+              }
+            }}
+          >
+            <GoogleLogo size={18} weight="bold" />
+            Continue with Google
           </Button>
         </form>
 
