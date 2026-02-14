@@ -82,6 +82,7 @@ const zh = {
   serviceProcess: {
     tag: "我们的运营实力",
     title: "服务流程亮点",
+    learnMoreHint: "探索我们全方位的专业贸易和物流服务。",
     steps: {
       supplierResearch: { title: "供应商调研", desc: "精心甄选最佳生产合作伙伴。" },
       qualityInspection: { title: "质量检验", desc: "现场工厂审核和产品抽样。" },
@@ -94,6 +95,7 @@ const zh = {
     tag: "流程",
     title: "运作方式",
     step: "步骤",
+    learnMoreHint: "探索我们为全球企业设计的完整采购和物流工作流程。",
     steps: {
       submit: { title: "提交需求", desc: "告诉我们您需要什么——产品类型、数量和规格。" },
       search: { title: "我们寻找供应商", desc: "我们的团队为您寻找经过验证的工厂并比较方案。" },
