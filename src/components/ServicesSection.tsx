@@ -70,8 +70,8 @@ const ServicesSection = () => {
               key={s.title}
               className="service-card group glass rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:glow-primary cursor-default"
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                <s.icon size={24} weight="light" className="text-primary" />
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl gradient-primary shadow-lg">
+                <s.icon size={24} weight="light" className="text-primary-foreground" />
               </div>
               <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>

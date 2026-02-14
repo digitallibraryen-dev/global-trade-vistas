@@ -55,8 +55,8 @@ const HowItWorksSection = () => {
             {steps.map((s, i) => (
               <div key={s.title} className="step-item relative text-center">
                 {/* Node */}
-                <div className="relative z-10 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full glass border border-primary/30">
-                  <s.icon size={28} weight="light" className="text-primary" />
+                <div className="relative z-10 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full gradient-primary shadow-lg">
+                  <s.icon size={28} weight="light" className="text-primary-foreground" />
                 </div>
                 <div className="mb-1 text-xs font-bold uppercase tracking-wider text-primary">
                   Step {i + 1}
