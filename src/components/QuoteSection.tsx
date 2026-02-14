@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ParallaxOrbs from "./ParallaxOrbs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,8 +34,9 @@ const QuoteSection = () => {
   };
 
   return (
-    <section id="quote" ref={ref} className="section-padding">
-      <div className="container-narrow max-w-2xl">
+    <section id="quote" ref={ref} className="relative section-padding">
+      <ParallaxOrbs variant="mixed" />
+      <div className="container-narrow max-w-2xl relative z-10">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Get Started

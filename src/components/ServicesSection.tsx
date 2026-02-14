@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagnifyingGlass, Package, ChartLineUp, Airplane } from "@phosphor-icons/react";
+import ParallaxOrbs from "./ParallaxOrbs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -47,8 +48,9 @@ const ServicesSection = () => {
   }, []);
 
   return (
-    <section id="services" ref={ref} className="section-padding">
-      <div className="container-narrow">
+    <section id="services" ref={ref} className="relative section-padding">
+      <ParallaxOrbs variant="primary" />
+      <div className="container-narrow relative z-10">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Our Services
