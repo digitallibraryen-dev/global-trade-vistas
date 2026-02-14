@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { List, X, Sun, Moon, SignIn } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import logo from "@/assets/logo.png";
+import SocialIcons from "./SocialIcons";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -65,6 +66,7 @@ const Navbar = () => {
           >
             <SignIn size={16} /> Sign In
           </button>
+          <SocialIcons size={18} />
         </div>
 
         {/* Mobile controls */}

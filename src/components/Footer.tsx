@@ -1,4 +1,5 @@
 import logo from "@/assets/logo.png";
+import SocialIcons from "./SocialIcons";
 
 const Footer = () => {
   return (
@@ -8,7 +9,8 @@ const Footer = () => {
           <img src={logo} alt="Almonesi Logo" className="h-8 w-auto object-contain" />
           © {new Date().getFullYear()} Almonesi Global Trade. All rights reserved.
         </div>
-        <div className="flex gap-6">
+        <div className="flex items-center gap-6">
+          <SocialIcons size={18} />
           {["Privacy Policy", "Terms of Service"].map((l) => (
             <a
               key={l}
