@@ -4,10 +4,16 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import ProductManager from "@/components/admin/ProductManager";
 import SocialMediaManager from "@/components/admin/SocialMediaManager";
 import AdminAccountManager from "@/components/admin/AdminAccountManager";
+import UserManager from "@/components/admin/UserManager";
+import GoogleOAuthSettings from "@/components/admin/GoogleOAuthSettings";
+import AnalyticsSettings from "@/components/admin/AnalyticsSettings";
 
 const titles: Record<string, { title: string; subtitle: string }> = {
   products: { title: "Products", subtitle: "Manage your product catalog" },
   social: { title: "Social Media", subtitle: "Manage social media links" },
+  users: { title: "User Management", subtitle: "Manage user accounts and permissions" },
+  oauth: { title: "Google OAuth", subtitle: "Configure Google Sign-In" },
+  analytics: { title: "Analytics", subtitle: "Configure tracking and analytics" },
   admins: { title: "Settings", subtitle: "Manage admin accounts" },
 };
 
@@ -27,7 +33,6 @@ const AdminDashboard = () => {
       />
 
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top bar */}
         <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-border bg-background/80 backdrop-blur-md px-4 sm:px-6 py-4">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -41,10 +46,12 @@ const AdminDashboard = () => {
           </div>
         </header>
 
-        {/* Content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-4xl">
           {activeTab === "products" && <ProductManager />}
           {activeTab === "social" && <SocialMediaManager />}
+          {activeTab === "users" && <UserManager />}
+          {activeTab === "oauth" && <GoogleOAuthSettings />}
+          {activeTab === "analytics" && <AnalyticsSettings />}
           {activeTab === "admins" && <AdminAccountManager />}
         </main>
       </div>
