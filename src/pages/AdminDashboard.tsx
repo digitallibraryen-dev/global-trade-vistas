@@ -12,7 +12,7 @@ const titles: Record<string, { title: string; subtitle: string }> = {
   products: { title: "Products", subtitle: "Manage your product catalog" },
   social: { title: "Social Media", subtitle: "Manage social media links" },
   users: { title: "User Management", subtitle: "Manage user accounts and permissions" },
-  oauth: { title: "Google OAuth", subtitle: "Configure Google Sign-In" },
+  oauth: { title: "Authentication Settings", subtitle: "Configure Google Sign-In and OAuth" },
   analytics: { title: "Analytics", subtitle: "Configure tracking and analytics" },
   admins: { title: "Settings", subtitle: "Manage admin accounts" },
 };
