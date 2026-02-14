@@ -2,12 +2,18 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { GoogleLogo } from "@phosphor-icons/react";
+
+interface GoogleConfig {
+  enabled: boolean;
+  show_on_login: boolean;
+  client_id: string;
+  scopes: string;
+}
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,24 +21,33 @@ const AuthPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [googleEnabled, setGoogleEnabled] = useState(false);
+  const [googleConfig, setGoogleConfig] = useState<GoogleConfig | null>(null);
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    supabase
-      .from("site_settings")
-      .select("value")
-      .eq("key", "google_oauth")
-      .maybeSingle()
-      .then(({ data }) => {
-        const val = data?.value as Record<string, unknown> | null;
-        if (val?.enabled && val?.show_on_login) {
-          setGoogleEnabled(true);
+    // Fetch Google OAuth config from edge function (public info only)
+    fetch(
+      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-oauth?action=get-config`,
+      { headers: { apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY } }
+    )
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.enabled && data.show_on_login && data.client_id) {
+          setGoogleConfig(data);
         }
-      });
+      })
+      .catch(() => {});
   }, []);
+
+  const handleGoogleLogin = () => {
+    if (!googleConfig?.client_id) return;
+    const redirectUri = `${window.location.origin}/auth/callback`;
+    const scopes = googleConfig.scopes || "openid email profile";
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(googleConfig.client_id)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scopes)}&access_type=offline&prompt=select_account`;
+    window.location.href = googleAuthUrl;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,7 +141,7 @@ const AuthPage = () => {
             {loading ? "Please wait…" : isLogin ? "Sign In" : "Sign Up"}
           </Button>
 
-          {googleEnabled && (
+          {googleConfig && (
             <>
               <div className="relative my-2">
                 <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
@@ -138,16 +153,7 @@ const AuthPage = () => {
                 variant="outline"
                 className="w-full gap-2"
                 disabled={loading}
-                onClick={async () => {
-                  setLoading(true);
-                  const { error } = await lovable.auth.signInWithOAuth("google", {
-                    redirect_uri: window.location.origin,
-                  });
-                  if (error) {
-                    toast({ title: "Google sign-in failed", description: String(error), variant: "destructive" });
-                    setLoading(false);
-                  }
-                }}
+                onClick={handleGoogleLogin}
               >
                 <GoogleLogo size={18} weight="bold" />
                 Continue with Google
