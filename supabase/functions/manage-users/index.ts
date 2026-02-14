@@ -32,6 +32,7 @@ Deno.serve(async (req) => {
     const { data: roleData } = await callerClient
       .from("user_roles")
       .select("role")
+      .eq("user_id", caller.id)
       .eq("role", "admin")
       .maybeSingle();
     if (!roleData) return json({ error: "Forbidden" }, 403);
