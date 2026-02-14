@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MagnifyingGlass, Flask, CurrencyDollar, Boat, ChartBar } from "@phosphor-icons/react";
+import { MagnifyingGlass, Flask, CurrencyDollar, Boat, ChartBar, ArrowRight } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -45,6 +46,16 @@ const ServiceProcessSection = () => {
               );
             })}
           </div>
+        </div>
+        <div className="mt-12 text-center">
+          <p className="text-sm text-muted-foreground mb-4">{t("serviceProcess.learnMoreHint")}</p>
+          <Link
+            to="/services"
+            className="group inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-transparent px-6 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-primary hover:shadow-lg hover:shadow-primary/10"
+          >
+            {t("aboutPreview.learnMore")}
+            <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>

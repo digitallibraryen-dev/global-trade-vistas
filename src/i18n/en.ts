@@ -82,6 +82,7 @@ const en = {
   serviceProcess: {
     tag: "Our Operational Strength",
     title: "Service Process Highlights",
+    learnMoreHint: "Explore our full range of professional trade and logistics services.",
     steps: {
       supplierResearch: { title: "Supplier Research", desc: "Carefully identifying the best production partners." },
       qualityInspection: { title: "Quality Inspection", desc: "On-site factory audits & product sampling." },
@@ -94,6 +95,7 @@ const en = {
     tag: "Process",
     title: "How It Works",
     step: "Step",
+    learnMoreHint: "Discover our complete sourcing and logistics workflow designed for global businesses.",
     steps: {
       submit: { title: "Submit Your Request", desc: "Tell us what you need — product type, quantity, and specifications." },
       search: { title: "We Search Suppliers", desc: "Our team scouts verified factories and compares options for you." },
