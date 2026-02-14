@@ -1,54 +1,52 @@
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { LogOut, Package, Share2, UserPlus } from "lucide-react";
+import { List } from "@phosphor-icons/react";
+import AdminSidebar from "@/components/admin/AdminSidebar";
 import ProductManager from "@/components/admin/ProductManager";
 import SocialMediaManager from "@/components/admin/SocialMediaManager";
 import AdminAccountManager from "@/components/admin/AdminAccountManager";
 
-type Tab = "products" | "social" | "admins";
-
-const tabs: { key: Tab; label: string; icon: React.ElementType }[] = [
-  { key: "products", label: "Products", icon: Package },
-  { key: "social", label: "Social Media", icon: Share2 },
-  { key: "admins", label: "Add Admin", icon: UserPlus },
-];
+const titles: Record<string, { title: string; subtitle: string }> = {
+  products: { title: "Products", subtitle: "Manage your product catalog" },
+  social: { title: "Social Media", subtitle: "Manage social media links" },
+  admins: { title: "Settings", subtitle: "Manage admin accounts" },
+};
 
 const AdminDashboard = () => {
-  const { signOut } = useAuth();
-  const [activeTab, setActiveTab] = useState<Tab>("products");
+  const [activeTab, setActiveTab] = useState("products");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const { title, subtitle } = titles[activeTab] ?? titles.products;
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border px-4 sm:px-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-foreground">Admin Dashboard</h1>
-        <Button variant="ghost" size="sm" onClick={signOut}>
-          <LogOut className="h-4 w-4 mr-2" /> Sign Out
-        </Button>
-      </header>
+    <div className="flex min-h-screen bg-background">
+      <AdminSidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        {/* Tab bar */}
-        <div className="flex gap-1 mb-8 overflow-x-auto border-b border-border">
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === tab.key
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <tab.icon className="h-4 w-4" />
-              {tab.label}
-            </button>
-          ))}
-        </div>
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top bar */}
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-border bg-background/80 backdrop-blur-md px-4 sm:px-6 py-4">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="lg:hidden p-2 rounded-lg hover:bg-secondary text-foreground"
+          >
+            <List size={22} />
+          </button>
+          <div>
+            <h1 className="text-xl font-bold text-foreground">{title}</h1>
+            <p className="text-sm text-muted-foreground">{subtitle}</p>
+          </div>
+        </header>
 
-        {activeTab === "products" && <ProductManager />}
-        {activeTab === "social" && <SocialMediaManager />}
-        {activeTab === "admins" && <AdminAccountManager />}
+        {/* Content */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-4xl">
+          {activeTab === "products" && <ProductManager />}
+          {activeTab === "social" && <SocialMediaManager />}
+          {activeTab === "admins" && <AdminAccountManager />}
+        </main>
       </div>
     </div>
   );
