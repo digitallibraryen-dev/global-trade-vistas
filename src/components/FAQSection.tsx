@@ -44,7 +44,7 @@ const FAQSection = () => {
             <AccordionItem
               key={i}
               value={`faq-${i}`}
-              className="rounded-xl border-none px-5 [&_svg]:text-white"
+              className="rounded-xl border-none px-5 [&_svg]:text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#003f7f]/30"
               style={{ backgroundColor: '#003f7f' }}
             >
               <AccordionTrigger className="text-left text-sm font-semibold text-white hover:no-underline py-4">
