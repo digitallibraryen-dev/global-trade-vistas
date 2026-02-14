@@ -1,42 +1,18 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useTranslation } from "react-i18next";
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".hero-headline", {
-        opacity: 0,
-        y: 60,
-        filter: "blur(10px)",
-        duration: 1.2,
-        ease: "power3.out",
-        delay: 0.2
-      });
-      gsap.from(".hero-sub", {
-        opacity: 0,
-        y: 40,
-        duration: 1,
-        ease: "power3.out",
-        delay: 0.5
-      });
-      gsap.from(".hero-cta", {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.8,
-        stagger: 0.15
-      });
-      gsap.from(".hero-spline", {
-        opacity: 0,
-        duration: 1.5,
-        ease: "power2.out",
-        delay: 0.3
-      });
+      gsap.from(".hero-headline", { opacity: 0, y: 60, filter: "blur(10px)", duration: 1.2, ease: "power3.out", delay: 0.2 });
+      gsap.from(".hero-sub", { opacity: 0, y: 40, duration: 1, ease: "power3.out", delay: 0.5 });
+      gsap.from(".hero-cta", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out", delay: 0.8, stagger: 0.15 });
+      gsap.from(".hero-spline", { opacity: 0, duration: 1.5, ease: "power2.out", delay: 0.3 });
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
@@ -46,60 +22,41 @@ const HeroSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
-      {/* Spline 3D Background */}
       <div className="hero-spline absolute inset-0 z-0">
         <iframe
           src="https://my.spline.design/herobannerfortransportandlogisticscompanygmw2425-GYw1Ka0Iu2NG1giJfqOEBM46/"
-          frameBorder="0"
-          width="100%"
-          height="100%"
-          className="pointer-events-none"
-          title="3D Hero Background"
-          loading="lazy" />
-
-        {/* Subtle overlay for text readability only */}
+          frameBorder="0" width="100%" height="100%"
+          className="pointer-events-none" title="3D Hero Background" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-transparent pointer-events-none z-[2]" />
-        {/* Solid black bar to fully hide Spline branding */}
-        <div
-          className="absolute bottom-0 right-0 w-[220px] h-[60px] pointer-events-none z-[5]"
-          style={{ backgroundColor: "#003f7f" }} />
-
+        <div className="absolute bottom-0 right-0 w-[220px] h-[60px] pointer-events-none z-[5]" style={{ backgroundColor: "#003f7f" }} />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 flex min-h-screen items-center section-padding pt-24">
         <div className="container-narrow">
           <div className="max-w-2xl">
             <h1 className="hero-headline text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)]">
-              Your Trusted Partner for{" "}
+              {t("hero.title1")}{" "}
               <span className="text-accent drop-shadow-[0_0_20px_hsl(200_90%_60%/0.6)]">
-                Sourcing & Trade
+                {t("hero.highlight")}
               </span>{" "}
-              in China
+              {t("hero.title2")}
             </h1>
             <p className="hero-sub mt-6 max-w-lg text-lg leading-relaxed text-white/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.2)]">
-              We connect your business with verified suppliers and manage your
-              trade operations professionally — from sourcing to delivery.
+              {t("hero.subtitle")}
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <button
-                onClick={() => scrollTo("#quote")}
-                className="hero-cta rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:shadow-[0_0_30px_hsl(215_80%_50%/0.4)] active:scale-[0.98]">
-
-                Request a Quote
+              <button onClick={() => scrollTo("#quote")} className="hero-cta rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:shadow-[0_0_30px_hsl(215_80%_50%/0.4)] active:scale-[0.98]">
+                {t("hero.cta1")}
               </button>
-              <button
-                onClick={() => scrollTo("#contact")}
-                className="hero-cta glass rounded-lg px-8 py-3.5 text-sm font-semibold text-white border-white/20 transition-all hover:bg-white/10">
-
-                Book a Consultation
+              <button onClick={() => scrollTo("#contact")} className="hero-cta glass rounded-lg px-8 py-3.5 text-sm font-semibold text-white border-white/20 transition-all hover:bg-white/10">
+                {t("hero.cta2")}
               </button>
             </div>
           </div>
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 };
 
 export default HeroSection;

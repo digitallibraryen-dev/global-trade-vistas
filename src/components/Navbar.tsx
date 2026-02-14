@@ -3,16 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { List, X, Sun, Moon, SignIn, SignOut, GearSix, UserCircle } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 import logo from "@/assets/logo.png";
 import SocialIcons from "./SocialIcons";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Blog", href: "#blog" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { key: "about", href: "#about" },
+  { key: "services", href: "#services" },
+  { key: "howItWorks", href: "#how-it-works" },
+  { key: "blog", href: "#blog" },
+  { key: "faq", href: "#faq" },
+  { key: "contact", href: "#contact" },
 ];
 
 const Navbar = () => {
@@ -20,6 +22,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
+  const { t } = useTranslation();
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
@@ -46,9 +49,10 @@ const Navbar = () => {
               onClick={() => scrollTo(l.href)}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              {l.label}
+              {t(`nav.${l.key}`)}
             </button>
           ))}
+          <LanguageSwitcher />
           <button
             onClick={toggleTheme}
             className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
@@ -60,7 +64,7 @@ const Navbar = () => {
             onClick={() => scrollTo("#quote")}
             className="rounded-lg gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-shadow hover:glow-primary"
           >
-            Get a Quote
+            {t("nav.getQuote")}
           </button>
           {user ? (
             <>
@@ -69,20 +73,20 @@ const Navbar = () => {
                   onClick={() => navigate("/admin")}
                   className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
                 >
-                  <GearSix size={16} /> Dashboard
+                  <GearSix size={16} /> {t("nav.dashboard")}
                 </button>
               )}
               <button
                 onClick={() => navigate("/account")}
                 className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
               >
-                <UserCircle size={16} /> My Account
+                <UserCircle size={16} /> {t("nav.myAccount")}
               </button>
               <button
                 onClick={() => signOut()}
                 className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
               >
-                <SignOut size={16} /> Sign Out
+                <SignOut size={16} /> {t("nav.signOut")}
               </button>
             </>
           ) : (
@@ -90,7 +94,7 @@ const Navbar = () => {
               onClick={() => navigate("/login")}
               className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
             >
-              <SignIn size={16} /> Sign In
+              <SignIn size={16} /> {t("nav.signIn")}
             </button>
           )}
           <SocialIcons size={18} />
@@ -98,6 +102,7 @@ const Navbar = () => {
 
         {/* Mobile controls */}
         <div className="flex items-center gap-2 md:hidden">
+          <LanguageSwitcher />
           <button
             onClick={toggleTheme}
             className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-foreground"
@@ -125,14 +130,14 @@ const Navbar = () => {
                 onClick={() => scrollTo(l.href)}
                 className="text-left text-base font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                {l.label}
+                {t(`nav.${l.key}`)}
               </button>
             ))}
             <button
               onClick={() => scrollTo("#quote")}
               className="mt-2 rounded-lg gradient-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
-              Get a Quote
+              {t("nav.getQuote")}
             </button>
             {user ? (
               <>
@@ -141,20 +146,20 @@ const Navbar = () => {
                     onClick={() => { setOpen(false); navigate("/admin"); }}
                     className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
                   >
-                    <GearSix size={16} /> Dashboard
+                    <GearSix size={16} /> {t("nav.dashboard")}
                   </button>
                 )}
                 <button
                   onClick={() => { setOpen(false); navigate("/account"); }}
                   className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  <UserCircle size={16} /> My Account
+                  <UserCircle size={16} /> {t("nav.myAccount")}
                 </button>
                 <button
                   onClick={() => { setOpen(false); signOut(); }}
                   className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  <SignOut size={16} /> Sign Out
+                  <SignOut size={16} /> {t("nav.signOut")}
                 </button>
               </>
             ) : (
@@ -162,7 +167,7 @@ const Navbar = () => {
                 onClick={() => { setOpen(false); navigate("/login"); }}
                 className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                <SignIn size={16} /> Sign In
+                <SignIn size={16} /> {t("nav.signIn")}
               </button>
             )}
           </div>
