@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { List, X } from "@phosphor-icons/react";
+import { List, X, Sun, Moon } from "@phosphor-icons/react";
+import { useTheme } from "next-themes";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
@@ -13,6 +14,9 @@ const navLinks = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   const scrollTo = (href: string) => {
     setOpen(false);
@@ -41,6 +45,13 @@ const Navbar = () => {
             </button>
           ))}
           <button
+            onClick={toggleTheme}
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <button
             onClick={() => scrollTo("#quote")}
             className="rounded-lg gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-shadow hover:glow-primary"
           >
@@ -48,14 +59,23 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="text-foreground md:hidden"
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={24} /> : <List size={24} />}
-        </button>
+        {/* Mobile controls */}
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={toggleTheme}
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-foreground"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-foreground"
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={24} /> : <List size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile tray */}
