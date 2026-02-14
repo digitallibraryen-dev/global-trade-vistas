@@ -105,13 +105,34 @@ const en = {
   howItWorksPage: {
     tag: "Our Process",
     title: "How Our Process Works",
-    subtitle: "We simplify international sourcing and logistics with a structured and transparent process.",
+    subtitle: "At Almonesi Global Trade (OMT), we follow a structured, transparent, and results-driven process to ensure your sourcing and shipping operations run smoothly from start to finish.",
+    ctaTitle: "Ready to start your sourcing journey?",
     steps: {
-      submit: { title: "Submit Your Request", desc: "Tell us your product type, quantity, specifications, and target market." },
-      search: { title: "Supplier Research & Verification", desc: "We identify reliable factories and conduct supplier background checks." },
-      negotiate: { title: "Price Negotiation & Sampling", desc: "We negotiate competitive pricing and arrange product samples for approval." },
-      quality: { title: "Quality Inspection", desc: "Our team conducts on-site inspections before shipment to ensure quality standards." },
-      shipment: { title: "Shipping & Delivery", desc: "We handle freight booking, customs clearance, and door-to-door delivery." },
+      submit: {
+        title: "Submit Your Request",
+        desc: "Tell us exactly what you need — product specifications, quantity, target price, packaging requirements, and destination country. Our team carefully reviews your request and prepares a sourcing strategy tailored to your business goals.",
+        bullets: [],
+      },
+      search: {
+        title: "Supplier Research & Verification",
+        desc: "We identify reliable and verified factories across China through our established supplier network. Only qualified manufacturers move to the next stage.",
+        bullets: ["Production capacity", "Certifications", "Factory credibility", "Past export history", "Pricing structure"],
+      },
+      sampling: {
+        title: "Sampling & Quality Verification",
+        desc: "Before mass production begins, we ensure your product meets international standards and your exact expectations.",
+        bullets: ["Arrange product samples", "Conduct quality checks", "Verify materials and workmanship", "Perform factory audits when required"],
+      },
+      negotiate: {
+        title: "Price Negotiation & Order Management",
+        desc: "We negotiate competitive pricing, payment terms, and delivery schedules on your behalf. We manage communication with the supplier throughout production.",
+        bullets: ["Fair pricing", "Clear contracts", "Risk protection", "Production timeline control"],
+      },
+      logistics: {
+        title: "Logistics & Final Delivery",
+        desc: "From factory pickup to your warehouse, you receive full visibility and updates throughout the shipment journey.",
+        bullets: ["Freight booking (Sea / Air / Rail)", "Export documentation", "Customs clearance", "Cargo insurance", "Final delivery coordination"],
+      },
     },
   },
   contactPage: {
@@ -146,9 +167,18 @@ const en = {
   servicesPage: {
     tag: "Our Services",
     title: "Our Professional Services",
-    subtitle: "We provide end-to-end sourcing and logistics solutions tailored to your business goals.",
+    subtitle: "We provide integrated sourcing and logistics solutions designed to simplify global trade and maximize your operational efficiency.",
     requestQuote: "Request a Quote",
     noServices: "No services available yet.",
+    ctaTitle: "Partner with Almonesi Global Trade (OMT) today.",
+    whyTitle: "Why Businesses Choose OMT",
+    trustBadges: [
+      "Transparent 5% Commission Structure",
+      "Verified Supplier Network",
+      "End-to-End Process Control",
+      "Global Shipping Expertise",
+      "Legally Registered Chinese Entity",
+    ],
   },
   faqPage: {
     tag: "FAQ",
