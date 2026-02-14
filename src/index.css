@@ -155,6 +155,10 @@
   }
 
   .gradient-dark {
+    background: linear-gradient(180deg, hsl(204 60% 96%), hsl(204 50% 93%));
+  }
+
+  .dark .gradient-dark {
     background: linear-gradient(180deg, hsl(220 30% 6%), hsl(220 25% 3%));
   }
 
