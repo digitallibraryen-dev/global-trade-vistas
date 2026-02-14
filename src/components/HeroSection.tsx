@@ -59,10 +59,9 @@ const HeroSection = () => {
         />
         {/* Gradient overlay for readability */}
         {/* Solid black bar to fully hide Spline branding */}
-        <div className="absolute inset-x-0 bottom-0 h-[50px] bg-black pointer-events-none z-[5]" />
         <div
-          className="absolute inset-x-0 bottom-[50px] h-[30px] pointer-events-none z-[5]"
-          style={{ background: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)" }}
+          className="absolute inset-x-0 bottom-0 h-[80px] pointer-events-none z-[5]"
+          style={{ background: "linear-gradient(to top, rgba(20,100,200,0.8) 0%, rgba(80,160,255,0.4) 60%, rgba(255,255,255,0) 100%)" }}
         />
       </div>
 
