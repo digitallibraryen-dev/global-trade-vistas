@@ -5,19 +5,18 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
-  }
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    if (!authHeader) return json({ error: "Unauthorized" }, 401);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -27,43 +26,54 @@ Deno.serve(async (req) => {
     const callerClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
+    const { data: { user: caller } } = await callerClient.auth.getUser();
+    if (!caller) return json({ error: "Unauthorized" }, 401);
+
     const { data: roleData } = await callerClient
       .from("user_roles")
       .select("role")
       .eq("role", "admin")
       .maybeSingle();
-
-    if (!roleData) {
-      return new Response(JSON.stringify({ error: "Forbidden" }), {
-        status: 403,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    if (!roleData) return json({ error: "Forbidden" }, 403);
 
     const adminClient = createClient(supabaseUrl, serviceRoleKey);
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
 
+    // LIST all users
     if (req.method === "GET" && action === "list") {
-      const { data, error } = await adminClient.auth.admin.listUsers({ perPage: 100 });
-      if (error) throw error;
+      const allUsers = [];
+      let page = 1;
+      while (true) {
+        const { data, error } = await adminClient.auth.admin.listUsers({ page, perPage: 100 });
+        if (error) throw error;
+        allUsers.push(...data.users);
+        if (data.users.length < 100) break;
+        page++;
+      }
 
-      // Get all roles
       const { data: roles } = await adminClient.from("user_roles").select("*");
 
-      const users = data.users.map((u) => ({
-        id: u.id,
-        email: u.email,
-        created_at: u.created_at,
-        last_sign_in_at: u.last_sign_in_at,
-        is_admin: roles?.some((r) => r.user_id === u.id && r.role === "admin") ?? false,
-      }));
-
-      return new Response(JSON.stringify({ users }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      const users = allUsers.map((u) => {
+        const provider = u.app_metadata?.provider || u.app_metadata?.providers?.[0] || "email";
+        const name = u.user_metadata?.full_name || u.user_metadata?.name || "";
+        return {
+          id: u.id,
+          email: u.email || "",
+          name,
+          created_at: u.created_at,
+          last_sign_in_at: u.last_sign_in_at,
+          provider,
+          is_admin: roles?.some((r) => r.user_id === u.id && r.role === "admin") ?? false,
+          banned: !!u.banned_until,
+          banned_until: u.banned_until,
+        };
       });
+
+      return json({ users });
     }
 
+    // TOGGLE admin role
     if (req.method === "POST" && action === "toggle-admin") {
       const { userId, makeAdmin } = await req.json();
       if (!userId) throw new Error("userId required");
@@ -74,6 +84,8 @@ Deno.serve(async (req) => {
           .upsert({ user_id: userId, role: "admin" }, { onConflict: "user_id,role" });
         if (error) throw error;
       } else {
+        // Prevent admin from removing own admin role
+        if (userId === caller.id) return json({ error: "Cannot remove your own admin role" }, 400);
         const { error } = await adminClient
           .from("user_roles")
           .delete()
@@ -81,20 +93,44 @@ Deno.serve(async (req) => {
           .eq("role", "admin");
         if (error) throw error;
       }
-
-      return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return json({ success: true });
     }
 
-    return new Response(JSON.stringify({ error: "Unknown action" }), {
-      status: 400,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    // BAN / UNBAN user
+    if (req.method === "POST" && action === "toggle-ban") {
+      const { userId, ban } = await req.json();
+      if (!userId) throw new Error("userId required");
+      if (userId === caller.id) return json({ error: "Cannot ban yourself" }, 400);
+
+      if (ban) {
+        const { error } = await adminClient.auth.admin.updateUserById(userId, {
+          ban_duration: "876000h", // ~100 years
+        });
+        if (error) throw error;
+      } else {
+        const { error } = await adminClient.auth.admin.updateUserById(userId, {
+          ban_duration: "none",
+        });
+        if (error) throw error;
+      }
+      return json({ success: true });
+    }
+
+    // DELETE user
+    if (req.method === "POST" && action === "delete-user") {
+      const { userId } = await req.json();
+      if (!userId) throw new Error("userId required");
+      if (userId === caller.id) return json({ error: "Cannot delete your own account" }, 400);
+
+      // Remove roles first
+      await adminClient.from("user_roles").delete().eq("user_id", userId);
+      const { error } = await adminClient.auth.admin.deleteUser(userId);
+      if (error) throw error;
+      return json({ success: true });
+    }
+
+    return json({ error: "Unknown action" }, 400);
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return json({ error: err.message }, 500);
   }
 });
