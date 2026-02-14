@@ -7,11 +7,13 @@ import AdminAccountManager from "@/components/admin/AdminAccountManager";
 import UserManager from "@/components/admin/UserManager";
 import GoogleOAuthSettings from "@/components/admin/GoogleOAuthSettings";
 import AnalyticsSettings from "@/components/admin/AnalyticsSettings";
+import ReviewManager from "@/components/admin/ReviewManager";
 
 const titles: Record<string, { title: string; subtitle: string }> = {
   products: { title: "Products", subtitle: "Manage your product catalog" },
   social: { title: "Social Media", subtitle: "Manage social media links" },
   users: { title: "User Management", subtitle: "Manage user accounts and permissions" },
+  reviews: { title: "Review Moderation", subtitle: "Approve, reject, or manage customer reviews" },
   oauth: { title: "Authentication Settings", subtitle: "Configure Google Sign-In and OAuth" },
   analytics: { title: "Analytics", subtitle: "Configure tracking and analytics" },
   admins: { title: "Settings", subtitle: "Manage admin accounts" },
@@ -50,6 +52,7 @@ const AdminDashboard = () => {
           {activeTab === "products" && <ProductManager />}
           {activeTab === "social" && <SocialMediaManager />}
           {activeTab === "users" && <UserManager />}
+          {activeTab === "reviews" && <ReviewManager />}
           {activeTab === "oauth" && <GoogleOAuthSettings />}
           {activeTab === "analytics" && <AnalyticsSettings />}
           {activeTab === "admins" && <AdminAccountManager />}

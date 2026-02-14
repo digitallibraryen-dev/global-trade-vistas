@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { List, X, Sun, Moon, SignIn, SignOut, GearSix } from "@phosphor-icons/react";
+import { List, X, Sun, Moon, SignIn, SignOut, GearSix, UserCircle } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.png";
@@ -73,6 +73,12 @@ const Navbar = () => {
                 </button>
               )}
               <button
+                onClick={() => navigate("/account")}
+                className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+              >
+                <UserCircle size={16} /> My Account
+              </button>
+              <button
                 onClick={() => signOut()}
                 className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
               >
@@ -138,6 +144,12 @@ const Navbar = () => {
                     <GearSix size={16} /> Dashboard
                   </button>
                 )}
+                <button
+                  onClick={() => { setOpen(false); navigate("/account"); }}
+                  className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <UserCircle size={16} /> My Account
+                </button>
                 <button
                   onClick={() => { setOpen(false); signOut(); }}
                   className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"

@@ -5,8 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { GoogleLogo } from "@phosphor-icons/react";
+import PasswordStrength from "@/components/PasswordStrength";
 import logo from "@/assets/logo.png";
 
 interface GoogleConfig {
@@ -16,11 +18,28 @@ interface GoogleConfig {
   scopes: string;
 }
 
+const countries = [
+  "Afghanistan","Albania","Algeria","Argentina","Australia","Austria","Bahrain","Bangladesh","Belgium","Bolivia",
+  "Brazil","Canada","Chile","China","Colombia","Costa Rica","Cuba","Czech Republic","Denmark","Ecuador",
+  "Egypt","Estonia","Ethiopia","Finland","France","Germany","Ghana","Greece","Guatemala","Honduras",
+  "Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica",
+  "Japan","Jordan","Kazakhstan","Kenya","Kuwait","Latvia","Lebanon","Libya","Lithuania","Malaysia",
+  "Mexico","Morocco","Myanmar","Nepal","Netherlands","New Zealand","Nigeria","Norway","Oman","Pakistan",
+  "Palestine","Panama","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia",
+  "Saudi Arabia","Senegal","Singapore","Slovakia","Slovenia","Somalia","South Africa","South Korea","Spain","Sri Lanka",
+  "Sudan","Sweden","Switzerland","Syria","Taiwan","Tanzania","Thailand","Tunisia","Turkey","UAE",
+  "Uganda","Ukraine","United Kingdom","United States","Uruguay","Uzbekistan","Venezuela","Vietnam","Yemen","Zimbabwe",
+];
+
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [country, setCountry] = useState("");
+  const [dob, setDob] = useState("");
+  const [agreedTerms, setAgreedTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleConfig, setGoogleConfig] = useState<GoogleConfig | null>(null);
   const { signIn } = useAuth();
@@ -28,7 +47,6 @@ const AuthPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Fetch Google OAuth config from edge function (public info only)
     fetch(
       `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-oauth?action=get-config`,
       { headers: { apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY } }
@@ -64,6 +82,11 @@ const AuthPage = () => {
       }
       navigate("/");
     } else {
+      if (!agreedTerms) {
+        toast({ title: "Terms required", description: "You must agree to the terms.", variant: "destructive" });
+        setLoading(false);
+        return;
+      }
       if (password !== confirmPassword) {
         toast({ title: "Passwords don't match", description: "Please make sure both passwords are identical.", variant: "destructive" });
         setLoading(false);
@@ -72,7 +95,14 @@ const AuthPage = () => {
       const { error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
-        options: { emailRedirectTo: window.location.origin },
+        options: {
+          emailRedirectTo: window.location.origin,
+          data: {
+            full_name: fullName.trim(),
+            country,
+            date_of_birth: dob || null,
+          },
+        },
       });
       if (error) {
         toast({ title: "Signup failed", description: error.message, variant: "destructive" });
@@ -80,13 +110,17 @@ const AuthPage = () => {
         toast({ title: "Account created!", description: "You can now sign in." });
         setIsLogin(true);
         setConfirmPassword("");
+        setFullName("");
+        setCountry("");
+        setDob("");
+        setAgreedTerms(false);
       }
     }
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-8">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
           <Link to="/" className="inline-block mb-3">
@@ -101,8 +135,22 @@ const AuthPage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 glass-strong rounded-xl p-6">
+          {!isLogin && (
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Full Name *</Label>
+              <Input
+                id="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="John Doe"
+                required
+                autoComplete="name"
+              />
+            </div>
+          )}
+
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email *</Label>
             <Input
               id="email"
               type="email"
@@ -113,8 +161,30 @@ const AuthPage = () => {
               autoComplete="email"
             />
           </div>
+
+          {!isLogin && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="country">Country</Label>
+                <select
+                  id="country"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <option value="">Select country</option>
+                  {countries.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="dob">Date of Birth (optional)</Label>
+                <Input id="dob" type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+              </div>
+            </>
+          )}
+
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Password *</Label>
             <Input
               id="password"
               type="password"
@@ -125,22 +195,38 @@ const AuthPage = () => {
               minLength={6}
               autoComplete={isLogin ? "current-password" : "new-password"}
             />
+            {!isLogin && <PasswordStrength password={password} />}
           </div>
+
           {!isLogin && (
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <Input
-                id="confirm-password"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                minLength={6}
-                autoComplete="new-password"
-              />
-            </div>
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password">Confirm Password *</Label>
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  minLength={6}
+                  autoComplete="new-password"
+                />
+              </div>
+
+              <div className="flex items-start gap-2">
+                <Checkbox
+                  id="terms"
+                  checked={agreedTerms}
+                  onCheckedChange={(checked) => setAgreedTerms(checked === true)}
+                />
+                <Label htmlFor="terms" className="text-xs text-muted-foreground leading-tight cursor-pointer">
+                  I agree to the Terms of Service and Privacy Policy
+                </Label>
+              </div>
+            </>
           )}
+
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Please wait…" : isLogin ? "Sign In" : "Sign Up"}
           </Button>
@@ -151,7 +237,6 @@ const AuthPage = () => {
                 <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
                 <div className="relative flex justify-center text-xs uppercase"><span className="bg-background px-2 text-muted-foreground">Or</span></div>
               </div>
-
               <Button
                 type="button"
                 variant="outline"
