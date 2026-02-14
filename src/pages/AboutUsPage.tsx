@@ -9,6 +9,8 @@ import {
   Buildings,
   UsersThree,
   ChartLineUp,
+  CheckCircle,
+  Scales,
 } from "@phosphor-icons/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -110,6 +112,43 @@ const AboutUsPage = () => {
                     <h3 className="font-semibold text-foreground mb-1">{t(`aboutPage.story.${item.key}.title`)}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{t(`aboutPage.story.${item.key}.desc`)}</p>
                   </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+        {/* Legal Identity & Corporate Compliance */}
+        <section className="section-padding gradient-dark">
+          <div className="container-narrow">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-foreground sm:text-4xl">{t("aboutPage.legalTitle")}</h2>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="glass-strong rounded-xl p-8 max-w-3xl mx-auto text-center"
+            >
+              <Scales size={40} className="text-primary mx-auto mb-4" weight="duotone" />
+              <p className="text-lg font-semibold text-foreground">{t("aboutPage.legalEntityCn")}</p>
+              <p className="text-sm font-medium text-primary mt-1">{t("aboutPage.legalEntityEn")}</p>
+              <p className="mt-4 text-muted-foreground leading-relaxed">{t("aboutPage.legalText")}</p>
+              <p className="mt-3 text-sm text-muted-foreground italic">{t("aboutPage.legalNote")}</p>
+            </motion.div>
+
+            {/* Trust Badges */}
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5 max-w-4xl mx-auto">
+              {["registered", "compliant", "verified", "transparent", "secure"].map((badge, i) => (
+                <motion.div
+                  key={badge}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="flex items-center gap-2 glass-strong rounded-lg p-3"
+                >
+                  <CheckCircle size={20} className="text-primary shrink-0" weight="fill" />
+                  <span className="text-sm font-medium text-foreground">{t(`aboutPage.trust.${badge}`)}</span>
                 </motion.div>
               ))}
             </div>

@@ -48,6 +48,18 @@ const zh = {
       expansion: { title: "全球扩展", desc: "我们扩展到多个国家，在各大洲建立办事处和合作伙伴关系，以服务不断增长的客户群。" },
       clients: { title: "服务全球客户", desc: "如今，我们为50多个国家的数百家企业提供端到端的贸易解决方案，始终如一地践行承诺。" },
     },
+    legalTitle: "法律身份与企业注册",
+    legalEntityCn: "杭州穆尼溪科技有限公司",
+    legalEntityEn: "HANGZHOU ALMONESI TECHNOLOGY CO., LTD.",
+    legalText: "公司注册于中华人民共和国杭州市，完全遵守中国商业法律和国际贸易法规。我们保持透明的商业实践，严格遵守合同、财务和出口合规标准。",
+    legalNote: "营业执照和官方许可信息可应经过验证的合作伙伴和客户的要求提供。",
+    trust: {
+      registered: "中国正式注册企业",
+      compliant: "国际贸易合规",
+      verified: "经验证的供应商网络",
+      transparent: "透明的佣金结构",
+      secure: "安全的全球物流合作",
+    },
   },
   featuredServices: {
     tag: "我们的服务",
@@ -211,6 +223,8 @@ const zh = {
     terms: "服务条款",
     tagline: "我们致力于为全球客户提供最佳的运输、采购、进出口服务。",
     partner: "您在国际贸易中的可信赖合作伙伴。",
+    operatedBy: "运营方",
+    legalNote: "中华人民共和国合法注册企业。营业执照可应要求提供。",
   },
 };
 
