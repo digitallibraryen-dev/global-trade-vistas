@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { EnvelopeSimple, MapPin, Phone } from "@phosphor-icons/react";
 import ParallaxOrbs from "./ParallaxOrbs";
+import SocialIcons from "./SocialIcons";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -41,6 +42,7 @@ const ContactSection = () => {
                 <span className="text-sm text-foreground">{c.text}</span>
               </div>
             ))}
+            <SocialIcons size={24} className="mt-4" />
           </div>
 
           {/* Form */}
