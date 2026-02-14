@@ -34,13 +34,13 @@ const LanguageSwitcher = () => {
           <span>{current.flag}</span>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[140px] bg-[#003f7f] border-[#003f7f] z-50">
+      <DropdownMenuContent align="end" className="min-w-[140px]">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => changeLanguage(lang.code)}
-            className={`flex items-center gap-2 cursor-pointer text-white hover:!bg-white/20 focus:!bg-white/20 ${
-              i18n.language === lang.code ? "!bg-white/15 text-white" : ""
+            className={`flex items-center gap-2 cursor-pointer ${
+              i18n.language === lang.code ? "bg-primary/10 text-primary" : ""
             }`}
           >
             <span>{lang.flag}</span>
