@@ -60,7 +60,7 @@ const HeroSection = () => {
         {/* Gradient overlay for readability */}
         {/* Solid black bar to fully hide Spline branding */}
         <div
-          className="absolute bottom-0 right-0 w-[150px] h-[40px] pointer-events-none z-[5]"
+          className="absolute bottom-0 right-0 w-[220px] h-[60px] pointer-events-none z-[5]"
           style={{ backgroundColor: "#003f7f" }}
         />
       </div>
