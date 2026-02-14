@@ -127,6 +127,26 @@ const ContactPage = () => {
               </Button>
             </form>
           </div>
+
+          {/* Google Map */}
+          <div className="mt-16 lg:col-span-2">
+            <h3 className="text-center text-lg font-semibold text-foreground mb-6">
+              {t("contactPage.mapTitle", "Our Location – Visit Us in China")}
+            </h3>
+            <div className="rounded-2xl overflow-hidden border border-border shadow-lg">
+              <iframe
+                title="Almonesi Office Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3540.5!2d120.1551!3d30.2741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x344b73b5b7e1b3e1%3A0x1234567890abcdef!2sHangzhou%2C+China!5e0!3m2!1sen!2scn!4v1700000000000"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full"
+              />
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
