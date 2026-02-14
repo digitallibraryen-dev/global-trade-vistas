@@ -174,6 +174,46 @@
   .container-narrow {
     @apply max-w-7xl mx-auto;
   }
+
+  /* Social icon animations */
+  .social-icon-btn {
+    --glow-color: 215, 80%, 50%;
+  }
+
+  .social-icon-glow {
+    background: radial-gradient(circle, hsl(var(--glow-color) / 0.08) 0%, transparent 70%);
+    animation: social-breathe 3s ease-in-out infinite;
+  }
+
+  .social-icon-btn:hover .social-icon-glow {
+    background: radial-gradient(circle, hsl(var(--glow-color) / 0.2) 0%, transparent 70%);
+    animation: none;
+  }
+
+  .social-icon-btn:hover {
+    box-shadow: 0 0 16px hsl(var(--glow-color) / 0.25),
+                0 0 40px hsl(var(--glow-color) / 0.08);
+  }
+
+  .social-icon-inner {
+    color: hsl(var(--muted-foreground));
+    transition: color 0.3s ease, filter 0.3s ease;
+  }
+
+  .social-icon-btn:hover .social-icon-inner {
+    color: hsl(var(--glow-color));
+    filter: drop-shadow(0 0 6px hsl(var(--glow-color) / 0.5));
+  }
+
+  .dark .social-icon-btn:hover {
+    box-shadow: 0 0 20px hsl(var(--glow-color) / 0.35),
+                0 0 50px hsl(var(--glow-color) / 0.1);
+  }
+}
+
+@keyframes social-breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
 }
 
 /* Scrollbar styling */
