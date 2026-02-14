@@ -58,6 +58,7 @@ const HeroSection = () => {
           loading="lazy" />
 
         {/* Gradient overlay for readability */}
+        <div className="absolute inset-0 bg-background/60 dark:bg-transparent pointer-events-none z-[2]" />
         {/* Solid black bar to fully hide Spline branding */}
         <div
           className="absolute bottom-0 right-0 w-[220px] h-[60px] pointer-events-none z-[5]"
@@ -71,12 +72,12 @@ const HeroSection = () => {
           <div className="max-w-2xl">
             <h1 className="hero-headline text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               Your Trusted Partner for{" "}
-              <span className="gradient-primary bg-clip-text bg-primary-foreground text-primary-foreground">
+              <span className="gradient-primary bg-clip-text text-transparent">
                 Sourcing & Trade
               </span>{" "}
               in China
             </h1>
-            <p className="hero-sub mt-6 max-w-lg text-lg leading-relaxed text-primary-foreground">
+            <p className="hero-sub mt-6 max-w-lg text-lg leading-relaxed text-foreground/80 dark:text-primary-foreground">
               We connect your business with verified suppliers and manage your
               trade operations professionally — from sourcing to delivery.
             </p>
