@@ -3,12 +3,16 @@ import Preloader from "@/components/Preloader";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import ServicesSection from "@/components/ServicesSection";
+import ServiceProcessSection from "@/components/ServiceProcessSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import QuoteSection from "@/components/QuoteSection";
 import BlogSection from "@/components/BlogSection";
 import ProductsSection from "@/components/ProductsSection";
 import ReviewsSection from "@/components/ReviewsSection";
+import KnowledgeHubSection from "@/components/KnowledgeHubSection";
+import TrustedBySection from "@/components/TrustedBySection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -29,11 +33,15 @@ const Index = () => {
         <main>
           <HeroSection />
           <AboutSection />
+          <WhyChooseUsSection />
           <ServicesSection />
+          <ServiceProcessSection />
           <HowItWorksSection />
           <ProductsSection />
           <ReviewsSection />
           <QuoteSection />
+          <KnowledgeHubSection />
+          <TrustedBySection />
           <BlogSection />
           <FAQSection />
           <ContactSection />
