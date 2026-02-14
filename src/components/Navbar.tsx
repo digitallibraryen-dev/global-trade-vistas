@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { List, X, Sun, Moon } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
+import { List, X, Sun, Moon, SignIn } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import logo from "@/assets/logo.png";
 
@@ -15,6 +16,7 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
@@ -57,6 +59,12 @@ const Navbar = () => {
           >
             Get a Quote
           </button>
+          <button
+            onClick={() => navigate("/login")}
+            className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+          >
+            <SignIn size={16} /> Sign In
+          </button>
         </div>
 
         {/* Mobile controls */}
@@ -96,6 +104,12 @@ const Navbar = () => {
               className="mt-2 rounded-lg gradient-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
               Get a Quote
+            </button>
+            <button
+              onClick={() => { setOpen(false); navigate("/login"); }}
+              className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <SignIn size={16} /> Sign In
             </button>
           </div>
         </div>
