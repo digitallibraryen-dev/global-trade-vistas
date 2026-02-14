@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Package, ShareNetwork, UserPlus, SignOut, House, Users, GoogleLogo, ChartLine } from "@phosphor-icons/react";
+import { Package, ShareNetwork, UserPlus, SignOut, House, Users, Lock, ChartLine } from "@phosphor-icons/react";
 import logo from "@/assets/logo.png";
 
 type NavItem = { key: string; label: string; icon: React.ElementType };
@@ -9,7 +9,7 @@ const navItems: NavItem[] = [
   { key: "products", label: "Products", icon: Package },
   { key: "social", label: "Social Media", icon: ShareNetwork },
   { key: "users", label: "Users", icon: Users },
-  { key: "oauth", label: "Google OAuth", icon: GoogleLogo },
+  { key: "oauth", label: "Authentication", icon: Lock },
   { key: "analytics", label: "Analytics", icon: ChartLine },
   { key: "admins", label: "Add Admin", icon: UserPlus },
 ];

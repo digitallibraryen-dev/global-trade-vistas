@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,9 +15,24 @@ const AuthPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleEnabled, setGoogleEnabled] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => {
+    supabase
+      .from("site_settings")
+      .select("value")
+      .eq("key", "google_oauth")
+      .maybeSingle()
+      .then(({ data }) => {
+        const val = data?.value as Record<string, unknown> | null;
+        if (val?.enabled && val?.show_on_login) {
+          setGoogleEnabled(true);
+        }
+      });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,30 +126,34 @@ const AuthPage = () => {
             {loading ? "Please wait…" : isLogin ? "Sign In" : "Sign Up"}
           </Button>
 
-          <div className="relative my-2">
-            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
-            <div className="relative flex justify-center text-xs uppercase"><span className="bg-background px-2 text-muted-foreground">Or</span></div>
-          </div>
+          {googleEnabled && (
+            <>
+              <div className="relative my-2">
+                <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
+                <div className="relative flex justify-center text-xs uppercase"><span className="bg-background px-2 text-muted-foreground">Or</span></div>
+              </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full gap-2"
-            disabled={loading}
-            onClick={async () => {
-              setLoading(true);
-              const { error } = await lovable.auth.signInWithOAuth("google", {
-                redirect_uri: window.location.origin,
-              });
-              if (error) {
-                toast({ title: "Google sign-in failed", description: String(error), variant: "destructive" });
-                setLoading(false);
-              }
-            }}
-          >
-            <GoogleLogo size={18} weight="bold" />
-            Continue with Google
-          </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full gap-2"
+                disabled={loading}
+                onClick={async () => {
+                  setLoading(true);
+                  const { error } = await lovable.auth.signInWithOAuth("google", {
+                    redirect_uri: window.location.origin,
+                  });
+                  if (error) {
+                    toast({ title: "Google sign-in failed", description: String(error), variant: "destructive" });
+                    setLoading(false);
+                  }
+                }}
+              >
+                <GoogleLogo size={18} weight="bold" />
+                Continue with Google
+              </Button>
+            </>
+          )}
         </form>
 
         <p className="text-center text-sm text-muted-foreground">
