@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { EnvelopeSimple, MapPin, Phone } from "@phosphor-icons/react";
+import { useTranslation } from "react-i18next";
 import ParallaxOrbs from "./ParallaxOrbs";
 import SocialIcons from "./SocialIcons";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const { t } = useTranslation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,21 +17,12 @@ const ContactSection = () => {
       <ParallaxOrbs variant="primary" />
       <div className="container-narrow relative z-10">
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-            Contact
-          </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Get in Touch
-          </h2>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("contact.tag")}</p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("contact.title")}</h2>
         </div>
-
         <div className="mt-14 grid gap-10 lg:grid-cols-2">
-          {/* Info */}
           <div className="space-y-6">
-            <p className="text-muted-foreground leading-relaxed">
-              Ready to start sourcing from China? Reach out to our team and
-              we'll help you get started with a personalized consultation.
-            </p>
+            <p className="text-muted-foreground leading-relaxed">{t("contact.subtitle")}</p>
             {[
               { icon: EnvelopeSimple, text: "info@almonesi.com" },
               { icon: Phone, text: "+86 123 456 7890" },
@@ -44,37 +37,12 @@ const ContactSection = () => {
             ))}
             <SocialIcons size={24} className="mt-4" />
           </div>
-
-          {/* Form */}
           <div className="glass rounded-2xl p-6">
             <div className="space-y-4">
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Your Name"
-                className="w-full rounded-lg border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary/30"
-              />
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="Your Email"
-                className="w-full rounded-lg border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary/30"
-              />
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                placeholder="Your Message"
-                rows={4}
-                className="w-full rounded-lg border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none resize-none focus:border-primary focus:ring-1 focus:ring-primary/30"
-              />
-              <button className="w-full rounded-lg gradient-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(215_80%_50%/0.4)] active:scale-[0.98]">
-                Send Message
-              </button>
+              <input type="text" name="name" value={form.name} onChange={handleChange} placeholder={t("contact.namePlaceholder")} className="w-full rounded-lg border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary/30" />
+              <input type="email" name="email" value={form.email} onChange={handleChange} placeholder={t("contact.emailPlaceholder")} className="w-full rounded-lg border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary/30" />
+              <textarea name="message" value={form.message} onChange={handleChange} placeholder={t("contact.messagePlaceholder")} rows={4} className="w-full rounded-lg border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none resize-none focus:border-primary focus:ring-1 focus:ring-primary/30" />
+              <button className="w-full rounded-lg gradient-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(215_80%_50%/0.4)] active:scale-[0.98]">{t("contact.send")}</button>
             </div>
           </div>
         </div>
