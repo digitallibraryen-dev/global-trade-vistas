@@ -53,8 +53,8 @@ const AboutSection = () => {
           {/* Image side */}
           <div className="about-image relative">
             <div className="aspect-[4/3] overflow-hidden rounded-2xl glass">
-              <div className="flex h-full w-full items-center justify-center gradient-radial-glow">
-                <Globe size={120} weight="thin" className="text-primary animate-float" />
+              <div className="flex h-full w-full items-center justify-center" style={{ background: '#003f7f' }}>
+                <Globe size={120} weight="thin" className="text-white animate-float" />
               </div>
             </div>
             <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-2xl gradient-primary opacity-20 blur-2xl" />
