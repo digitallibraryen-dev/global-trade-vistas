@@ -69,7 +69,7 @@ const HeroSection = () => {
       <div className="relative z-10 flex min-h-screen items-center section-padding pt-24">
         <div className="container-narrow">
           <div className="max-w-2xl">
-            <h1 className="hero-headline text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl text-primary-foreground">
+            <h1 className="hero-headline text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               Your Trusted Partner for{" "}
               <span className="gradient-primary bg-clip-text bg-primary-foreground text-primary-foreground">
                 Sourcing & Trade
