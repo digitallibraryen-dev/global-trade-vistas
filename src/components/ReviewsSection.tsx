@@ -17,31 +17,62 @@ interface Review {
   comment: string;
   created_at: string;
   user_id: string;
-  profiles?: { full_name: string | null; avatar_url: string | null } | null;
+  profiles?: { full_name: string | null; avatar_url: string | null; country: string | null } | null;
 }
 
 const MAX_COMMENT = 500;
+
+const countryToFlag: Record<string, string> = {
+  "Afghanistan": "🇦🇫", "Albania": "🇦🇱", "Algeria": "🇩🇿", "Argentina": "🇦🇷", "Australia": "🇦🇺",
+  "Austria": "🇦🇹", "Bahrain": "🇧🇭", "Bangladesh": "🇧🇩", "Belgium": "🇧🇪", "Bolivia": "🇧🇴",
+  "Brazil": "🇧🇷", "Canada": "🇨🇦", "Chile": "🇨🇱", "China": "🇨🇳", "Colombia": "🇨🇴",
+  "Costa Rica": "🇨🇷", "Cuba": "🇨🇺", "Czech Republic": "🇨🇿", "Denmark": "🇩🇰", "Ecuador": "🇪🇨",
+  "Egypt": "🇪🇬", "Estonia": "🇪🇪", "Ethiopia": "🇪🇹", "Finland": "🇫🇮", "France": "🇫🇷",
+  "Germany": "🇩🇪", "Ghana": "🇬🇭", "Greece": "🇬🇷", "Guatemala": "🇬🇹", "Honduras": "🇭🇳",
+  "Hungary": "🇭🇺", "Iceland": "🇮🇸", "India": "🇮🇳", "Indonesia": "🇮🇩", "Iran": "🇮🇷",
+  "Iraq": "🇮🇶", "Ireland": "🇮🇪", "Israel": "🇮🇱", "Italy": "🇮🇹", "Jamaica": "🇯🇲",
+  "Japan": "🇯🇵", "Jordan": "🇯🇴", "Kazakhstan": "🇰🇿", "Kenya": "🇰🇪", "Kuwait": "🇰🇼",
+  "Latvia": "🇱🇻", "Lebanon": "🇱🇧", "Libya": "🇱🇾", "Lithuania": "🇱🇹", "Malaysia": "🇲🇾",
+  "Mexico": "🇲🇽", "Morocco": "🇲🇦", "Myanmar": "🇲🇲", "Nepal": "🇳🇵", "Netherlands": "🇳🇱",
+  "New Zealand": "🇳🇿", "Nigeria": "🇳🇬", "Norway": "🇳🇴", "Oman": "🇴🇲", "Pakistan": "🇵🇰",
+  "Palestine": "🇵🇸", "Panama": "🇵🇦", "Paraguay": "🇵🇾", "Peru": "🇵🇪", "Philippines": "🇵🇭",
+  "Poland": "🇵🇱", "Portugal": "🇵🇹", "Qatar": "🇶🇦", "Romania": "🇷🇴", "Russia": "🇷🇺",
+  "Saudi Arabia": "🇸🇦", "Senegal": "🇸🇳", "Singapore": "🇸🇬", "Slovakia": "🇸🇰", "Slovenia": "🇸🇮",
+  "Somalia": "🇸🇴", "South Africa": "🇿🇦", "South Korea": "🇰🇷", "Spain": "🇪🇸", "Sri Lanka": "🇱🇰",
+  "Sudan": "🇸🇩", "Sweden": "🇸🇪", "Switzerland": "🇨🇭", "Syria": "🇸🇾", "Taiwan": "🇹🇼",
+  "Tanzania": "🇹🇿", "Thailand": "🇹🇭", "Tunisia": "🇹🇳", "Turkey": "🇹🇷", "UAE": "🇦🇪",
+  "Uganda": "🇺🇬", "Ukraine": "🇺🇦", "United Kingdom": "🇬🇧", "United States": "🇺🇸", "Uruguay": "🇺🇾",
+  "Uzbekistan": "🇺🇿", "Venezuela": "🇻🇪", "Vietnam": "🇻🇳", "Yemen": "🇾🇪", "Zimbabwe": "🇿🇼",
+};
 
 const ReviewsSection = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewCounts, setReviewCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
-  
 
   const fetchReviews = async () => {
     const { data } = await supabase
       .from("reviews")
-      .select("*, profiles(full_name, avatar_url)")
+      .select("*, profiles(full_name, avatar_url, country)")
       .eq("status", "approved")
       .order("created_at", { ascending: false })
       .limit(20);
-    setReviews((data as unknown as Review[]) ?? []);
+    const reviewsList = (data as unknown as Review[]) ?? [];
+    setReviews(reviewsList);
+    
+    // Count reviews per user
+    const counts: Record<string, number> = {};
+    reviewsList.forEach((r) => {
+      counts[r.user_id] = (counts[r.user_id] || 0) + 1;
+    });
+    setReviewCounts(counts);
     setLoading(false);
   };
 
@@ -200,7 +231,13 @@ const ReviewsSection = () => {
                       <div>
                         <p className="text-sm font-medium text-foreground flex items-center gap-1">
                           {r.profiles?.full_name || "User"}
+                          {r.profiles?.country && countryToFlag[r.profiles.country] && (
+                            <span title={r.profiles.country}>{countryToFlag[r.profiles.country]}</span>
+                          )}
                           <SealCheck size={14} className="text-primary" weight="fill" />
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {reviewCounts[r.user_id] || 1} {(reviewCounts[r.user_id] || 1) === 1 ? "review" : "reviews"}
                         </p>
                       </div>
                     </div>
