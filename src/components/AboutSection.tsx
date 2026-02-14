@@ -1,15 +1,31 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Globe, TrendUp, ShieldCheck, Handshake } from "@phosphor-icons/react";
+import { GlobeHemisphereWest, Factory, Package, Handshake, Globe } from "@phosphor-icons/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-  { icon: Globe, value: "50+", label: "Countries Served" },
-  { icon: TrendUp, value: "12+", label: "Years Experience" },
-  { icon: ShieldCheck, value: "2,000+", label: "Verified Suppliers" },
-  { icon: Handshake, value: "98%", label: "Client Satisfaction" },
+const reasons = [
+  {
+    icon: GlobeHemisphereWest,
+    title: "Global Trade Expertise",
+    desc: "Over 12 years of hands-on experience navigating China's supply chain and international markets with precision and confidence.",
+  },
+  {
+    icon: Factory,
+    title: "Verified Manufacturing Network",
+    desc: "Direct access to trusted factories and first-tier suppliers across major industrial cities in China.",
+  },
+  {
+    icon: Package,
+    title: "End-to-End Logistics Control",
+    desc: "From factory inspection to customs clearance and final delivery — we manage every detail.",
+  },
+  {
+    icon: Handshake,
+    title: "Transparent & Ethical Trade",
+    desc: "We ensure clear communication, fair pricing, and secure transactions at every stage.",
+  },
 ];
 
 const AboutSection = () => {
@@ -34,12 +50,12 @@ const AboutSection = () => {
         stagger: 0.15,
         ease: "power3.out",
       });
-      gsap.from(".stat-card", {
-        scrollTrigger: { trigger: ".stat-card", start: "top 85%" },
+      gsap.from(".why-card", {
+        scrollTrigger: { trigger: ".why-grid", start: "top 80%" },
         opacity: 0,
-        y: 30,
-        duration: 0.6,
-        stagger: 0.1,
+        y: 50,
+        duration: 0.7,
+        stagger: 0.15,
         ease: "power3.out",
       });
     }, ref);
@@ -80,18 +96,30 @@ const AboutSection = () => {
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {stats.map((s) => (
+        {/* Why Choose Us */}
+        <div className="mt-20 text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+            Why Choose Us
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Your Competitive Edge in Global Trade
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+            We combine deep industry knowledge with an unmatched supplier network to give your business the advantage.
+          </p>
+        </div>
+
+        <div className="why-grid mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {reasons.map((r) => (
             <div
-              key={s.label}
-              className="stat-card glass rounded-xl p-6 text-center transition-all hover:glow-primary"
+              key={r.title}
+              className="why-card group glass rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_24px_hsl(var(--glow-primary)/0.25)] cursor-default border border-transparent hover:border-primary/20"
             >
-              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl gradient-primary shadow-lg">
-                <s.icon size={24} weight="light" className="text-primary-foreground" />
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl gradient-primary shadow-lg transition-transform duration-300 group-hover:scale-110">
+                <r.icon size={28} weight="light" className="text-primary-foreground" />
               </div>
-              <div className="text-2xl font-bold text-foreground">{s.value}</div>
-              <div className="mt-1 text-xs text-muted-foreground">{s.label}</div>
+              <h3 className="text-lg font-semibold text-foreground">{r.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{r.desc}</p>
             </div>
           ))}
         </div>

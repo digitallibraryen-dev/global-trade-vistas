@@ -3,7 +3,7 @@ import Preloader from "@/components/Preloader";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
-import WhyChooseUsSection from "@/components/WhyChooseUsSection";
+// WhyChooseUsSection is now integrated into AboutSection
 import ServicesSection from "@/components/ServicesSection";
 import ServiceProcessSection from "@/components/ServiceProcessSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -33,7 +33,7 @@ const Index = () => {
         <main>
           <HeroSection />
           <AboutSection />
-          <WhyChooseUsSection />
+          {/* WhyChooseUs is now part of AboutSection */}
           <ServicesSection />
           <ServiceProcessSection />
           <HowItWorksSection />
