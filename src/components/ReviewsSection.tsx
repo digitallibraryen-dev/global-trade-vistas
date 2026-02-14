@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { SealCheck, ChatCircleDots } from "@phosphor-icons/react";
+import { SealCheck, ChatCircleDots, Trash } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +32,7 @@ const ReviewsSection = () => {
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
-  const [bannedWords, setBannedWords] = useState<string[]>([]);
+  
 
   const fetchReviews = async () => {
     const { data } = await supabase
@@ -45,51 +45,45 @@ const ReviewsSection = () => {
     setLoading(false);
   };
 
-  const fetchBannedWords = async () => {
-    const { data } = await supabase.from("banned_words").select("word");
-    setBannedWords((data ?? []).map((w) => w.word.toLowerCase()));
-  };
-
   useEffect(() => {
     fetchReviews();
-    fetchBannedWords();
   }, []);
-
-  const containsBannedWord = (text: string) => {
-    const lower = text.toLowerCase();
-    return bannedWords.some((w) => lower.includes(w));
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || rating === 0 || !comment.trim()) return;
     setSubmitting(true);
 
-    const isFlagged = containsBannedWord(comment) || containsBannedWord(title);
-    const status = isFlagged ? "pending" : "approved";
-
     const { error } = await supabase.from("reviews").insert({
       user_id: user.id,
       rating,
       title: title.trim() || null,
       comment: comment.trim(),
-      status,
     });
 
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({
-        title: isFlagged ? "Review submitted for moderation" : "Review published!",
-        description: isFlagged ? "Your review will appear after approval." : "Thank you for your feedback.",
+        title: "Review submitted for moderation",
+        description: "Your review will appear after admin approval.",
       });
       setRating(0);
       setTitle("");
       setComment("");
       setShowForm(false);
-      if (!isFlagged) fetchReviews();
     }
     setSubmitting(false);
+  };
+
+  const handleDelete = async (reviewId: string) => {
+    const { error } = await supabase.from("reviews").delete().eq("id", reviewId);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Review deleted" });
+      fetchReviews();
+    }
   };
 
   const avgRating = reviews.length > 0
@@ -214,9 +208,19 @@ const ReviewsSection = () => {
                   </div>
                   {r.title && <p className="font-semibold text-foreground text-sm">{r.title}</p>}
                   <p className="text-sm text-muted-foreground leading-relaxed">{r.comment}</p>
-                  <p className="text-xs text-muted-foreground/60">
-                    {new Date(r.created_at).toLocaleDateString()}
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground/60">
+                      {new Date(r.created_at).toLocaleDateString()}
+                    </p>
+                    {user && user.id === r.user_id && (
+                      <button
+                        onClick={() => handleDelete(r.id)}
+                        className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 transition-colors"
+                      >
+                        <Trash size={12} /> Delete
+                      </button>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </AnimatePresence>
