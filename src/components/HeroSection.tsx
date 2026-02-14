@@ -69,12 +69,16 @@ const HeroSection = () => {
       <div className="relative z-10 flex min-h-screen items-center section-padding pt-24">
         <div className="container-narrow">
           <div className="max-w-2xl">
-            <h1 className="hero-headline neon-headline text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-              Your Trusted Partner for Sourcing & Trade in China
+            <h1 className="hero-headline text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl text-primary-foreground">
+              Your Trusted Partner for{" "}
+              <span className="gradient-primary bg-clip-text bg-primary-foreground text-primary-foreground">
+                Sourcing & Trade
+              </span>{" "}
+              in China
             </h1>
-            <p className="hero-sub neon-sub mt-6 max-w-lg text-lg leading-relaxed">
+            <p className="hero-sub mt-6 max-w-lg text-lg leading-relaxed text-primary-foreground">
               We connect your business with verified suppliers and manage your
-              trade operations professionally—from sourcing to delivery
+              trade operations professionally — from sourcing to delivery.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <button
