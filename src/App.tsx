@@ -7,7 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import AdminLogin from "./pages/AdminLogin";
+import AuthPage from "./pages/AuthPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminGuard from "./components/AdminGuard";
 
@@ -23,7 +23,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/login" element={<AuthPage />} />
               <Route
                 path="/admin"
                 element={
