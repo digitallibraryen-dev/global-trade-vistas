@@ -11,6 +11,7 @@ const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
@@ -40,6 +41,11 @@ const AuthPage = () => {
         navigate(data ? "/admin" : "/");
       }
     } else {
+      if (password !== confirmPassword) {
+        toast({ title: "Passwords don't match", description: "Please make sure both passwords are identical.", variant: "destructive" });
+        setLoading(false);
+        return;
+      }
       const { error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
@@ -50,6 +56,7 @@ const AuthPage = () => {
       } else {
         toast({ title: "Account created!", description: "You can now sign in." });
         setIsLogin(true);
+        setConfirmPassword("");
       }
     }
     setLoading(false);
@@ -93,6 +100,21 @@ const AuthPage = () => {
               autoComplete={isLogin ? "current-password" : "new-password"}
             />
           </div>
+          {!isLogin && (
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password">Confirm Password</Label>
+              <Input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                minLength={6}
+                autoComplete="new-password"
+              />
+            </div>
+          )}
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Please wait…" : isLogin ? "Sign In" : "Sign Up"}
           </Button>
