@@ -9,10 +9,16 @@ import UserManager from "@/components/admin/UserManager";
 import GoogleOAuthSettings from "@/components/admin/GoogleOAuthSettings";
 import AnalyticsSettings from "@/components/admin/AnalyticsSettings";
 import ReviewManager from "@/components/admin/ReviewManager";
+import BlogManager from "@/components/admin/BlogManager";
+import FAQManager from "@/components/admin/FAQManager";
+import ContactMessageManager from "@/components/admin/ContactMessageManager";
 
 const titles: Record<string, { title: string; subtitle: string }> = {
   products: { title: "Products", subtitle: "Manage your product catalog" },
   services: { title: "Services", subtitle: "Manage your featured services" },
+  blog: { title: "Blog Posts", subtitle: "Create and manage blog articles" },
+  faq: { title: "FAQ", subtitle: "Manage frequently asked questions" },
+  messages: { title: "Contact Messages", subtitle: "View messages from visitors" },
   social: { title: "Social Media", subtitle: "Manage social media links" },
   users: { title: "User Management", subtitle: "Manage user accounts and permissions" },
   reviews: { title: "Review Moderation", subtitle: "Approve, reject, or manage customer reviews" },
@@ -53,6 +59,9 @@ const AdminDashboard = () => {
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-4xl">
           {activeTab === "products" && <ProductManager />}
           {activeTab === "services" && <ServiceManager />}
+          {activeTab === "blog" && <BlogManager />}
+          {activeTab === "faq" && <FAQManager />}
+          {activeTab === "messages" && <ContactMessageManager />}
           {activeTab === "social" && <SocialMediaManager />}
           {activeTab === "users" && <UserManager />}
           {activeTab === "reviews" && <ReviewManager />}
