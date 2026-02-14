@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { GoogleLogo } from "@phosphor-icons/react";
+import logo from "@/assets/logo.png";
 
 interface GoogleConfig {
   enabled: boolean;
@@ -88,6 +89,9 @@ const AuthPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
+          <Link to="/" className="inline-block mb-3">
+            <img src={logo} alt="Logo" className="h-14 w-14 rounded-full object-cover mx-auto hover:opacity-80 transition-opacity" />
+          </Link>
           <h1 className="text-2xl font-bold text-foreground">
             {isLogin ? "Sign In" : "Create Account"}
           </h1>
