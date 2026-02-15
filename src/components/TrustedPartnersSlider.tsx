@@ -21,7 +21,7 @@ const partners: Partner[] = [
   { name: "JD.com", logo: "/logos/jd.svg", category: "sourcing" },
   { name: "Suning", logo: "/logos/suning.png", category: "sourcing" },
   // Chinese Logistics
-  { name: "SF Express", logo: "/logos/sf-express.png", category: "logistics" },
+  { name: "SF Express", logo: "/logos/sf-express-hd.jpg", category: "logistics" },
   { name: "China Post / EMS", logo: "/logos/china-post-ems.svg", category: "logistics" },
   { name: "Yunda Express", logo: "/logos/yunda.png", category: "logistics" },
   { name: "ZTO Express", logo: "/logos/zto-express.svg", category: "logistics" },
