@@ -2,23 +2,41 @@ import { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 
-const partners = [
-  { name: "Alibaba", logo: "/logos/alibaba.png" },
-  { name: "AliExpress", logo: "/logos/aliexpress.png" },
-  { name: "Made-in-China", logo: "/logos/made-in-china.png" },
-  { name: "Global Sources", logo: "/logos/globalsources.png" },
-  { name: "DHgate", logo: "/logos/dhgate.png" },
-  { name: "Taobao", logo: "/logos/taobao.png" },
-  { name: "Tmall", logo: "/logos/tmall.png" },
-  { name: "JD.com", logo: "/logos/jd.png" },
-  { name: "Suning", logo: "/logos/suning.png" },
-  { name: "DHL", logo: "/logos/dhl.png" },
-  { name: "FedEx", logo: "/logos/fedex.png" },
-  { name: "UPS", logo: "/logos/ups.png" },
-  { name: "Maersk", logo: "/logos/maersk.png" },
-  { name: "CMA CGM", logo: "/logos/cma-cgm.png" },
-  { name: "Cainiao", logo: "/logos/cainiao.png" },
-  { name: "DB Schenker", logo: "/logos/dbschenker.png" },
+interface Partner {
+  name: string;
+  color: string;
+  category: "sourcing" | "logistics";
+}
+
+const partners: Partner[] = [
+  // Chinese Sourcing & Marketplace Platforms
+  { name: "Alibaba", color: "#FF6A00", category: "sourcing" },
+  { name: "AliExpress", color: "#E43225", category: "sourcing" },
+  { name: "Made-in-China", color: "#0066CC", category: "sourcing" },
+  { name: "Global Sources", color: "#003399", category: "sourcing" },
+  { name: "1688", color: "#FF4400", category: "sourcing" },
+  { name: "DHgate", color: "#F57C00", category: "sourcing" },
+  { name: "Taobao", color: "#FF5000", category: "sourcing" },
+  { name: "Tmall", color: "#E4393C", category: "sourcing" },
+  { name: "JD.com", color: "#C9141E", category: "sourcing" },
+  { name: "Suning", color: "#F89E1C", category: "sourcing" },
+  // Chinese Logistics
+  { name: "SF Express", color: "#000000", category: "logistics" },
+  { name: "China Post", color: "#006633", category: "logistics" },
+  { name: "Yunda Express", color: "#003399", category: "logistics" },
+  { name: "ZTO Express", color: "#003D79", category: "logistics" },
+  { name: "Best Express", color: "#E60012", category: "logistics" },
+  { name: "Cainiao", color: "#FF6A00", category: "logistics" },
+  { name: "EMS China", color: "#003399", category: "logistics" },
+  { name: "COSCO Shipping", color: "#003B6F", category: "logistics" },
+  // Global Logistics
+  { name: "DHL", color: "#D40511", category: "logistics" },
+  { name: "FedEx", color: "#4D148C", category: "logistics" },
+  { name: "UPS", color: "#351C15", category: "logistics" },
+  { name: "Maersk", color: "#0077B5", category: "logistics" },
+  { name: "CMA CGM", color: "#002B5C", category: "logistics" },
+  { name: "Kuehne+Nagel", color: "#003A70", category: "logistics" },
+  { name: "DB Schenker", color: "#EC0016", category: "logistics" },
 ];
 
 const TrustedPartnersSlider = () => {
@@ -34,7 +52,7 @@ const TrustedPartnersSlider = () => {
 
     tweenRef.current = gsap.to(track, {
       x: -totalWidth,
-      duration: 35,
+      duration: 45,
       ease: "none",
       repeat: -1,
       modifiers: {
@@ -75,19 +93,18 @@ const TrustedPartnersSlider = () => {
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
 
-        <div ref={trackRef} className="flex w-max items-center gap-8 px-5">
+        <div ref={trackRef} className="flex w-max items-center gap-6 px-5">
           {logos.map((p, i) => (
             <div
               key={`${p.name}-${i}`}
-              className="group flex h-20 w-44 shrink-0 items-center justify-center gap-3 rounded-xl border border-border bg-card/60 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+              className="group flex h-16 shrink-0 items-center gap-3 rounded-xl border border-border bg-card/80 px-5 py-3 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
             >
-              <img
-                src={p.logo}
-                alt={p.name}
-                className="h-9 w-9 shrink-0 rounded-md object-contain opacity-70 transition-all duration-300 group-hover:opacity-100"
-                loading="lazy"
+              {/* Brand color dot */}
+              <span
+                className="h-3 w-3 shrink-0 rounded-full opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+                style={{ backgroundColor: p.color }}
               />
-              <span className="text-xs font-semibold text-muted-foreground transition-colors duration-300 group-hover:text-foreground leading-tight">
+              <span className="whitespace-nowrap text-sm font-bold text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
                 {p.name}
               </span>
             </div>
