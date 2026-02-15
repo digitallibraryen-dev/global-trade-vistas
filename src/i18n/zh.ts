@@ -249,6 +249,12 @@ const zh = {
     messagePlaceholder: "您的留言",
     send: "发送消息",
   },
+  whatsappMessages: {
+    general: "您好，阿尔蒙尼西全球贸易（OMT），\n我想请求报价。\n请提供更多详细信息。",
+    product: "您好，阿尔蒙尼西全球贸易（OMT），\n我对您的产品感兴趣：{{name}}。\n请提供价格和详细信息。",
+    service: "您好，阿尔蒙尼西全球贸易（OMT），\n我想请求您的服务报价：{{name}}。\n请提供更多详细信息。",
+    contact: "您好，阿尔蒙尼西全球贸易（OMT），我想联系您。",
+  },
   footer: {
     rights: "版权所有。",
     privacy: "隐私政策",

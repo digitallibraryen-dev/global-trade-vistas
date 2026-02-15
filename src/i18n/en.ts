@@ -249,6 +249,12 @@ const en = {
     messagePlaceholder: "Your Message",
     send: "Send Message",
   },
+  whatsappMessages: {
+    general: "Hello Almonesi Global Trade (OMT),\nI would like to request a quotation.\nPlease provide more details.",
+    product: "Hello Almonesi Global Trade (OMT),\nI am interested in your product: {{name}}.\nPlease send me pricing and details.",
+    service: "Hello Almonesi Global Trade (OMT),\nI would like to request a quotation for your service: {{name}}.\nPlease provide more details.",
+    contact: "Hello Almonesi Global Trade (OMT), I would like to get in touch.",
+  },
   footer: {
     rights: "All rights reserved.",
     privacy: "Privacy Policy",

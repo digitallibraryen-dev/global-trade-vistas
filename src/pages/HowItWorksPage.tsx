@@ -29,7 +29,7 @@ const HowItWorksPage = () => {
   const getWhatsAppLink = () => {
     if (!whatsapp) return "#";
     const number = whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "");
-    const message = encodeURIComponent("Hello Almonesi Global Trade (OMT),\nI would like to request a quotation.\nPlease provide more details.");
+    const message = encodeURIComponent(t("whatsappMessages.general"));
     return `https://wa.me/${number}?text=${message}`;
   };
 

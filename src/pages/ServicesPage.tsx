@@ -39,8 +39,8 @@ const ServicesPage = () => {
     if (!whatsapp) return "#";
     const number = whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "");
     const message = title
-      ? encodeURIComponent(`Hello Almonesi Global Trade (OMT),\nI would like to request a quotation for your service: ${title}.\nPlease provide more details.`)
-      : encodeURIComponent("Hello Almonesi Global Trade (OMT),\nI would like to request a quotation.\nPlease provide more details.");
+      ? encodeURIComponent(t("whatsappMessages.service", { name: title }))
+      : encodeURIComponent(t("whatsappMessages.general"));
     return `https://wa.me/${number}?text=${message}`;
   };
 

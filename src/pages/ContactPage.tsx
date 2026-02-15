@@ -37,7 +37,7 @@ const ContactPage = () => {
   };
 
   const whatsappLink = whatsapp
-    ? `https://wa.me/${whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "")}?text=${encodeURIComponent("Hello Almonesi Global Trade (OMT), I would like to get in touch.")}`
+    ? `https://wa.me/${whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "")}?text=${encodeURIComponent(t("whatsappMessages.contact"))}`
     : null;
 
   return (

@@ -38,7 +38,7 @@ const FeaturedServicesSection = () => {
     if (!whatsapp) return "#";
     const number = whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "");
     const message = encodeURIComponent(
-      `Hello Almonesi Global Trade (OMT),\nI would like to request a quotation for your service: ${serviceTitle}.\nPlease provide more details.`
+      t("whatsappMessages.service", { name: serviceTitle })
     );
     return `https://wa.me/${number}?text=${message}`;
   };
