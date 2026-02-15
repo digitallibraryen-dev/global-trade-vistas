@@ -36,7 +36,7 @@ const ProductsSection = () => {
     if (!whatsapp) return "#";
     const number = whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "");
     const message = encodeURIComponent(
-      `Hello Almonesi Global Trade (OMT),\nI am interested in your product: ${productName}.\nPlease send me pricing and details.`
+      t("whatsappMessages.product", { name: productName })
     );
     return `https://wa.me/${number}?text=${message}`;
   };
