@@ -40,7 +40,7 @@ const partners: Partner[] = [
 ];
 
 const TrustedPartnersSlider = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
@@ -48,22 +48,32 @@ const TrustedPartnersSlider = () => {
     const track = trackRef.current;
     if (!track) return;
 
+    const isRTL = document.documentElement.dir === "rtl";
     const totalWidth = track.scrollWidth / 2;
 
+    // Kill previous tween if language changed
+    tweenRef.current?.kill();
+
     tweenRef.current = gsap.to(track, {
-      x: -totalWidth,
-      duration: 45,
+      x: isRTL ? totalWidth : -totalWidth,
+      duration: 90,
       ease: "none",
       repeat: -1,
       modifiers: {
-        x: gsap.utils.unitize((x: string) => parseFloat(x) % totalWidth),
+        x: gsap.utils.unitize((x: string) => {
+          const val = parseFloat(x);
+          if (isRTL) {
+            return ((val % totalWidth) + totalWidth) % totalWidth;
+          }
+          return val % totalWidth;
+        }),
       },
     });
 
     return () => {
       tweenRef.current?.kill();
     };
-  }, []);
+  }, [i18n.language]);
 
   const handleMouseEnter = () => tweenRef.current?.pause();
   const handleMouseLeave = () => tweenRef.current?.resume();
