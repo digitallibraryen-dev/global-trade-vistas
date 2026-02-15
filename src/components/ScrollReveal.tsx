@@ -16,18 +16,18 @@ interface ScrollRevealProps {
 }
 
 const animationMap: Record<Animation, gsap.TweenVars> = {
-  "fade-up": { opacity: 0, y: 50, filter: "blur(6px)" },
-  "fade-in": { opacity: 0, filter: "blur(4px)" },
-  "scale-in": { opacity: 0, scale: 0.92, filter: "blur(6px)" },
-  "slide-left": { opacity: 0, x: -50, filter: "blur(4px)" },
-  "slide-right": { opacity: 0, x: 50, filter: "blur(4px)" },
+  "fade-up": { opacity: 0, y: 40 },
+  "fade-in": { opacity: 0 },
+  "scale-in": { opacity: 0, scale: 0.92 },
+  "slide-left": { opacity: 0, x: -40 },
+  "slide-right": { opacity: 0, x: 40 },
 };
 
 const ScrollReveal = ({
   children,
   animation = "fade-up",
   delay = 0,
-  duration = 1,
+  duration = 0.8,
   className = "",
   stagger = 0,
 }: ScrollRevealProps) => {
@@ -46,8 +46,7 @@ const ScrollReveal = ({
         duration,
         delay,
         stagger: stagger > 0 ? stagger : undefined,
-        ease: "power4.out",
-        clearProps: "filter",
+        ease: "power3.out",
         scrollTrigger: {
           trigger: el,
           start: "top 85%",
