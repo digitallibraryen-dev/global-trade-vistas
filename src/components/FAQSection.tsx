@@ -20,7 +20,8 @@ const FAQSection = () => {
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("faq.tag")}</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("faq.title")}</h2>
         </ScrollReveal>
-        <ScrollReveal animation="card" stagger={0.1} className="mt-10 space-y-3">
+        <ScrollReveal animation="card" stagger={0.1} className="mt-10">
+          <Accordion type="single" collapsible className="space-y-3">
           {items.map((f, i) => (
             <AccordionItem
               key={i}
@@ -32,6 +33,7 @@ const FAQSection = () => {
               <AccordionContent className="text-sm leading-relaxed text-white/80 pb-4">{f.a}</AccordionContent>
             </AccordionItem>
           ))}
+          </Accordion>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={0.4} className="mt-12 text-center">
           <Link
