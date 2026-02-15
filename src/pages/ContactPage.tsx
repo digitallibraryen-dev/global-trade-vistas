@@ -81,7 +81,7 @@ const ContactPage = () => {
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+                  className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
                 >
                   <WhatsappLogo size={20} /> {t("contactPage.whatsappBtn")}
                 </a>

@@ -80,7 +80,7 @@ const ServicesPage = () => {
                       href={getWhatsAppLink(s.title)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+                      className="btn-3d mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
                     >
                       <WhatsappLogo size={18} /> {t("servicesPage.requestQuote")}
                     </a>
@@ -97,7 +97,7 @@ const ServicesPage = () => {
               href={getWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 shadow-lg"
+              className="btn-3d mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-base font-semibold text-primary-foreground shadow-lg"
             >
               <WhatsappLogo size={22} /> {t("servicesPage.requestQuote")}
             </a>
