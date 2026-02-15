@@ -10,8 +10,8 @@ interface Partner {
 
 const partners: Partner[] = [
   // Chinese Sourcing & Marketplace Platforms
-  { name: "Alibaba", logo: "/logos/alibaba.svg", category: "sourcing" },
-  { name: "AliExpress", logo: "/logos/aliexpress-new.svg", category: "sourcing" },
+  { name: "Alibaba", logo: "/logos/alibaba-hd.jpg", category: "sourcing" },
+  { name: "AliExpress", logo: "/logos/aliexpress-hd.jpg", category: "sourcing" },
   { name: "Made-in-China", logo: "/logos/made-in-china.png", category: "sourcing" },
   { name: "Global Sources", logo: "/logos/globalsources.png", category: "sourcing" },
   { name: "1688", logo: "/logos/1688.png", category: "sourcing" },
@@ -26,16 +26,16 @@ const partners: Partner[] = [
   { name: "Yunda Express", logo: "/logos/yunda.png", category: "logistics" },
   { name: "ZTO Express", logo: "/logos/zto-express.svg", category: "logistics" },
   { name: "Best Express", logo: "/logos/best-express.png", category: "logistics" },
-  { name: "Cainiao", logo: "/logos/cainiao.svg", category: "logistics" },
-  { name: "EMS China", logo: "/logos/ems-china.png", category: "logistics" },
+  { name: "Cainiao", logo: "/logos/cainiao-hd.jpg", category: "logistics" },
+  { name: "EMS China", logo: "/logos/ems-china-hd.jpg", category: "logistics" },
   { name: "COSCO Shipping", logo: "/logos/cosco.svg", category: "logistics" },
   // Global Logistics
-  { name: "DHL", logo: "/logos/dhl.svg", category: "logistics" },
+  { name: "DHL", logo: "/logos/dhl-hd.png", category: "logistics" },
   { name: "FedEx", logo: "/logos/fedex.svg", category: "logistics" },
   { name: "UPS", logo: "/logos/ups.svg", category: "logistics" },
   { name: "Maersk", logo: "/logos/maersk.svg", category: "logistics" },
   { name: "CMA CGM", logo: "/logos/cma-cgm.png", category: "logistics" },
-  { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel.png", category: "logistics" },
+  { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel-hd.png", category: "logistics" },
   { name: "DB Schenker", logo: "/logos/dbschenker.svg", category: "logistics" },
 ];
 
