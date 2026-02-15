@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
+import ScrollReveal from "./ScrollReveal";
 
 interface Partner {
   name: string;
@@ -9,7 +10,6 @@ interface Partner {
 }
 
 const partners: Partner[] = [
-  // Chinese Sourcing & Marketplace Platforms
   { name: "Alibaba", logo: "/logos/alibaba-hd.jpg", category: "sourcing" },
   { name: "AliExpress", logo: "/logos/aliexpress-hd.jpg", category: "sourcing" },
   { name: "Made-in-China", logo: "/logos/made-in-china.png", category: "sourcing" },
@@ -20,7 +20,6 @@ const partners: Partner[] = [
   { name: "Tmall", logo: "/logos/tmall.svg", category: "sourcing" },
   { name: "JD.com", logo: "/logos/jd.svg", category: "sourcing" },
   { name: "Suning", logo: "/logos/suning.png", category: "sourcing" },
-  // Chinese Logistics
   { name: "SF Express", logo: "/logos/sf-express-hd.jpg", category: "logistics" },
   { name: "China Post / EMS", logo: "/logos/china-post-ems.svg", category: "logistics" },
   { name: "Yunda Express", logo: "/logos/yunda.png", category: "logistics" },
@@ -29,7 +28,6 @@ const partners: Partner[] = [
   { name: "Cainiao", logo: "/logos/cainiao-hd.jpg", category: "logistics" },
   { name: "EMS China", logo: "/logos/ems-china-hd.jpg", category: "logistics" },
   { name: "COSCO Shipping", logo: "/logos/cosco.svg", category: "logistics" },
-  // Global Logistics
   { name: "DHL", logo: "/logos/dhl-hd.png", category: "logistics" },
   { name: "FedEx", logo: "/logos/fedex.svg", category: "logistics" },
   { name: "UPS", logo: "/logos/ups.svg", category: "logistics" },
@@ -51,10 +49,7 @@ const TrustedPartnersSlider = () => {
     const isRTL = document.documentElement.dir === "rtl";
     const totalWidth = track.scrollWidth / 2;
 
-    // Kill previous tween if language changed
     tweenRef.current?.kill();
-
-    // Reset position before starting new tween
     gsap.set(track, { x: 0 });
 
     tweenRef.current = gsap.to(track, {
@@ -70,9 +65,7 @@ const TrustedPartnersSlider = () => {
       },
     });
 
-    return () => {
-      tweenRef.current?.kill();
-    };
+    return () => { tweenRef.current?.kill(); };
   }, [i18n.language]);
 
   const handleMouseEnter = () => tweenRef.current?.pause();
@@ -82,7 +75,7 @@ const TrustedPartnersSlider = () => {
 
   return (
     <section className="py-16 bg-muted/30 overflow-hidden">
-      <div className="container-narrow text-center mb-10">
+      <ScrollReveal animation="headline" className="container-narrow text-center mb-10">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
           {t("trustedPartners.tag", "Our Network")}
         </p>
@@ -92,14 +85,13 @@ const TrustedPartnersSlider = () => {
         <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
           {t("trustedPartners.subtitle", "Connecting you with reliable suppliers and seamless shipping solutions from China to the world.")}
         </p>
-      </div>
+      </ScrollReveal>
 
       <div
         className="relative"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Fade edges */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
 

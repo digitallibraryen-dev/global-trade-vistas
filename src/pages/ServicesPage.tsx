@@ -7,6 +7,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ScrollReveal from "@/components/ScrollReveal";
+import TiltCard from "@/components/TiltCard";
 
 interface Service {
   id: string;
@@ -61,9 +63,9 @@ const ServicesPage = () => {
           ) : services.length === 0 ? (
             <p className="text-center text-muted-foreground">{t("servicesPage.noServices")}</p>
           ) : (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <ScrollReveal animation="card" stagger={0.12} className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {services.map((s) => (
-                <div key={s.id} className="glass rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <TiltCard key={s.id} className="glass rounded-2xl overflow-hidden">
                   {s.image_url ? (
                     <img src={s.image_url} alt={s.title} className="h-48 w-full object-cover" />
                   ) : (
@@ -85,13 +87,13 @@ const ServicesPage = () => {
                       <WhatsappLogo size={18} /> {t("servicesPage.requestQuote")}
                     </a>
                   </div>
-                </div>
+                </TiltCard>
               ))}
-            </div>
+            </ScrollReveal>
           )}
 
           {/* CTA Section */}
-          <div className="mt-20 text-center">
+          <ScrollReveal animation="headline" className="mt-20 text-center">
             <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{t("servicesPage.ctaTitle")}</h2>
             <a
               href={getWhatsAppLink()}
@@ -101,20 +103,22 @@ const ServicesPage = () => {
             >
               <WhatsappLogo size={22} /> {t("servicesPage.requestQuote")}
             </a>
-          </div>
+          </ScrollReveal>
 
           {/* Why Businesses Choose OMT */}
-          <div className="mt-20 glass rounded-2xl p-8 sm:p-12">
-            <h3 className="text-xl font-bold text-foreground text-center sm:text-2xl">{t("servicesPage.whyTitle")}</h3>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {trustBadges?.map((badge: string, i: number) => (
-                <div key={i} className="flex items-center gap-3">
-                  <CheckCircle size={22} weight="fill" className="text-primary shrink-0" />
-                  <span className="text-sm font-medium text-foreground">{badge}</span>
-                </div>
-              ))}
+          <ScrollReveal animation="slide-left" className="mt-20">
+            <div className="glass rounded-2xl p-8 sm:p-12">
+              <h3 className="text-xl font-bold text-foreground text-center sm:text-2xl">{t("servicesPage.whyTitle")}</h3>
+              <ScrollReveal animation="alternating" stagger={0.08} className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {trustBadges?.map((badge: string, i: number) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <CheckCircle size={22} weight="fill" className="text-primary shrink-0" />
+                    <span className="text-sm font-medium text-foreground">{badge}</span>
+                  </div>
+                ))}
+              </ScrollReveal>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </main>
       <Footer />

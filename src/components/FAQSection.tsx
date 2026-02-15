@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import ScrollReveal from "./ScrollReveal";
 
 const FAQSection = () => {
   const { t } = useTranslation();
@@ -15,11 +16,11 @@ const FAQSection = () => {
   return (
     <section id="faq" className="section-padding">
       <div className="container-narrow max-w-2xl">
-        <div className="text-center">
+        <ScrollReveal animation="headline" className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("faq.tag")}</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("faq.title")}</h2>
-        </div>
-        <Accordion type="single" collapsible className="mt-10 space-y-3">
+        </ScrollReveal>
+        <ScrollReveal animation="card" stagger={0.1} className="mt-10 space-y-3">
           {items.map((f, i) => (
             <AccordionItem
               key={i}
@@ -31,8 +32,8 @@ const FAQSection = () => {
               <AccordionContent className="text-sm leading-relaxed text-white/80 pb-4">{f.a}</AccordionContent>
             </AccordionItem>
           ))}
-        </Accordion>
-        <div className="mt-12 text-center">
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={0.4} className="mt-12 text-center">
           <Link
             to="/faq"
             className="btn-3d group inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-transparent px-6 py-3 text-sm font-semibold text-primary"
@@ -40,7 +41,7 @@ const FAQSection = () => {
             {t("aboutPreview.learnMore")}
             <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" data-icon />
           </Link>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

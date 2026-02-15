@@ -53,14 +53,16 @@ const FeaturedServicesSection = () => {
   return (
     <section id="featured-services" className="section-padding gradient-dark">
       <div className="container-narrow">
-        <ScrollReveal animation="fade-up">
+        <ScrollReveal animation="headline">
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("featuredServices.tag")}</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("featuredServices.title")}</h2>
-            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">{t("featuredServices.subtitle")}</p>
           </div>
         </ScrollReveal>
-        <ScrollReveal animation="fade-up" delay={0.2} stagger={0.1} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ScrollReveal animation="paragraph" delay={0.2}>
+          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-center">{t("featuredServices.subtitle")}</p>
+        </ScrollReveal>
+        <ScrollReveal animation="card" delay={0.3} stagger={0.12} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
             <TiltCard key={s.id} className="glass-strong rounded-xl overflow-hidden">
               {s.image_url ? (
