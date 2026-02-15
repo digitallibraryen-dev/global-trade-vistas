@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Pencil, Plus } from "lucide-react";
+import { Trash2, Pencil, Plus, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
 
 interface Product {
   id: string;
@@ -15,6 +15,7 @@ interface Product {
   image_url: string | null;
   published: boolean;
   created_at: string;
+  sort_order: number;
 }
 
 const ProductManager = () => {
@@ -32,7 +33,7 @@ const ProductManager = () => {
       const { data, error } = await supabase
         .from("products")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("sort_order", { ascending: true });
       if (error) throw error;
       return data as Product[];
     },
@@ -86,6 +87,23 @@ const ProductManager = () => {
     onError: (err: Error) => toast({ title: "Error", description: err.message, variant: "destructive" }),
   });
 
+  const reorderMutation = useMutation({
+    mutationFn: async ({ id, direction }: { id: string; direction: "up" | "down" }) => {
+      const idx = products.findIndex((p) => p.id === id);
+      if (idx < 0) return;
+      const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+      if (swapIdx < 0 || swapIdx >= products.length) return;
+      const a = products[idx];
+      const b = products[swapIdx];
+      const { error: e1 } = await supabase.from("products").update({ sort_order: b.sort_order }).eq("id", a.id);
+      if (e1) throw e1;
+      const { error: e2 } = await supabase.from("products").update({ sort_order: a.sort_order }).eq("id", b.id);
+      if (e2) throw e2;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-products"] }),
+    onError: (err: Error) => toast({ title: "Error reordering", description: err.message, variant: "destructive" }),
+  });
+
   const resetForm = () => {
     setName(""); setDescription(""); setImageFile(null); setEditingId(null);
   };
@@ -132,7 +150,7 @@ const ProductManager = () => {
           <p className="text-muted-foreground text-sm">No products yet.</p>
         ) : (
           <div className="grid gap-4">
-            {products.map((p) => (
+            {products.map((p, i) => (
               <div key={p.id} className="glass rounded-xl p-4 flex items-center gap-4">
                 {p.image_url ? (
                   <img src={p.image_url} alt={p.name} className="w-16 h-16 rounded-lg object-cover shrink-0" />
@@ -144,6 +162,14 @@ const ProductManager = () => {
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-foreground truncate">{p.name}</p>
                   <p className="text-sm text-muted-foreground line-clamp-1">{p.description}</p>
+                </div>
+                <div className="flex flex-col gap-1 shrink-0 mr-2">
+                  <Button variant="ghost" size="icon" className="h-7 w-7" disabled={i === 0} onClick={() => reorderMutation.mutate({ id: p.id, direction: "up" })}>
+                    <ArrowUp className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="h-7 w-7" disabled={i === products.length - 1} onClick={() => reorderMutation.mutate({ id: p.id, direction: "down" })}>
+                    <ArrowDown className="h-4 w-4" />
+                  </Button>
                 </div>
                 <div className="flex gap-1 shrink-0">
                   <Button variant="ghost" size="icon" onClick={() => startEdit(p)}>
