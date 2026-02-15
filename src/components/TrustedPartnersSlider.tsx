@@ -54,6 +54,9 @@ const TrustedPartnersSlider = () => {
     // Kill previous tween if language changed
     tweenRef.current?.kill();
 
+    // Reset position before starting new tween
+    gsap.set(track, { x: 0 });
+
     tweenRef.current = gsap.to(track, {
       x: isRTL ? totalWidth : -totalWidth,
       duration: 90,
@@ -62,10 +65,7 @@ const TrustedPartnersSlider = () => {
       modifiers: {
         x: gsap.utils.unitize((x: string) => {
           const val = parseFloat(x);
-          if (isRTL) {
-            return ((val % totalWidth) + totalWidth) % totalWidth;
-          }
-          return val % totalWidth;
+          return ((val % totalWidth) + totalWidth) % totalWidth * (isRTL ? 1 : -1);
         }),
       },
     });
