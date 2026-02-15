@@ -3,24 +3,22 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 
 const partners = [
-  { name: "Alibaba", url: "https://logo.clearbit.com/alibaba.com" },
-  { name: "AliExpress", url: "https://logo.clearbit.com/aliexpress.com" },
-  { name: "Made-in-China", url: "https://logo.clearbit.com/made-in-china.com" },
-  { name: "Global Sources", url: "https://logo.clearbit.com/globalsources.com" },
-  { name: "1688", url: "https://logo.clearbit.com/1688.com" },
-  { name: "DHgate", url: "https://logo.clearbit.com/dhgate.com" },
-  { name: "Taobao", url: "https://logo.clearbit.com/taobao.com" },
-  { name: "Tmall", url: "https://logo.clearbit.com/tmall.com" },
-  { name: "JD.com", url: "https://logo.clearbit.com/jd.com" },
-  { name: "DHL", url: "https://logo.clearbit.com/dhl.com" },
-  { name: "FedEx", url: "https://logo.clearbit.com/fedex.com" },
-  { name: "UPS", url: "https://logo.clearbit.com/ups.com" },
-  { name: "Maersk", url: "https://logo.clearbit.com/maersk.com" },
-  { name: "COSCO Shipping", url: "https://logo.clearbit.com/cosco.com" },
-  { name: "SF Express", url: "https://logo.clearbit.com/sf-express.com" },
-  { name: "CMA CGM", url: "https://logo.clearbit.com/cma-cgm.com" },
-  { name: "Cainiao", url: "https://logo.clearbit.com/cainiao.com" },
-  { name: "DB Schenker", url: "https://logo.clearbit.com/dbschenker.com" },
+  { name: "Alibaba", logo: "/logos/alibaba.png" },
+  { name: "AliExpress", logo: "/logos/aliexpress.png" },
+  { name: "Made-in-China", logo: "/logos/made-in-china.png" },
+  { name: "Global Sources", logo: "/logos/globalsources.png" },
+  { name: "DHgate", logo: "/logos/dhgate.png" },
+  { name: "Taobao", logo: "/logos/taobao.png" },
+  { name: "Tmall", logo: "/logos/tmall.png" },
+  { name: "JD.com", logo: "/logos/jd.png" },
+  { name: "Suning", logo: "/logos/suning.png" },
+  { name: "DHL", logo: "/logos/dhl.png" },
+  { name: "FedEx", logo: "/logos/fedex.png" },
+  { name: "UPS", logo: "/logos/ups.png" },
+  { name: "Maersk", logo: "/logos/maersk.png" },
+  { name: "CMA CGM", logo: "/logos/cma-cgm.png" },
+  { name: "Cainiao", logo: "/logos/cainiao.png" },
+  { name: "DB Schenker", logo: "/logos/dbschenker.png" },
 ];
 
 const TrustedPartnersSlider = () => {
@@ -36,7 +34,7 @@ const TrustedPartnersSlider = () => {
 
     tweenRef.current = gsap.to(track, {
       x: -totalWidth,
-      duration: 40,
+      duration: 35,
       ease: "none",
       repeat: -1,
       modifiers: {
@@ -77,25 +75,19 @@ const TrustedPartnersSlider = () => {
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
 
-        <div ref={trackRef} className="flex w-max items-center gap-10 px-5">
+        <div ref={trackRef} className="flex w-max items-center gap-8 px-5">
           {logos.map((p, i) => (
             <div
               key={`${p.name}-${i}`}
-              className="group flex h-20 w-36 shrink-0 items-center justify-center rounded-xl border border-border bg-card/60 p-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+              className="group flex h-20 w-44 shrink-0 items-center justify-center gap-3 rounded-xl border border-border bg-card/60 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
             >
               <img
-                src={p.url}
+                src={p.logo}
                 alt={p.name}
-                className="max-h-10 max-w-full object-contain grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+                className="h-9 w-9 shrink-0 rounded-md object-contain opacity-70 transition-all duration-300 group-hover:opacity-100"
                 loading="lazy"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  target.style.display = "none";
-                  const fallback = target.nextElementSibling as HTMLElement;
-                  if (fallback) fallback.style.display = "flex";
-                }}
               />
-              <span className="hidden items-center justify-center text-xs font-semibold text-muted-foreground">
+              <span className="text-xs font-semibold text-muted-foreground transition-colors duration-300 group-hover:text-foreground leading-tight">
                 {p.name}
               </span>
             </div>
