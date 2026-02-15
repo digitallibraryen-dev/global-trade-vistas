@@ -25,7 +25,7 @@ const ProductsSection = () => {
         .from("products")
         .select("id, name, description, image_url")
         .eq("published", true)
-        .order("created_at", { ascending: false });
+        .order("sort_order", { ascending: true });
       if (error) throw error;
       return data as Product[];
     },
