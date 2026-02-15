@@ -1,20 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SealCheck, ChatCircleDots, Trash } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import ParallaxOrbs from "./ParallaxOrbs";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface Review {
   id: string;
@@ -55,7 +50,6 @@ const ReviewsSection = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useTranslation();
-  const sectionRef = useRef<HTMLElement>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewCounts, setReviewCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
@@ -82,41 +76,6 @@ const ReviewsSection = () => {
 
   useEffect(() => { fetchReviews(); }, []);
 
-  // GSAP timeline for header
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: sectionRef.current, start: "top 82%" },
-      });
-      tl.from(".reviews-title", { opacity: 0, y: 40, filter: "blur(8px)", duration: 0.8, ease: "power3.out" })
-        .from(".reviews-stats", { opacity: 0, y: 25, filter: "blur(4px)", duration: 0.6, ease: "power3.out" }, "-=0.4")
-        .from(".reviews-subtitle", { opacity: 0, y: 20, filter: "blur(4px)", duration: 0.5, ease: "power3.out" }, "-=0.3");
-
-      tl.eventCallback("onComplete", () => {
-        gsap.set([".reviews-title", ".reviews-stats", ".reviews-subtitle"], { clearProps: "filter" });
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
-  // GSAP stagger for review cards
-  useEffect(() => {
-    if (loading || reviews.length === 0) return;
-    const ctx = gsap.context(() => {
-      gsap.from(".review-card", {
-        scrollTrigger: { trigger: ".reviews-grid", start: "top 85%" },
-        opacity: 0,
-        y: 40,
-        filter: "blur(6px)",
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power3.out",
-        clearProps: "filter",
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, [loading, reviews]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || rating === 0 || !comment.trim()) return;
@@ -140,18 +99,17 @@ const ReviewsSection = () => {
   const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : "0";
 
   return (
-    <section id="reviews" ref={sectionRef} className="relative section-padding gradient-dark overflow-hidden">
-      <ParallaxOrbs variant="accent" />
-      <div className="container-narrow relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="reviews-title text-3xl sm:text-4xl font-bold text-foreground mb-3">{t("reviews.title")}</h2>
-          <div className="reviews-stats flex items-center justify-center gap-3 mb-2">
+    <section id="reviews" className="section-padding gradient-dark">
+      <div className="container-narrow">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">{t("reviews.title")}</h2>
+          <div className="flex items-center justify-center gap-3 mb-2">
             <StarRating rating={Math.round(Number(avgRating))} readonly size={24} />
             <span className="text-xl font-semibold text-foreground">{avgRating}</span>
             <span className="text-sm text-muted-foreground">({reviews.length} {t("reviews.reviews")})</span>
           </div>
-          <p className="reviews-subtitle text-muted-foreground max-w-lg mx-auto">{t("reviews.subtitle")}</p>
-        </div>
+          <p className="text-muted-foreground max-w-lg mx-auto">{t("reviews.subtitle")}</p>
+        </motion.div>
 
         {user ? (
           <div className="max-w-xl mx-auto mb-12">
@@ -184,41 +142,43 @@ const ReviewsSection = () => {
         ) : reviews.length === 0 ? (
           <p className="text-center text-muted-foreground">{t("reviews.noReviews")}</p>
         ) : (
-          <div className="reviews-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {reviews.map((r) => (
-              <div key={r.id} className="review-card glass-strong rounded-xl p-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {r.profiles?.avatar_url ? (
-                      <img src={r.profiles.avatar_url} alt="" className="h-8 w-8 rounded-full object-cover" />
-                    ) : (
-                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">{(r.profiles?.full_name || "U")[0].toUpperCase()}</div>
-                    )}
-                    <div>
-                      <p className="text-sm font-medium text-foreground flex items-center gap-1">
-                        {r.profiles?.full_name || "User"}
-                        {r.profiles?.country && countryToFlag[r.profiles.country] && <span title={r.profiles.country}>{countryToFlag[r.profiles.country]}</span>}
-                        <SealCheck size={14} className="text-primary" weight="fill" />
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {reviewCounts[r.user_id] || 1} {(reviewCounts[r.user_id] || 1) === 1 ? t("reviews.review") : t("reviews.reviews")}
-                      </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence>
+              {reviews.map((r, i) => (
+                <motion.div key={r.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="glass-strong rounded-xl p-5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {r.profiles?.avatar_url ? (
+                        <img src={r.profiles.avatar_url} alt="" className="h-8 w-8 rounded-full object-cover" />
+                      ) : (
+                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">{(r.profiles?.full_name || "U")[0].toUpperCase()}</div>
+                      )}
+                      <div>
+                        <p className="text-sm font-medium text-foreground flex items-center gap-1">
+                          {r.profiles?.full_name || "User"}
+                          {r.profiles?.country && countryToFlag[r.profiles.country] && <span title={r.profiles.country}>{countryToFlag[r.profiles.country]}</span>}
+                          <SealCheck size={14} className="text-primary" weight="fill" />
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {reviewCounts[r.user_id] || 1} {(reviewCounts[r.user_id] || 1) === 1 ? t("reviews.review") : t("reviews.reviews")}
+                        </p>
+                      </div>
                     </div>
+                    <StarRating rating={r.rating} readonly size={14} />
                   </div>
-                  <StarRating rating={r.rating} readonly size={14} />
-                </div>
-                {r.title && <p className="font-semibold text-foreground text-sm">{r.title}</p>}
-                <p className="text-sm text-muted-foreground leading-relaxed">{r.comment}</p>
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground/60">{new Date(r.created_at).toLocaleDateString()}</p>
-                  {user && user.id === r.user_id && (
-                    <button onClick={() => handleDelete(r.id)} className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 transition-colors">
-                      <Trash size={12} /> {t("reviews.delete")}
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+                  {r.title && <p className="font-semibold text-foreground text-sm">{r.title}</p>}
+                  <p className="text-sm text-muted-foreground leading-relaxed">{r.comment}</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground/60">{new Date(r.created_at).toLocaleDateString()}</p>
+                    {user && user.id === r.user_id && (
+                      <button onClick={() => handleDelete(r.id)} className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 transition-colors">
+                        <Trash size={12} /> {t("reviews.delete")}
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </div>

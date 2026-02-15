@@ -4,7 +4,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PaperPlaneTilt, MagnifyingGlass, ShieldCheck, Handshake, Truck, ArrowRight } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
-import ParallaxOrbs from "./ParallaxOrbs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,31 +16,15 @@ const HowItWorksSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".step-item", {
-        scrollTrigger: { trigger: ".steps-container", start: "top 80%" },
-        opacity: 0,
-        y: 50,
-        filter: "blur(6px)",
-        duration: 0.7,
-        stagger: 0.15,
-        ease: "power3.out",
-        clearProps: "filter",
-      });
-      gsap.from(".step-line", {
-        scrollTrigger: { trigger: ".steps-container", start: "top 80%" },
-        scaleX: 0,
-        duration: 1.8,
-        ease: "power2.out",
-        delay: 0.3,
-      });
+      gsap.from(".step-item", { scrollTrigger: { trigger: ".steps-container", start: "top 80%" }, opacity: 0, y: 40, duration: 0.6, stagger: 0.15, ease: "power3.out" });
+      gsap.from(".step-line", { scrollTrigger: { trigger: ".steps-container", start: "top 80%" }, scaleX: 0, duration: 1.5, ease: "power2.out", delay: 0.3 });
     }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="how-it-works" ref={ref} className="relative section-padding gradient-dark">
-      <ParallaxOrbs variant="accent" />
-      <div className="container-narrow relative z-10">
+    <section id="how-it-works" ref={ref} className="section-padding gradient-dark">
+      <div className="container-narrow">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("howItWorks.tag")}</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("howItWorks.title")}</h2>

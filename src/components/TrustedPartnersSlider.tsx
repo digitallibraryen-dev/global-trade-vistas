@@ -1,9 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface Partner {
   name: string;
@@ -12,6 +9,7 @@ interface Partner {
 }
 
 const partners: Partner[] = [
+  // Chinese Sourcing & Marketplace Platforms
   { name: "Alibaba", logo: "/logos/alibaba-hd.jpg", category: "sourcing" },
   { name: "AliExpress", logo: "/logos/aliexpress-hd.jpg", category: "sourcing" },
   { name: "Made-in-China", logo: "/logos/made-in-china.png", category: "sourcing" },
@@ -22,6 +20,7 @@ const partners: Partner[] = [
   { name: "Tmall", logo: "/logos/tmall.svg", category: "sourcing" },
   { name: "JD.com", logo: "/logos/jd.svg", category: "sourcing" },
   { name: "Suning", logo: "/logos/suning.png", category: "sourcing" },
+  // Chinese Logistics
   { name: "SF Express", logo: "/logos/sf-express-hd.jpg", category: "logistics" },
   { name: "China Post / EMS", logo: "/logos/china-post-ems.svg", category: "logistics" },
   { name: "Yunda Express", logo: "/logos/yunda.png", category: "logistics" },
@@ -30,6 +29,7 @@ const partners: Partner[] = [
   { name: "Cainiao", logo: "/logos/cainiao-hd.jpg", category: "logistics" },
   { name: "EMS China", logo: "/logos/ems-china-hd.jpg", category: "logistics" },
   { name: "COSCO Shipping", logo: "/logos/cosco.svg", category: "logistics" },
+  // Global Logistics
   { name: "DHL", logo: "/logos/dhl-hd.png", category: "logistics" },
   { name: "FedEx", logo: "/logos/fedex.svg", category: "logistics" },
   { name: "UPS", logo: "/logos/ups.svg", category: "logistics" },
@@ -41,29 +41,9 @@ const partners: Partner[] = [
 
 const TrustedPartnersSlider = () => {
   const { t, i18n } = useTranslation();
-  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
-  // Header timeline animation
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: sectionRef.current, start: "top 82%" },
-      });
-      tl.from(".partners-tag", { opacity: 0, y: 25, filter: "blur(6px)", duration: 0.6, ease: "power3.out" })
-        .from(".partners-title", { opacity: 0, y: 35, filter: "blur(8px)", duration: 0.7, ease: "power3.out" }, "-=0.3")
-        .from(".partners-subtitle", { opacity: 0, y: 20, filter: "blur(4px)", duration: 0.6, ease: "power3.out" }, "-=0.3")
-        .from(".partners-track-wrap", { opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.2");
-
-      tl.eventCallback("onComplete", () => {
-        gsap.set([".partners-tag", ".partners-title", ".partners-subtitle"], { clearProps: "filter" });
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
-  // Infinite scroll tween
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -71,7 +51,10 @@ const TrustedPartnersSlider = () => {
     const isRTL = document.documentElement.dir === "rtl";
     const totalWidth = track.scrollWidth / 2;
 
+    // Kill previous tween if language changed
     tweenRef.current?.kill();
+
+    // Reset position before starting new tween
     gsap.set(track, { x: 0 });
 
     tweenRef.current = gsap.to(track, {
@@ -87,7 +70,9 @@ const TrustedPartnersSlider = () => {
       },
     });
 
-    return () => { tweenRef.current?.kill(); };
+    return () => {
+      tweenRef.current?.kill();
+    };
   }, [i18n.language]);
 
   const handleMouseEnter = () => tweenRef.current?.pause();
@@ -96,24 +81,25 @@ const TrustedPartnersSlider = () => {
   const logos = [...partners, ...partners];
 
   return (
-    <section ref={sectionRef} className="py-16 bg-muted/30 overflow-hidden">
+    <section className="py-16 bg-muted/30 overflow-hidden">
       <div className="container-narrow text-center mb-10">
-        <p className="partners-tag text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
           {t("trustedPartners.tag", "Our Network")}
         </p>
-        <h2 className="partners-title mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           {t("trustedPartners.title", "Trusted Platforms & Logistics Partners")}
         </h2>
-        <p className="partners-subtitle mt-3 text-muted-foreground max-w-2xl mx-auto">
+        <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
           {t("trustedPartners.subtitle", "Connecting you with reliable suppliers and seamless shipping solutions from China to the world.")}
         </p>
       </div>
 
       <div
-        className="partners-track-wrap relative"
+        className="relative"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
+        {/* Fade edges */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
 

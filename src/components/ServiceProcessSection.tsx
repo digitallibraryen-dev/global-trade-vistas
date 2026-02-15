@@ -4,7 +4,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MagnifyingGlass, Flask, CurrencyDollar, Boat, ChartBar, ArrowRight } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
-import ParallaxOrbs from "./ParallaxOrbs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,31 +16,15 @@ const ServiceProcessSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".process-node", {
-        scrollTrigger: { trigger: ".process-flow", start: "top 80%" },
-        opacity: 0,
-        scale: 0.8,
-        filter: "blur(6px)",
-        duration: 0.7,
-        stagger: 0.12,
-        ease: "back.out(1.4)",
-        clearProps: "filter",
-      });
-      gsap.from(".process-line", {
-        scrollTrigger: { trigger: ".process-flow", start: "top 80%" },
-        scaleX: 0,
-        duration: 2,
-        ease: "power2.out",
-        delay: 0.2,
-      });
+      gsap.from(".process-node", { scrollTrigger: { trigger: ".process-flow", start: "top 80%" }, opacity: 0, scale: 0.8, duration: 0.6, stagger: 0.12, ease: "back.out(1.4)" });
+      gsap.from(".process-line", { scrollTrigger: { trigger: ".process-flow", start: "top 80%" }, scaleX: 0, duration: 1.8, ease: "power2.out", delay: 0.2 });
     }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={ref} className="relative section-padding gradient-dark overflow-hidden">
-      <ParallaxOrbs variant="primary" />
-      <div className="container-narrow relative z-10">
+    <section ref={ref} className="section-padding gradient-dark overflow-hidden">
+      <div className="container-narrow">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("serviceProcess.tag")}</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("serviceProcess.title")}</h2>
