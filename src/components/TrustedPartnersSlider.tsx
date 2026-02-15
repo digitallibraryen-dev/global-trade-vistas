@@ -102,7 +102,7 @@ const TrustedPartnersSlider = () => {
               <img
                 src={p.logo}
                 alt={`${p.name} logo`}
-                className="h-10 w-10 shrink-0 object-contain grayscale opacity-70 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+                className="h-10 w-10 shrink-0 object-contain transition-all duration-300 group-hover:scale-110"
                 loading="lazy"
               />
               <span className="whitespace-nowrap text-sm font-bold text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
