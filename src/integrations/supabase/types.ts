@@ -141,9 +141,13 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          description_ar: string | null
+          description_zh: string | null
           id: string
           image_url: string | null
           name: string
+          name_ar: string | null
+          name_zh: string | null
           published: boolean
           sort_order: number
           updated_at: string
@@ -151,9 +155,13 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_zh?: string | null
           id?: string
           image_url?: string | null
           name: string
+          name_ar?: string | null
+          name_zh?: string | null
           published?: boolean
           sort_order?: number
           updated_at?: string
@@ -161,9 +169,13 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_zh?: string | null
           id?: string
           image_url?: string | null
           name?: string
+          name_ar?: string | null
+          name_zh?: string | null
           published?: boolean
           sort_order?: number
           updated_at?: string
@@ -254,34 +266,46 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          description_ar: string | null
+          description_zh: string | null
           icon: string | null
           id: string
           image_url: string | null
           published: boolean
           sort_order: number
           title: string
+          title_ar: string | null
+          title_zh: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_zh?: string | null
           icon?: string | null
           id?: string
           image_url?: string | null
           published?: boolean
           sort_order?: number
           title: string
+          title_ar?: string | null
+          title_zh?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_zh?: string | null
           icon?: string | null
           id?: string
           image_url?: string | null
           published?: boolean
           sort_order?: number
           title?: string
+          title_ar?: string | null
+          title_zh?: string | null
           updated_at?: string
         }
         Relationships: []

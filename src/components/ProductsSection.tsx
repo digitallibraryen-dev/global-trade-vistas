@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
+import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
@@ -9,12 +10,17 @@ import TiltCard from "./TiltCard";
 interface Product {
   id: string;
   name: string;
+  name_ar: string | null;
+  name_zh: string | null;
   description: string | null;
+  description_ar: string | null;
+  description_zh: string | null;
   image_url: string | null;
 }
 
 const ProductsSection = () => {
   const { t } = useTranslation();
+  const loc = useLocalizedField();
   const { data: socialLinks = [] } = useSocialLinks();
   const whatsapp = socialLinks.find((l) => l.platform === "whatsapp" && l.enabled);
 
@@ -23,7 +29,7 @@ const ProductsSection = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("id, name, description, image_url")
+        .select("id, name, name_ar, name_zh, description, description_ar, description_zh, image_url")
         .eq("published", true)
         .order("sort_order", { ascending: true });
       if (error) throw error;
@@ -55,30 +61,34 @@ const ProductsSection = () => {
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-center">{t("products.subtitle")}</p>
         </ScrollReveal>
         <ScrollReveal animation="card" delay={0.3} stagger={0.12} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => (
-            <TiltCard key={p.id} className="glass-strong rounded-xl overflow-hidden">
-              {p.image_url ? (
-                <img src={p.image_url} alt={p.name} className="w-full h-48 object-cover" loading="lazy" />
-              ) : (
-                <div className="w-full h-48 bg-muted flex items-center justify-center">
-                  <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
+          {products.map((p) => {
+            const localName = loc(p, "name");
+            const localDesc = loc(p, "description");
+            return (
+              <TiltCard key={p.id} className="glass-strong rounded-xl overflow-hidden">
+                {p.image_url ? (
+                  <img src={p.image_url} alt={localName} className="w-full h-48 object-cover" loading="lazy" />
+                ) : (
+                  <div className="w-full h-48 bg-muted flex items-center justify-center">
+                    <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
+                  </div>
+                )}
+                <div className="p-5 space-y-3">
+                  <h3 className="text-lg font-semibold text-foreground">{localName}</h3>
+                  {localDesc && <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>}
+                  <a
+                    href={getWhatsAppLink(localName)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                  >
+                    <WhatsappLogo size={16} weight="fill" data-icon />
+                    {t("products.requestQuote")}
+                  </a>
                 </div>
-              )}
-              <div className="p-5 space-y-3">
-                <h3 className="text-lg font-semibold text-foreground">{p.name}</h3>
-                {p.description && <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{p.description}</p>}
-                <a
-                  href={getWhatsAppLink(p.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-                >
-                  <WhatsappLogo size={16} weight="fill" data-icon />
-                  {t("products.requestQuote")}
-                </a>
-              </div>
-            </TiltCard>
-          ))}
+              </TiltCard>
+            );
+          })}
         </ScrollReveal>
       </div>
     </section>

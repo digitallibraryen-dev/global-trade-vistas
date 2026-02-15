@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { WhatsappLogo, CheckCircle } from "@phosphor-icons/react";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
+import { useLocalizedField } from "@/hooks/useLocalizedField";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
@@ -13,13 +14,18 @@ import TiltCard from "@/components/TiltCard";
 interface Service {
   id: string;
   title: string;
+  title_ar: string | null;
+  title_zh: string | null;
   description: string | null;
+  description_ar: string | null;
+  description_zh: string | null;
   image_url: string | null;
   icon: string | null;
 }
 
 const ServicesPage = () => {
   const { t } = useTranslation();
+  const loc = useLocalizedField();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const { data: links } = useSocialLinks();
@@ -64,31 +70,35 @@ const ServicesPage = () => {
             <p className="text-center text-muted-foreground">{t("servicesPage.noServices")}</p>
           ) : (
             <ScrollReveal animation="card" stagger={0.12} className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((s) => (
-                <TiltCard key={s.id} className="glass rounded-2xl overflow-hidden">
-                  {s.image_url ? (
-                    <img src={s.image_url} alt={s.title} className="h-48 w-full object-cover" />
-                  ) : (
-                    <div className="h-48 w-full flex items-center justify-center gradient-primary">
-                      <span className="text-primary-foreground/50 text-sm">Service</span>
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
-                    {s.description && (
-                      <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{s.description}</p>
+              {services.map((s) => {
+                const localTitle = loc(s, "title");
+                const localDesc = loc(s, "description");
+                return (
+                  <TiltCard key={s.id} className="glass rounded-2xl overflow-hidden">
+                    {s.image_url ? (
+                      <img src={s.image_url} alt={localTitle} className="h-48 w-full object-cover" />
+                    ) : (
+                      <div className="h-48 w-full flex items-center justify-center gradient-primary">
+                        <span className="text-primary-foreground/50 text-sm">Service</span>
+                      </div>
                     )}
-                    <a
-                      href={getWhatsAppLink(s.title)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-3d mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-                    >
-                      <WhatsappLogo size={18} /> {t("servicesPage.requestQuote")}
-                    </a>
-                  </div>
-                </TiltCard>
-              ))}
+                    <div className="p-5">
+                      <h3 className="text-lg font-semibold text-foreground">{localTitle}</h3>
+                      {localDesc && (
+                        <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{localDesc}</p>
+                      )}
+                      <a
+                        href={getWhatsAppLink(localTitle)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-3d mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                      >
+                        <WhatsappLogo size={18} /> {t("servicesPage.requestQuote")}
+                      </a>
+                    </div>
+                  </TiltCard>
+                );
+              })}
             </ScrollReveal>
           )}
 
