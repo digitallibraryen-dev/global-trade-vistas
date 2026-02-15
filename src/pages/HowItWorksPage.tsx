@@ -95,7 +95,7 @@ const HowItWorksPage = () => {
             href={getWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 shadow-lg"
+            className="btn-3d mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3 text-base font-semibold text-primary-foreground shadow-lg"
           >
             <WhatsappLogo size={22} /> {t("servicesPage.requestQuote")}
           </a>

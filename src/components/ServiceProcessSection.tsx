@@ -51,10 +51,10 @@ const ServiceProcessSection = () => {
           <p className="text-sm text-muted-foreground mb-4">{t("serviceProcess.learnMoreHint")}</p>
           <Link
             to="/services"
-            className="group inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-transparent px-6 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-primary hover:shadow-lg hover:shadow-primary/10"
+            className="btn-3d group inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-transparent px-6 py-3 text-sm font-semibold text-primary"
           >
             {t("aboutPreview.learnMore")}
-            <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" />
+            <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" data-icon />
           </Link>
         </div>
       </div>

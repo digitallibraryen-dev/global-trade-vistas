@@ -45,10 +45,10 @@ const HeroSection = () => {
               {t("hero.subtitle")}
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <button onClick={() => scrollTo("#quote")} className="hero-cta rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:shadow-[0_0_30px_hsl(215_80%_50%/0.4)] active:scale-[0.98]">
+              <button onClick={() => scrollTo("#quote")} className="hero-cta btn-3d rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg">
                 {t("hero.cta1")}
               </button>
-              <button onClick={() => scrollTo("#contact")} className="hero-cta glass rounded-lg px-8 py-3.5 text-sm font-semibold text-white border-white/20 transition-all hover:bg-white/10">
+              <button onClick={() => scrollTo("#contact")} className="hero-cta btn-3d glass rounded-lg px-8 py-3.5 text-sm font-semibold text-white border-white/20">
                 {t("hero.cta2")}
               </button>
             </div>

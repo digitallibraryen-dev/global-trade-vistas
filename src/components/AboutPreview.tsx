@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "@phosphor-icons/react";
-import { motion } from "framer-motion";
+import ScrollReveal from "./ScrollReveal";
 
 const AboutPreview = () => {
   const { t } = useTranslation();
@@ -9,13 +9,7 @@ const AboutPreview = () => {
   return (
     <section id="about" className="section-padding">
       <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center"
-        >
+        <ScrollReveal animation="fade-up" className="max-w-3xl mx-auto text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             {t("aboutPreview.tag")}
           </p>
@@ -27,11 +21,11 @@ const AboutPreview = () => {
           </p>
           <Link
             to="/about-us"
-            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-accent"
+            className="btn-3d mt-8 inline-flex items-center gap-2 rounded-lg bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary"
           >
-            {t("aboutPreview.learnMore")} <ArrowRight size={16} />
+            {t("aboutPreview.learnMore")} <ArrowRight size={16} data-icon />
           </Link>
-        </motion.div>
+        </ScrollReveal>
       </div>
     </section>
   );

@@ -2,9 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
-import { motion } from "framer-motion";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import * as PhosphorIcons from "@phosphor-icons/react";
+import ScrollReveal from "./ScrollReveal";
+import TiltCard from "./TiltCard";
 
 interface Service {
   id: string;
@@ -52,21 +53,16 @@ const FeaturedServicesSection = () => {
   return (
     <section id="featured-services" className="section-padding gradient-dark">
       <div className="container-narrow">
-        <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("featuredServices.tag")}</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("featuredServices.title")}</h2>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">{t("featuredServices.subtitle")}</p>
-        </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
-            <motion.div
-              key={s.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="glass-strong rounded-xl overflow-hidden group hover:scale-[1.02] transition-transform duration-300"
-            >
+        <ScrollReveal animation="fade-up">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("featuredServices.tag")}</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("featuredServices.title")}</h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">{t("featuredServices.subtitle")}</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal animation="fade-up" delay={0.2} stagger={0.1} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((s) => (
+            <TiltCard key={s.id} className="glass-strong rounded-xl overflow-hidden">
               {s.image_url ? (
                 <img src={s.image_url} alt={s.title} className="w-full h-48 object-cover" loading="lazy" />
               ) : (
@@ -83,16 +79,16 @@ const FeaturedServicesSection = () => {
                   href={getWhatsAppLink(s.title)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg"
+                  className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
                 >
                   {getIcon(s.icon)}
-                  <WhatsappLogo size={16} weight="fill" />
+                  <WhatsappLogo size={16} weight="fill" data-icon />
                   {t("featuredServices.requestQuote")}
                 </a>
               </div>
-            </motion.div>
+            </TiltCard>
           ))}
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
