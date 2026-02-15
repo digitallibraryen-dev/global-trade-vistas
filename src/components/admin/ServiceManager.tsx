@@ -18,7 +18,11 @@ const ICON_OPTIONS = [
 interface Service {
   id: string;
   title: string;
+  title_ar: string | null;
+  title_zh: string | null;
   description: string;
+  description_ar: string | null;
+  description_zh: string | null;
   image_url: string;
   icon: string;
   published: boolean;
@@ -32,7 +36,11 @@ const ServiceManager = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState({ title: "", description: "", image_url: "", icon: "Package", published: true });
+  const [form, setForm] = useState({
+    title: "", title_ar: "", title_zh: "",
+    description: "", description_ar: "", description_zh: "",
+    image_url: "", icon: "Package", published: true,
+  });
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const fetchServices = async () => {
@@ -62,12 +70,19 @@ const ServiceManager = () => {
       if (url) imageUrl = url;
     }
 
+    const payload = {
+      title: form.title, description: form.description,
+      title_ar: form.title_ar || null, title_zh: form.title_zh || null,
+      description_ar: form.description_ar || null, description_zh: form.description_zh || null,
+      image_url: imageUrl, icon: form.icon, published: form.published,
+    };
+
     if (editingId) {
-      const { error } = await supabase.from("services").update({ title: form.title, description: form.description, image_url: imageUrl, icon: form.icon, published: form.published }).eq("id", editingId);
+      const { error } = await supabase.from("services").update(payload).eq("id", editingId);
       if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
       else toast({ title: "Service updated" });
     } else {
-      const { error } = await supabase.from("services").insert({ title: form.title, description: form.description, image_url: imageUrl, icon: form.icon, published: form.published, sort_order: services.length });
+      const { error } = await supabase.from("services").insert({ ...payload, sort_order: services.length });
       if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
       else toast({ title: "Service added" });
     }
@@ -85,13 +100,17 @@ const ServiceManager = () => {
 
   const startEdit = (s: Service) => {
     setEditingId(s.id);
-    setForm({ title: s.title, description: s.description || "", image_url: s.image_url || "", icon: s.icon || "Package", published: s.published });
+    setForm({
+      title: s.title, title_ar: s.title_ar || "", title_zh: s.title_zh || "",
+      description: s.description || "", description_ar: s.description_ar || "", description_zh: s.description_zh || "",
+      image_url: s.image_url || "", icon: s.icon || "Package", published: s.published,
+    });
     setImageFile(null);
   };
 
   const resetForm = () => {
     setEditingId(null);
-    setForm({ title: "", description: "", image_url: "", icon: "Package", published: true });
+    setForm({ title: "", title_ar: "", title_zh: "", description: "", description_ar: "", description_zh: "", image_url: "", icon: "Package", published: true });
     setImageFile(null);
   };
 
@@ -102,9 +121,11 @@ const ServiceManager = () => {
       {/* Form */}
       <div className="glass-strong rounded-xl p-6 space-y-4">
         <h3 className="font-semibold text-foreground">{editingId ? "Edit Service" : "Add New Service"}</h3>
+        
+        {/* English */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label>Title *</Label>
+            <Label>Title (English) *</Label>
             <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Service title" />
           </div>
           <div className="space-y-2">
@@ -121,9 +142,40 @@ const ServiceManager = () => {
           </div>
         </div>
         <div className="space-y-2">
-          <Label>Description</Label>
+          <Label>Description (English)</Label>
           <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="Service description" rows={3} />
         </div>
+
+        {/* Arabic */}
+        <div className="border-t border-border pt-3">
+          <p className="text-sm font-medium text-muted-foreground mb-2">🇸🇦 Arabic Translation</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label>Title (Arabic)</Label>
+              <Input dir="rtl" value={form.title_ar} onChange={(e) => setForm({ ...form, title_ar: e.target.value })} placeholder="عنوان الخدمة" />
+            </div>
+          </div>
+          <div className="space-y-2 mt-2">
+            <Label>Description (Arabic)</Label>
+            <Textarea dir="rtl" value={form.description_ar} onChange={(e) => setForm({ ...form, description_ar: e.target.value })} placeholder="وصف الخدمة" rows={2} />
+          </div>
+        </div>
+
+        {/* Chinese */}
+        <div className="border-t border-border pt-3">
+          <p className="text-sm font-medium text-muted-foreground mb-2">🇨🇳 Chinese Translation</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label>Title (Chinese)</Label>
+              <Input value={form.title_zh} onChange={(e) => setForm({ ...form, title_zh: e.target.value })} placeholder="服务标题" />
+            </div>
+          </div>
+          <div className="space-y-2 mt-2">
+            <Label>Description (Chinese)</Label>
+            <Textarea value={form.description_zh} onChange={(e) => setForm({ ...form, description_zh: e.target.value })} placeholder="服务描述" rows={2} />
+          </div>
+        </div>
+
         <div className="space-y-2">
           <Label>Image</Label>
           <div className="flex gap-3 items-center">
@@ -155,6 +207,11 @@ const ServiceManager = () => {
             <div className="flex-1 min-w-0">
               <p className="font-medium text-foreground truncate">{s.title}</p>
               <p className="text-xs text-muted-foreground">{s.published ? "Published" : "Draft"} · Icon: {s.icon}</p>
+              {(s.title_ar || s.title_zh) && (
+                <p className="text-xs text-muted-foreground/70 mt-0.5">
+                  {s.title_ar && `🇸🇦 ${s.title_ar}`}{s.title_ar && s.title_zh && " · "}{s.title_zh && `🇨🇳 ${s.title_zh}`}
+                </p>
+              )}
             </div>
             <div className="flex gap-2 shrink-0">
               <Button size="sm" variant="outline" onClick={() => startEdit(s)}>Edit</Button>

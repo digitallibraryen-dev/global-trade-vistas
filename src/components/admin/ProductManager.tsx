@@ -6,12 +6,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Pencil, Plus, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
+import { Trash2, Pencil, Plus, ArrowUp, ArrowDown } from "lucide-react";
 
 interface Product {
   id: string;
   name: string;
+  name_ar: string | null;
+  name_zh: string | null;
   description: string | null;
+  description_ar: string | null;
+  description_zh: string | null;
   image_url: string | null;
   published: boolean;
   created_at: string;
@@ -22,7 +26,11 @@ const ProductManager = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [name, setName] = useState("");
+  const [nameAr, setNameAr] = useState("");
+  const [nameZh, setNameZh] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionAr, setDescriptionAr] = useState("");
+  const [descriptionZh, setDescriptionZh] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -54,15 +62,21 @@ const ProductManager = () => {
       let imageUrl: string | undefined;
       if (imageFile) imageUrl = await uploadImage(imageFile);
 
+      const payload: Record<string, unknown> = {
+        name, description,
+        name_ar: nameAr || null,
+        name_zh: nameZh || null,
+        description_ar: descriptionAr || null,
+        description_zh: descriptionZh || null,
+      };
+      if (imageUrl) payload.image_url = imageUrl;
+
       if (editingId) {
-        const updates: Record<string, unknown> = { name, description };
-        if (imageUrl) updates.image_url = imageUrl;
-        const { error } = await supabase.from("products").update(updates).eq("id", editingId);
+        const { error } = await supabase.from("products").update(payload).eq("id", editingId);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("products").insert({
-          name, description, image_url: imageUrl ?? null,
-        });
+        payload.image_url = imageUrl ?? null;
+        const { error } = await supabase.from("products").insert(payload as any);
         if (error) throw error;
       }
     },
@@ -105,11 +119,20 @@ const ProductManager = () => {
   });
 
   const resetForm = () => {
-    setName(""); setDescription(""); setImageFile(null); setEditingId(null);
+    setName(""); setNameAr(""); setNameZh("");
+    setDescription(""); setDescriptionAr(""); setDescriptionZh("");
+    setImageFile(null); setEditingId(null);
   };
 
   const startEdit = (p: Product) => {
-    setEditingId(p.id); setName(p.name); setDescription(p.description ?? ""); setImageFile(null);
+    setEditingId(p.id);
+    setName(p.name);
+    setNameAr(p.name_ar ?? "");
+    setNameZh(p.name_zh ?? "");
+    setDescription(p.description ?? "");
+    setDescriptionAr(p.description_ar ?? "");
+    setDescriptionZh(p.description_zh ?? "");
+    setImageFile(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -121,14 +144,46 @@ const ProductManager = () => {
           {editingId ? "Edit Product" : "Add Product"}
         </h2>
         <div className="space-y-3">
+          {/* English */}
           <div>
-            <Label htmlFor="product-name">Product Name</Label>
+            <Label htmlFor="product-name">Product Name (English) *</Label>
             <Input id="product-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter product name" maxLength={200} />
           </div>
           <div>
-            <Label htmlFor="product-desc">Short Description</Label>
+            <Label htmlFor="product-desc">Description (English)</Label>
             <Textarea id="product-desc" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Brief description" rows={3} maxLength={500} />
           </div>
+
+          {/* Arabic */}
+          <div className="border-t border-border pt-3 mt-3">
+            <p className="text-sm font-medium text-muted-foreground mb-2">🇸🇦 Arabic Translation</p>
+            <div className="space-y-2">
+              <div>
+                <Label htmlFor="product-name-ar">Product Name (Arabic)</Label>
+                <Input id="product-name-ar" dir="rtl" value={nameAr} onChange={(e) => setNameAr(e.target.value)} placeholder="اسم المنتج" maxLength={200} />
+              </div>
+              <div>
+                <Label htmlFor="product-desc-ar">Description (Arabic)</Label>
+                <Textarea id="product-desc-ar" dir="rtl" value={descriptionAr} onChange={(e) => setDescriptionAr(e.target.value)} placeholder="وصف مختصر" rows={2} maxLength={500} />
+              </div>
+            </div>
+          </div>
+
+          {/* Chinese */}
+          <div className="border-t border-border pt-3 mt-3">
+            <p className="text-sm font-medium text-muted-foreground mb-2">🇨🇳 Chinese Translation</p>
+            <div className="space-y-2">
+              <div>
+                <Label htmlFor="product-name-zh">Product Name (Chinese)</Label>
+                <Input id="product-name-zh" value={nameZh} onChange={(e) => setNameZh(e.target.value)} placeholder="产品名称" maxLength={200} />
+              </div>
+              <div>
+                <Label htmlFor="product-desc-zh">Description (Chinese)</Label>
+                <Textarea id="product-desc-zh" value={descriptionZh} onChange={(e) => setDescriptionZh(e.target.value)} placeholder="简要描述" rows={2} maxLength={500} />
+              </div>
+            </div>
+          </div>
+
           <div>
             <Label htmlFor="product-image">Product Image</Label>
             <Input id="product-image" type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
@@ -162,6 +217,11 @@ const ProductManager = () => {
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-foreground truncate">{p.name}</p>
                   <p className="text-sm text-muted-foreground line-clamp-1">{p.description}</p>
+                  {(p.name_ar || p.name_zh) && (
+                    <p className="text-xs text-muted-foreground/70 mt-0.5">
+                      {p.name_ar && `🇸🇦 ${p.name_ar}`}{p.name_ar && p.name_zh && " · "}{p.name_zh && `🇨🇳 ${p.name_zh}`}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-1 shrink-0 mr-2">
                   <Button variant="ghost" size="icon" className="h-7 w-7" disabled={i === 0} onClick={() => reorderMutation.mutate({ id: p.id, direction: "up" })}>
