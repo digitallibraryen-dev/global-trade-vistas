@@ -17,26 +17,42 @@ const ParallaxOrbs = ({ variant = "mixed" }: ParallaxOrbsProps) => {
     const orbs = ref.current.querySelectorAll(".parallax-orb");
     const ctx = gsap.context(() => {
       orbs.forEach((orb, i) => {
-        // Floating animation
+        // Cinematic floating with yoyo
         gsap.to(orb, {
-          y: -15 + (i % 3) * 5,
-          duration: 3 + i * 0.5,
+          y: -20 + (i % 3) * 6,
+          x: (i % 2 === 0 ? 8 : -8),
+          duration: 4 + i * 0.7,
           repeat: -1,
           yoyo: true,
-          ease: "power1.inOut",
-          delay: i * 0.3,
+          ease: "sine.inOut",
+          delay: i * 0.4,
         });
 
-        // Parallax on scroll
+        // Deep parallax on scroll — background speed layers
+        const speed = i % 3 === 0 ? 0.5 : i % 3 === 1 ? 1 : 1.2;
         gsap.to(orb, {
           scrollTrigger: {
             trigger: ref.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1.5,
+            scrub: 2,
           },
-          y: (i % 2 === 0 ? -80 : 80) * (1 + i * 0.2),
+          y: (i % 2 === 0 ? -100 : 100) * speed,
         });
+
+        // Glow intensity increases on scroll
+        gsap.fromTo(orb, 
+          { opacity: 0.3 },
+          {
+            opacity: 0.7,
+            scrollTrigger: {
+              trigger: ref.current,
+              start: "top bottom",
+              end: "center center",
+              scrub: 1,
+            },
+          }
+        );
       });
     }, ref);
 
@@ -44,15 +60,16 @@ const ParallaxOrbs = ({ variant = "mixed" }: ParallaxOrbsProps) => {
   }, []);
 
   const colors = {
-    primary: "hsl(var(--primary) / 0.08)",
-    accent: "hsl(var(--accent) / 0.08)",
+    primary: "hsl(var(--primary) / 0.1)",
+    accent: "hsl(var(--accent) / 0.1)",
   };
 
   const orbConfigs = [
-    { size: 200, top: "10%", left: "5%", color: variant === "accent" ? colors.accent : colors.primary },
-    { size: 150, top: "60%", right: "8%", color: variant === "primary" ? colors.primary : colors.accent },
-    { size: 100, top: "30%", right: "25%", color: colors.primary },
-    { size: 180, bottom: "15%", left: "15%", color: colors.accent },
+    { size: 240, top: "8%", left: "3%", color: variant === "accent" ? colors.accent : colors.primary },
+    { size: 180, top: "55%", right: "5%", color: variant === "primary" ? colors.primary : colors.accent },
+    { size: 120, top: "25%", right: "22%", color: colors.primary },
+    { size: 200, bottom: "10%", left: "12%", color: colors.accent },
+    { size: 90, top: "40%", left: "45%", color: colors.primary },
   ];
 
   return (
@@ -60,15 +77,17 @@ const ParallaxOrbs = ({ variant = "mixed" }: ParallaxOrbsProps) => {
       {orbConfigs.map((orb, i) => (
         <div
           key={i}
-          className="parallax-orb absolute rounded-full blur-3xl"
+          className="parallax-orb absolute rounded-full"
           style={{
             width: orb.size,
             height: orb.size,
-            background: orb.color,
+            background: `radial-gradient(circle, ${orb.color}, transparent 70%)`,
+            filter: "blur(40px)",
             top: orb.top,
             left: orb.left,
             right: orb.right,
             bottom: orb.bottom,
+            willChange: "transform, opacity",
           }}
         />
       ))}

@@ -10,15 +10,23 @@ const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 1.5,
+      duration: 1.6,
+      easing: (t) => {
+        // Custom cinematic easing — weighted cubic with soft landing
+        return t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      },
+      touchMultiplier: 1.8,
       infinite: false,
+      smoothWheel: true,
+      syncTouch: true,
+      syncTouchLerp: 0.075,
     });
 
     lenisRef.current = lenis;
 
-    // Connect Lenis to GSAP ScrollTrigger
+    // Sync Lenis with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
