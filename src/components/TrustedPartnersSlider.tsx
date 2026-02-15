@@ -14,7 +14,7 @@ const partners: Partner[] = [
   { name: "AliExpress", logo: "/logos/aliexpress-hd.jpg", category: "sourcing" },
   { name: "Made-in-China", logo: "/logos/made-in-china.png", category: "sourcing" },
   { name: "Global Sources", logo: "/logos/globalsources.png", category: "sourcing" },
-  { name: "1688", logo: "/logos/1688.png", category: "sourcing" },
+  { name: "Amazon", logo: "/logos/amazon-hd.png", category: "sourcing" },
   { name: "DHgate", logo: "/logos/dhgate.svg", category: "sourcing" },
   { name: "Taobao", logo: "/logos/taobao.svg", category: "sourcing" },
   { name: "Tmall", logo: "/logos/tmall.svg", category: "sourcing" },
