@@ -25,16 +25,18 @@ const WhyChooseSection = () => {
   return (
     <section id="why-choose" className="section-padding">
       <div className="container-narrow">
-        <ScrollReveal animation="fade-up" className="text-center mb-12">
+        <ScrollReveal animation="headline" className="text-center mb-12">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("whyChoose.tag")}</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("whyChoose.title")}</h2>
         </ScrollReveal>
-        <ScrollReveal animation="fade-up" stagger={0.08} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ScrollReveal animation="card" stagger={0.1} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <TiltCard key={item.key} className="glass-strong rounded-xl p-6 text-center group">
-              <div className="mx-auto mb-4 h-14 w-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:glow-primary transition-shadow duration-300">
-                <item.icon size={28} className="text-primary" weight="duotone" />
-              </div>
+              <ScrollReveal animation="icon-bounce">
+                <div className="mx-auto mb-4 h-14 w-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:glow-primary transition-shadow duration-300">
+                  <item.icon size={28} className="text-primary" weight="duotone" />
+                </div>
+              </ScrollReveal>
               <h3 className="font-semibold text-foreground mb-2">{t(`whyChoose.items.${item.key}.title`)}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{t(`whyChoose.items.${item.key}.desc`)}</p>
             </TiltCard>

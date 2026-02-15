@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const ContactPage = () => {
   const { t } = useTranslation();
@@ -40,6 +41,12 @@ const ContactPage = () => {
     ? `https://wa.me/${whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "")}?text=${encodeURIComponent(t("whatsappMessages.contact"))}`
     : null;
 
+  const contactItems = [
+    { icon: MapPin, title: t("contactPage.office"), value: t("contactPage.address") },
+    { icon: EnvelopeSimple, title: t("contactPage.emailLabel"), value: "info@almonesi.com" },
+    { icon: Phone, title: t("contactPage.phoneLabel"), value: "+86 195 6490 6074" },
+  ];
+
   return (
     <>
       <Navbar />
@@ -48,88 +55,56 @@ const ContactPage = () => {
         <div className="container-narrow max-w-5xl">
           <div className="grid gap-12 lg:grid-cols-2">
             {/* Info */}
-            <div className="space-y-8">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: '#003f7f' }}>
-                  <MapPin size={24} weight="light" className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">{t("contactPage.office")}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{t("contactPage.address")}</p>
-                </div>
+            <ScrollReveal animation="slide-right">
+              <div className="space-y-8">
+                {contactItems.map((c, i) => (
+                  <ScrollReveal key={i} animation="fade-up" delay={i * 0.12}>
+                    <div className="flex items-start gap-4">
+                      <ScrollReveal animation="icon-bounce">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: '#003f7f' }}>
+                          <c.icon size={24} weight="light" className="text-white" />
+                        </div>
+                      </ScrollReveal>
+                      <div>
+                        <h3 className="font-semibold text-foreground">{c.title}</h3>
+                        <p className="mt-1 text-sm text-muted-foreground">{c.value}</p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+                {whatsappLink && (
+                  <ScrollReveal animation="fade-up" delay={0.4}>
+                    <a
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+                    >
+                      <WhatsappLogo size={20} /> {t("contactPage.whatsappBtn")}
+                    </a>
+                  </ScrollReveal>
+                )}
               </div>
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: '#003f7f' }}>
-                  <EnvelopeSimple size={24} weight="light" className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">{t("contactPage.emailLabel")}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">info@almonesi.com</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: '#003f7f' }}>
-                  <Phone size={24} weight="light" className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">{t("contactPage.phoneLabel")}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">+86 195 6490 6074</p>
-                </div>
-              </div>
-              {whatsappLink && (
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-                >
-                  <WhatsappLogo size={20} /> {t("contactPage.whatsappBtn")}
-                </a>
-              )}
-            </div>
+            </ScrollReveal>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="glass rounded-2xl p-6 sm:p-8 space-y-5">
-              <h2 className="text-xl font-bold text-foreground">{t("contactPage.formTitle")}</h2>
-              <p className="text-sm text-muted-foreground">{t("contactPage.formSubtitle")}</p>
-              <Input
-                placeholder={t("contactPage.namePlaceholder")}
-                value={form.full_name}
-                onChange={(e) => setForm({ ...form, full_name: e.target.value })}
-                maxLength={100}
-                required
-              />
-              <Input
-                type="email"
-                placeholder={t("contactPage.emailPlaceholder")}
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                maxLength={255}
-                required
-              />
-              <Input
-                placeholder={t("contactPage.subjectPlaceholder")}
-                value={form.subject}
-                onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                maxLength={200}
-                required
-              />
-              <Textarea
-                placeholder={t("contactPage.messagePlaceholder")}
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                maxLength={2000}
-                rows={5}
-                required
-              />
-              <Button type="submit" disabled={sending} className="w-full">
-                {sending ? t("contactPage.sending") : t("contactPage.send")}
-              </Button>
-            </form>
+            <ScrollReveal animation="slide-left">
+              <form onSubmit={handleSubmit} className="glass rounded-2xl p-6 sm:p-8 space-y-5">
+                <h2 className="text-xl font-bold text-foreground">{t("contactPage.formTitle")}</h2>
+                <p className="text-sm text-muted-foreground">{t("contactPage.formSubtitle")}</p>
+                <Input placeholder={t("contactPage.namePlaceholder")} value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} maxLength={100} required />
+                <Input type="email" placeholder={t("contactPage.emailPlaceholder")} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} required />
+                <Input placeholder={t("contactPage.subjectPlaceholder")} value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} maxLength={200} required />
+                <Textarea placeholder={t("contactPage.messagePlaceholder")} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} maxLength={2000} rows={5} required />
+                <Button type="submit" disabled={sending} className="w-full">
+                  {sending ? t("contactPage.sending") : t("contactPage.send")}
+                </Button>
+              </form>
+            </ScrollReveal>
           </div>
 
           {/* Google Map */}
-          <div className="mt-16 lg:col-span-2">
+          <ScrollReveal animation="scale-in" className="mt-16">
             <h3 className="text-center text-lg font-semibold text-foreground mb-6">
               {t("contactPage.mapTitle", "Our Location – Visit Us in China")}
             </h3>
@@ -146,7 +121,7 @@ const ContactPage = () => {
                 className="w-full"
               />
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </main>
       <Footer />

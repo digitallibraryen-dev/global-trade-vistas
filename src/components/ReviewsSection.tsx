@@ -3,13 +3,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
-import { motion, AnimatePresence } from "framer-motion";
 import { SealCheck, ChatCircleDots, Trash } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import ScrollReveal from "./ScrollReveal";
 
 interface Review {
   id: string;
@@ -101,7 +101,7 @@ const ReviewsSection = () => {
   return (
     <section id="reviews" className="section-padding gradient-dark">
       <div className="container-narrow">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
+        <ScrollReveal animation="headline" className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">{t("reviews.title")}</h2>
           <div className="flex items-center justify-center gap-3 mb-2">
             <StarRating rating={Math.round(Number(avgRating))} readonly size={24} />
@@ -109,14 +109,14 @@ const ReviewsSection = () => {
             <span className="text-sm text-muted-foreground">({reviews.length} {t("reviews.reviews")})</span>
           </div>
           <p className="text-muted-foreground max-w-lg mx-auto">{t("reviews.subtitle")}</p>
-        </motion.div>
+        </ScrollReveal>
 
         {user ? (
           <div className="max-w-xl mx-auto mb-12">
             {!showForm ? (
               <Button onClick={() => setShowForm(true)} className="w-full gap-2"><ChatCircleDots size={18} /> {t("reviews.writeReview")}</Button>
             ) : (
-              <motion.form initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} onSubmit={handleSubmit} className="glass-strong rounded-xl p-6 space-y-4">
+              <form onSubmit={handleSubmit} className="glass-strong rounded-xl p-6 space-y-4">
                 <div className="space-y-2"><Label>{t("reviews.ratingLabel")}</Label><StarRating rating={rating} onChange={setRating} size={28} /></div>
                 <div className="space-y-2"><Label htmlFor="review-title">{t("reviews.titleLabel")}</Label><Input id="review-title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("reviews.titlePlaceholder")} maxLength={100} /></div>
                 <div className="space-y-2">
@@ -128,7 +128,7 @@ const ReviewsSection = () => {
                   <Button type="submit" disabled={submitting || rating === 0 || !comment.trim()}>{submitting ? t("reviews.submitting") : t("reviews.submit")}</Button>
                   <Button type="button" variant="outline" onClick={() => setShowForm(false)}>{t("reviews.cancel")}</Button>
                 </div>
-              </motion.form>
+              </form>
             )}
           </div>
         ) : (
@@ -142,44 +142,42 @@ const ReviewsSection = () => {
         ) : reviews.length === 0 ? (
           <p className="text-center text-muted-foreground">{t("reviews.noReviews")}</p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <AnimatePresence>
-              {reviews.map((r, i) => (
-                <motion.div key={r.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="glass-strong rounded-xl p-5 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {r.profiles?.avatar_url ? (
-                        <img src={r.profiles.avatar_url} alt="" className="h-8 w-8 rounded-full object-cover" />
-                      ) : (
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">{(r.profiles?.full_name || "U")[0].toUpperCase()}</div>
-                      )}
-                      <div>
-                        <p className="text-sm font-medium text-foreground flex items-center gap-1">
-                          {r.profiles?.full_name || "User"}
-                          {r.profiles?.country && countryToFlag[r.profiles.country] && <span title={r.profiles.country}>{countryToFlag[r.profiles.country]}</span>}
-                          <SealCheck size={14} className="text-primary" weight="fill" />
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {reviewCounts[r.user_id] || 1} {(reviewCounts[r.user_id] || 1) === 1 ? t("reviews.review") : t("reviews.reviews")}
-                        </p>
-                      </div>
-                    </div>
-                    <StarRating rating={r.rating} readonly size={14} />
-                  </div>
-                  {r.title && <p className="font-semibold text-foreground text-sm">{r.title}</p>}
-                  <p className="text-sm text-muted-foreground leading-relaxed">{r.comment}</p>
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-muted-foreground/60">{new Date(r.created_at).toLocaleDateString()}</p>
-                    {user && user.id === r.user_id && (
-                      <button onClick={() => handleDelete(r.id)} className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 transition-colors">
-                        <Trash size={12} /> {t("reviews.delete")}
-                      </button>
+          <ScrollReveal animation="card" stagger={0.08} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {reviews.map((r) => (
+              <div key={r.id} className="glass-strong rounded-xl p-5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {r.profiles?.avatar_url ? (
+                      <img src={r.profiles.avatar_url} alt="" className="h-8 w-8 rounded-full object-cover" />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">{(r.profiles?.full_name || "U")[0].toUpperCase()}</div>
                     )}
+                    <div>
+                      <p className="text-sm font-medium text-foreground flex items-center gap-1">
+                        {r.profiles?.full_name || "User"}
+                        {r.profiles?.country && countryToFlag[r.profiles.country] && <span title={r.profiles.country}>{countryToFlag[r.profiles.country]}</span>}
+                        <SealCheck size={14} className="text-primary" weight="fill" />
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {reviewCounts[r.user_id] || 1} {(reviewCounts[r.user_id] || 1) === 1 ? t("reviews.review") : t("reviews.reviews")}
+                      </p>
+                    </div>
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
+                  <StarRating rating={r.rating} readonly size={14} />
+                </div>
+                {r.title && <p className="font-semibold text-foreground text-sm">{r.title}</p>}
+                <p className="text-sm text-muted-foreground leading-relaxed">{r.comment}</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground/60">{new Date(r.created_at).toLocaleDateString()}</p>
+                  {user && user.id === r.user_id && (
+                    <button onClick={() => handleDelete(r.id)} className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 transition-colors">
+                      <Trash size={12} /> {t("reviews.delete")}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </ScrollReveal>
         )}
       </div>
     </section>

@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ScrollReveal from "@/components/ScrollReveal";
 
 interface BlogPost {
   id: string;
@@ -49,7 +50,7 @@ const BlogPage = () => {
           ) : posts.length === 0 ? (
             <p className="text-center text-muted-foreground">{t("blogPage.noPosts")}</p>
           ) : (
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <ScrollReveal animation="card" stagger={0.12} className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <Link
                   key={post.id}
@@ -77,7 +78,7 @@ const BlogPage = () => {
                   </div>
                 </Link>
               ))}
-            </div>
+            </ScrollReveal>
           )}
         </div>
       </main>

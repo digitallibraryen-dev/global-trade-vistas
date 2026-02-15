@@ -11,6 +11,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ScrollReveal from "@/components/ScrollReveal";
 
 interface FAQItem {
   id: string;
@@ -18,8 +19,6 @@ interface FAQItem {
   answer: string;
   category: string;
 }
-
-const categories = ["General", "Shipping", "Payments", "Quality Control", "Orders"];
 
 const FAQPage = () => {
   const { t } = useTranslation();
@@ -39,10 +38,8 @@ const FAQPage = () => {
       });
   }, []);
 
-  // If no DB items, fall back to static i18n items
   const staticItems = t("faq.items", { returnObjects: true }) as Array<{ q: string; a: string }>;
   const useStatic = !loading && items.length === 0;
-
   const filteredItems = activeCategory === "all" ? items : items.filter((i) => i.category === activeCategory);
   const usedCategories = [...new Set(items.map((i) => i.category))];
 
@@ -57,7 +54,7 @@ const FAQPage = () => {
       <main className="section-padding">
         <div className="container-narrow max-w-3xl">
           {!useStatic && usedCategories.length > 1 && (
-            <div className="flex flex-wrap gap-2 mb-8 justify-center">
+            <ScrollReveal animation="fade-up" className="flex flex-wrap gap-2 mb-8 justify-center">
               <button
                 onClick={() => setActiveCategory("all")}
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
@@ -77,37 +74,39 @@ const FAQPage = () => {
                   {cat}
                 </button>
               ))}
-            </div>
+            </ScrollReveal>
           )}
 
           {loading ? (
             <p className="text-center text-muted-foreground">Loading...</p>
           ) : (
-            <Accordion type="single" collapsible className="space-y-3">
-              {useStatic
-                ? staticItems.map((f, i) => (
-                    <AccordionItem
-                      key={i}
-                      value={`faq-${i}`}
-                      className="rounded-xl border-none px-5 [&_svg]:text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#003f7f]/30"
-                      style={{ backgroundColor: '#003f7f' }}
-                    >
-                      <AccordionTrigger className="text-left text-sm font-semibold text-white hover:no-underline py-4">{f.q}</AccordionTrigger>
-                      <AccordionContent className="text-sm leading-relaxed text-white/80 pb-4">{f.a}</AccordionContent>
-                    </AccordionItem>
-                  ))
-                : filteredItems.map((item) => (
-                    <AccordionItem
-                      key={item.id}
-                      value={item.id}
-                      className="rounded-xl border-none px-5 [&_svg]:text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#003f7f]/30"
-                      style={{ backgroundColor: '#003f7f' }}
-                    >
-                      <AccordionTrigger className="text-left text-sm font-semibold text-white hover:no-underline py-4">{item.question}</AccordionTrigger>
-                      <AccordionContent className="text-sm leading-relaxed text-white/80 pb-4">{item.answer}</AccordionContent>
-                    </AccordionItem>
-                  ))}
-            </Accordion>
+            <ScrollReveal animation="card" stagger={0.1}>
+              <Accordion type="single" collapsible className="space-y-3">
+                {useStatic
+                  ? staticItems.map((f, i) => (
+                      <AccordionItem
+                        key={i}
+                        value={`faq-${i}`}
+                        className="rounded-xl border-none px-5 [&_svg]:text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#003f7f]/30"
+                        style={{ backgroundColor: '#003f7f' }}
+                      >
+                        <AccordionTrigger className="text-left text-sm font-semibold text-white hover:no-underline py-4">{f.q}</AccordionTrigger>
+                        <AccordionContent className="text-sm leading-relaxed text-white/80 pb-4">{f.a}</AccordionContent>
+                      </AccordionItem>
+                    ))
+                  : filteredItems.map((item) => (
+                      <AccordionItem
+                        key={item.id}
+                        value={item.id}
+                        className="rounded-xl border-none px-5 [&_svg]:text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#003f7f]/30"
+                        style={{ backgroundColor: '#003f7f' }}
+                      >
+                        <AccordionTrigger className="text-left text-sm font-semibold text-white hover:no-underline py-4">{item.question}</AccordionTrigger>
+                        <AccordionContent className="text-sm leading-relaxed text-white/80 pb-4">{item.answer}</AccordionContent>
+                      </AccordionItem>
+                    ))}
+              </Accordion>
+            </ScrollReveal>
           )}
         </div>
       </main>
