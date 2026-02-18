@@ -19,6 +19,11 @@ const zh = {
     subtitle: "我们将您的业务与经过验证的供应商连接起来，专业管理您的贸易运营——从采购到交付。",
     cta1: "获取报价",
     cta2: "预约咨询",
+    ctaContact: "联系我们",
+    ctaServices: "了解我们的服务",
+    statVerified: "认证供应商",
+    statSupport: "全天候支持",
+    statClients: "满意客户",
   },
   aboutPreview: {
     tag: "关于我们",
