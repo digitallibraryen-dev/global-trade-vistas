@@ -75,18 +75,18 @@ const HeroSection = () => {
             </div>
 
             {/* Stats Badges */}
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-6 flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3">
               {stats.map((s) => (
                 <div
                   key={s.label}
-                  className="hero-stat flex items-center gap-3 rounded-xl px-5 py-3 backdrop-blur-md bg-white/10 border border-white/15"
+                  className="hero-stat flex items-center gap-2 rounded-lg px-3 py-2 backdrop-blur-md bg-white/10 border border-white/15"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg backdrop-blur-sm bg-white/15">
-                    <s.icon size={22} weight="light" className="text-white" />
+                  <div className="flex h-7 w-7 items-center justify-center rounded-md backdrop-blur-sm bg-white/15">
+                    <s.icon size={16} weight="light" className="text-white" />
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-white leading-tight">{s.value}</div>
-                    <div className="text-xs text-white/70">{s.label}</div>
+                    <div className="text-sm font-bold text-white leading-tight">{s.value}</div>
+                    <div className="text-[10px] text-white/70">{s.label}</div>
                   </div>
                 </div>
               ))}
