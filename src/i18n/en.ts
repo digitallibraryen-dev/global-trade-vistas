@@ -19,11 +19,6 @@ const en = {
     subtitle: "We connect your business with verified suppliers and manage your trade operations professionally — from sourcing to delivery.",
     cta1: "Request a Quote",
     cta2: "Book a Consultation",
-    ctaContact: "Contact Us",
-    ctaServices: "Explore Our Services",
-    statVerified: "Verified Suppliers",
-    statSupport: "Support",
-    statClients: "Satisfied Clients",
   },
   aboutPreview: {
     tag: "Who We Are",

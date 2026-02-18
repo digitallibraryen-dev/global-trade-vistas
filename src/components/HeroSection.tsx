@@ -1,28 +1,10 @@
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { ShieldCheck, Clock, Users, CheckCircle } from "@phosphor-icons/react";
-
-const BASE_DATE = new Date("2025-01-01T00:00:00Z");
-const BASE_COUNT = 1721;
-
-const getClientCount = () => {
-  const now = new Date();
-  const diffDays = Math.floor((now.getTime() - BASE_DATE.getTime()) / (1000 * 60 * 60 * 24));
-  // Deterministic pseudo-random increment per day (1-3)
-  let total = BASE_COUNT;
-  for (let i = 0; i < diffDays; i++) {
-    const seed = (i * 7 + 3) % 3; // yields 0,1,2
-    total += seed + 1; // yields 1,2,3
-  }
-  return total;
-};
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
-  const clientCount = useMemo(() => getClientCount(), []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -30,16 +12,13 @@ const HeroSection = () => {
       gsap.from(".hero-sub", { opacity: 0, y: 40, duration: 1, ease: "power3.out", delay: 0.5 });
       gsap.from(".hero-cta", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out", delay: 0.8, stagger: 0.15 });
       gsap.from(".hero-spline", { opacity: 0, duration: 1.5, ease: "power2.out", delay: 0.3 });
-      gsap.from(".hero-stat", { opacity: 0, y: 20, duration: 0.6, ease: "power3.out", delay: 1.1, stagger: 0.12 });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
-  const stats = [
-    { icon: ShieldCheck, value: "100%", label: t("hero.statVerified") },
-    { icon: Clock, value: "24/7", label: t("hero.statSupport") },
-    { icon: Users, value: `${clientCount.toLocaleString()}+`, label: t("hero.statClients") },
-  ];
+  const scrollTo = (id: string) => {
+    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
@@ -66,30 +45,12 @@ const HeroSection = () => {
               {t("hero.subtitle")}
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link to="/contact" className="hero-cta btn-3d rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg inline-flex items-center">
-                {t("hero.ctaContact")}
-              </Link>
-              <Link to="/services" className="hero-cta btn-3d glass rounded-lg px-8 py-3.5 text-sm font-semibold text-white border-white/20 inline-flex items-center">
-                {t("hero.ctaServices")}
-              </Link>
-            </div>
-
-            {/* Stats Badges */}
-            <div className="mt-6 flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3">
-              {stats.map((s) => (
-                <div
-                  key={s.label}
-                  className="hero-stat flex items-center gap-2 rounded-lg px-3 py-2 backdrop-blur-md bg-white/10 border border-white/15"
-                >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-md backdrop-blur-sm bg-white/15">
-                    <s.icon size={16} weight="light" className="text-white" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-white leading-tight">{s.value}</div>
-                    <div className="text-[10px] text-white/70">{s.label}</div>
-                  </div>
-                </div>
-              ))}
+              <button onClick={() => scrollTo("#quote")} className="hero-cta btn-3d rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg">
+                {t("hero.cta1")}
+              </button>
+              <button onClick={() => scrollTo("#contact")} className="hero-cta btn-3d glass rounded-lg px-8 py-3.5 text-sm font-semibold text-white border-white/20">
+                {t("hero.cta2")}
+              </button>
             </div>
           </div>
         </div>
