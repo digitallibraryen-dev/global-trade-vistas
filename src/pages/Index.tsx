@@ -8,6 +8,8 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import FeaturedServicesSection from "@/components/FeaturedServicesSection";
 import ProductsSection from "@/components/ProductsSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
+import LiveStatsSection from "@/components/LiveStatsSection";
+import MiddleEastMapSection from "@/components/MiddleEastMapSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import FAQSection from "@/components/FAQSection";
 import TrustedPartnersSlider from "@/components/TrustedPartnersSlider";
@@ -34,10 +36,11 @@ const Index = () => {
           <FeaturedServicesSection />
           <ProductsSection />
           <WhyChooseSection />
+          <LiveStatsSection />
+          <MiddleEastMapSection />
           <TrustedPartnersSlider />
           <ReviewsSection />
           <FAQSection />
-          
         </main>
         <Footer />
         <WhatsAppButton />
