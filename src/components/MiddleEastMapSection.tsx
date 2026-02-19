@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import middleEastMap from "@/assets/middle-east-map.jpg";
+import middleEastMap from "@/assets/middle-east-map.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -84,8 +84,7 @@ const MiddleEastMapSection = () => {
               className="w-full h-auto rounded-2xl"
               draggable={false}
               style={{
-                filter: "brightness(0.4) sepia(1) saturate(3) hue-rotate(190deg) brightness(1.2)",
-                opacity: 0.7,
+                opacity: 0.85,
               }}
             />
 
