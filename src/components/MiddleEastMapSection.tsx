@@ -84,8 +84,8 @@ const MiddleEastMapSection = () => {
               className="w-full h-auto rounded-2xl"
               draggable={false}
               style={{
-                filter: "brightness(0) saturate(100%) invert(25%) sepia(60%) saturate(600%) hue-rotate(190deg) brightness(90%)",
-                opacity: 0.5,
+                filter: "brightness(0.4) sepia(1) saturate(3) hue-rotate(190deg) brightness(1.2)",
+                opacity: 0.7,
               }}
             />
 
