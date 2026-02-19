@@ -7,22 +7,29 @@ gsap.registerPlugin(ScrollTrigger);
 interface Country {
   name: string;
   flag: string;
-  x: number; // % from left
-  y: number; // % from top
+  x: number;
+  y: number;
 }
 
 const countries: Country[] = [
-  { name: "Morocco", flag: "🇲🇦", x: 8, y: 32 },
-  { name: "Egypt", flag: "🇪🇬", x: 30, y: 35 },
-  { name: "Jordan", flag: "🇯🇴", x: 38, y: 28 },
-  { name: "Iraq", flag: "🇮🇶", x: 48, y: 25 },
-  { name: "Kuwait", flag: "🇰🇼", x: 55, y: 38 },
-  { name: "Saudi Arabia", flag: "🇸🇦", x: 50, y: 52 },
-  { name: "Bahrain", flag: "🇧🇭", x: 58, y: 45 },
-  { name: "Qatar", flag: "🇶🇦", x: 60, y: 50 },
-  { name: "UAE", flag: "🇦🇪", x: 65, y: 48 },
-  { name: "Oman", flag: "🇴🇲", x: 70, y: 55 },
-  { name: "Yemen", flag: "🇾🇪", x: 58, y: 65 },
+  { name: "Turkey", flag: "🇹🇷", x: 35, y: 10 },
+  { name: "Cyprus", flag: "🇨🇾", x: 22, y: 22 },
+  { name: "Lebanon", flag: "🇱🇧", x: 24, y: 28 },
+  { name: "Israel", flag: "🇮🇱", x: 22, y: 34 },
+  { name: "Palestine", flag: "🇵🇸", x: 20, y: 38 },
+  { name: "Syria", flag: "🇸🇾", x: 36, y: 20 },
+  { name: "Jordan", flag: "🇯🇴", x: 28, y: 38 },
+  { name: "Iraq", flag: "🇮🇶", x: 46, y: 22 },
+  { name: "Iran", flag: "🇮🇷", x: 68, y: 20 },
+  { name: "Kuwait", flag: "🇰🇼", x: 50, y: 40 },
+  { name: "Bahrain", flag: "🇧🇭", x: 56, y: 44 },
+  { name: "Qatar", flag: "🇶🇦", x: 57, y: 50 },
+  { name: "Saudi Arabia", flag: "🇸🇦", x: 46, y: 58 },
+  { name: "UAE", flag: "🇦🇪", x: 65, y: 50 },
+  { name: "Oman", flag: "🇴🇲", x: 68, y: 62 },
+  { name: "Yemen", flag: "🇾🇪", x: 52, y: 78 },
+  { name: "Egypt", flag: "🇪🇬", x: 12, y: 48 },
+  { name: "Morocco", flag: "🇲🇦", x: 2, y: 30 },
 ];
 
 const MiddleEastMapSection = () => {
@@ -31,7 +38,6 @@ const MiddleEastMapSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Section fade up
       gsap.from(".me-map-container", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
         opacity: 0,
@@ -40,7 +46,6 @@ const MiddleEastMapSection = () => {
         ease: "power3.out",
       });
 
-      // Staggered flag appearance
       gsap.from(".flag-pin", {
         scrollTrigger: { trigger: ".me-map-container", start: "top 75%" },
         opacity: 0,
@@ -72,77 +77,148 @@ const MiddleEastMapSection = () => {
         </div>
 
         {/* Map Container */}
-        <div className="me-map-container relative mx-auto max-w-4xl">
-          {/* SVG Map Background — simplified Middle East outline */}
-          <div className="relative w-full" style={{ paddingBottom: "60%" }}>
+        <div className="me-map-container relative mx-auto max-w-5xl" style={{ perspective: "1200px" }}>
+          <div
+            className="relative w-full"
+            style={{
+              paddingBottom: "75%",
+              transform: "rotateX(12deg) rotateY(-2deg)",
+              transformStyle: "preserve-3d",
+            }}
+          >
             <svg
-              viewBox="0 0 800 480"
-              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 800 600"
+              className="absolute inset-0 w-full h-full drop-shadow-2xl"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Grid dots for corporate feel */}
               <defs>
-                <pattern id="dotGrid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="1" cy="1" r="0.8" className="fill-muted-foreground/10" />
-                </pattern>
-                <radialGradient id="mapGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" className="[stop-color:hsl(var(--primary))]" stopOpacity="0.08" />
-                  <stop offset="100%" className="[stop-color:hsl(var(--primary))]" stopOpacity="0" />
+                <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(var(--muted))" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="hsl(var(--muted))" stopOpacity="0.35" />
+                </linearGradient>
+                <filter id="mapShadow" x="-5%" y="-5%" width="110%" height="110%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="8" floodColor="hsl(var(--primary))" floodOpacity="0.12" />
+                </filter>
+                <radialGradient id="mapGlow3d" cx="40%" cy="35%" r="60%">
+                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.06" />
+                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
                 </radialGradient>
               </defs>
 
-              <rect width="800" height="480" fill="url(#dotGrid)" />
-              <ellipse cx="400" cy="240" rx="350" ry="200" fill="url(#mapGlow)" />
-
-              {/* Simplified Middle East landmass */}
+              {/* Morocco (far left) */}
               <path
-                d="M40,180 Q80,120 160,140 Q200,100 260,130 Q300,90 340,120 
-                   Q360,100 400,110 Q440,80 500,100 Q540,90 580,120 
-                   Q620,100 660,130 Q700,120 740,160
-                   L750,200 Q720,240 700,280 Q660,320 620,340
-                   Q580,380 520,370 Q480,390 440,360 
-                   Q400,380 360,340 Q320,360 280,320
-                   Q240,340 200,300 Q160,320 120,280
-                   Q80,300 50,240 Z"
-                className="fill-primary/5 stroke-primary/20"
-                strokeWidth="1.5"
-                strokeLinejoin="round"
+                d="M20,160 L60,140 L90,150 L100,180 L90,220 L60,240 L30,230 L15,200 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
               />
 
-              {/* Connection lines between countries */}
-              {countries.map((c, i) => {
-                if (i === 0) return null;
-                const prev = countries[i - 1];
-                return (
-                  <line
-                    key={`line-${i}`}
-                    x1={prev.x * 8}
-                    y1={prev.y * 4.8}
-                    x2={c.x * 8}
-                    y2={c.y * 4.8}
-                    className="stroke-primary/10"
-                    strokeWidth="0.5"
-                    strokeDasharray="4,4"
-                  />
-                );
-              })}
+              {/* Egypt */}
+              <path
+                d="M100,220 L140,200 L170,210 L185,250 L180,300 L160,340 L130,350 L100,320 L90,280 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
 
-              {/* Dot markers for each country */}
+              {/* Turkey */}
+              <path
+                d="M180,30 L220,20 L280,25 L340,15 L400,25 L430,40 L420,70 L380,85 L320,80 L260,85 L210,75 L185,55 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Cyprus */}
+              <path
+                d="M175,110 L195,105 L210,115 L200,125 L180,125 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Syria */}
+              <path
+                d="M240,95 L310,90 L340,100 L345,140 L300,155 L260,150 L235,130 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Lebanon */}
+              <path
+                d="M215,135 L235,130 L240,150 L230,165 L215,160 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Israel + Palestine */}
+              <path
+                d="M200,165 L220,158 L230,170 L225,210 L210,230 L195,215 L190,190 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Jordan */}
+              <path
+                d="M230,170 L270,155 L290,180 L280,220 L250,240 L225,225 L225,200 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Iraq */}
+              <path
+                d="M310,90 L380,85 L420,100 L430,140 L420,180 L390,200 L350,210 L310,190 L300,155 L310,120 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Iran */}
+              <path
+                d="M430,40 L500,30 L570,50 L620,80 L640,130 L630,180 L600,210 L560,220 L520,200 L480,180 L440,170 L430,140 L420,100 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Kuwait */}
+              <path
+                d="M420,195 L445,190 L455,210 L445,225 L425,220 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Saudi Arabia */}
+              <path
+                d="M260,245 L320,220 L380,215 L430,230 L470,260 L490,300 L480,360 L450,410 L400,440 L350,450 L300,430 L270,390 L250,340 L245,290 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Bahrain */}
+              <path
+                d="M465,250 L475,245 L480,258 L472,265 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Qatar */}
+              <path
+                d="M478,270 L490,265 L495,285 L488,298 L478,295 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* UAE */}
+              <path
+                d="M498,280 L540,265 L570,280 L560,310 L530,320 L500,310 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Oman */}
+              <path
+                d="M530,320 L570,300 L600,320 L610,370 L590,410 L550,420 L510,400 L490,360 L500,330 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Yemen */}
+              <path
+                d="M350,450 L400,440 L450,420 L480,440 L470,480 L430,510 L380,520 L340,500 L330,470 Z"
+                fill="url(#mapGrad)" stroke="hsl(var(--border))" strokeWidth="1" filter="url(#mapShadow)"
+              />
+
+              {/* Glow overlay */}
+              <ellipse cx="380" cy="280" rx="320" ry="220" fill="url(#mapGlow3d)" />
+
+              {/* Country borders / internal lines */}
               {countries.map((c) => (
-                <g key={c.name}>
-                  <circle
-                    cx={c.x * 8}
-                    cy={c.y * 4.8}
-                    r="4"
-                    className="fill-primary/30"
-                  />
-                  <circle
-                    cx={c.x * 8}
-                    cy={c.y * 4.8}
-                    r="2"
-                    className="fill-primary"
-                  />
-                </g>
+                <circle
+                  key={`dot-${c.name}`}
+                  cx={c.x * 8}
+                  cy={c.y * 6}
+                  r="3"
+                  className="fill-primary/60"
+                />
               ))}
             </svg>
 
@@ -174,14 +250,13 @@ const MiddleEastMapSection = () => {
 
                 {/* Flag */}
                 <span
-                  className="text-2xl sm:text-3xl transition-transform duration-300 group-hover:scale-125 drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)]"
-                  style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.15))" }}
+                  className="text-xl sm:text-2xl transition-transform duration-300 group-hover:scale-125 drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]"
                 >
                   {c.flag}
                 </span>
 
                 {/* Pin line */}
-                <div className="w-px h-3 bg-primary/30 mt-0.5" />
+                <div className="w-px h-2.5 bg-primary/30 mt-0.5" />
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/40 shadow-[0_0_6px_hsl(var(--primary)/0.3)]" />
               </div>
             ))}
@@ -189,7 +264,6 @@ const MiddleEastMapSection = () => {
         </div>
       </div>
 
-      {/* Float animation */}
       <style>{`
         @keyframes floatFlag {
           0%, 100% { transform: translate(-50%, -100%) translateY(0); }
