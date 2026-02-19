@@ -8,29 +8,29 @@ gsap.registerPlugin(ScrollTrigger);
 interface Country {
   name: string;
   flag: string;
-  x: number; // % from left
-  y: number; // % from top
+  x: number;
+  y: number;
 }
 
 const countries: Country[] = [
-  { name: "Turkey", flag: "🇹🇷", x: 38, y: 8 },
-  { name: "Cyprus", flag: "🇨🇾", x: 22, y: 24 },
-  { name: "Lebanon", flag: "🇱🇧", x: 24, y: 32 },
-  { name: "Israel", flag: "🇮🇱", x: 21, y: 38 },
-  { name: "Palestine", flag: "🇵🇸", x: 19, y: 44 },
-  { name: "Syria", flag: "🇸🇾", x: 35, y: 22 },
-  { name: "Jordan", flag: "🇯🇴", x: 29, y: 42 },
-  { name: "Iraq", flag: "🇮🇶", x: 48, y: 22 },
-  { name: "Iran", flag: "🇮🇷", x: 72, y: 18 },
-  { name: "Kuwait", flag: "🇰🇼", x: 52, y: 42 },
-  { name: "Bahrain", flag: "🇧🇭", x: 59, y: 46 },
-  { name: "Qatar", flag: "🇶🇦", x: 60, y: 52 },
-  { name: "Saudi Arabia", flag: "🇸🇦", x: 47, y: 60 },
-  { name: "UAE", flag: "🇦🇪", x: 68, y: 52 },
-  { name: "Oman", flag: "🇴🇲", x: 70, y: 65 },
-  { name: "Yemen", flag: "🇾🇪", x: 52, y: 80 },
-  { name: "Egypt", flag: "🇪🇬", x: 12, y: 52 },
-  { name: "Morocco", flag: "🇲🇦", x: 3, y: 32 },
+  { name: "Turkey", flag: "🇹🇷", x: 38, y: 12 },
+  { name: "Cyprus", flag: "🇨🇾", x: 23, y: 27 },
+  { name: "Lebanon", flag: "🇱🇧", x: 26, y: 34 },
+  { name: "Israel", flag: "🇮🇱", x: 23, y: 40 },
+  { name: "Palestine", flag: "🇵🇸", x: 21, y: 46 },
+  { name: "Syria", flag: "🇸🇾", x: 36, y: 25 },
+  { name: "Jordan", flag: "🇯🇴", x: 30, y: 44 },
+  { name: "Iraq", flag: "🇮🇶", x: 48, y: 26 },
+  { name: "Iran", flag: "🇮🇷", x: 72, y: 22 },
+  { name: "Kuwait", flag: "🇰🇼", x: 53, y: 44 },
+  { name: "Bahrain", flag: "🇧🇭", x: 60, y: 48 },
+  { name: "Qatar", flag: "🇶🇦", x: 61, y: 54 },
+  { name: "Saudi Arabia", flag: "🇸🇦", x: 48, y: 62 },
+  { name: "UAE", flag: "🇦🇪", x: 69, y: 54 },
+  { name: "Oman", flag: "🇴🇲", x: 71, y: 68 },
+  { name: "Yemen", flag: "🇾🇪", x: 53, y: 82 },
+  { name: "Egypt", flag: "🇪🇬", x: 14, y: 54 },
+  { name: "Morocco", flag: "🇲🇦", x: 5, y: 36 },
 ];
 
 const MiddleEastMapSection = () => {
@@ -64,7 +64,6 @@ const MiddleEastMapSection = () => {
   return (
     <section ref={sectionRef} className="section-padding gradient-dark relative overflow-hidden">
       <div className="container-narrow relative z-10">
-        {/* Header */}
         <div className="text-center mb-12">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Regional Reach
@@ -77,18 +76,19 @@ const MiddleEastMapSection = () => {
           </p>
         </div>
 
-        {/* Map Container */}
         <div className="me-map-container relative mx-auto max-w-4xl">
           <div className="relative w-full">
-            {/* Map Image */}
             <img
               src={middleEastMap}
               alt="Middle East Map"
-              className="w-full h-auto rounded-2xl opacity-80 dark:invert dark:opacity-30"
+              className="w-full h-auto rounded-2xl"
               draggable={false}
+              style={{
+                filter: "brightness(0) saturate(100%) invert(25%) sepia(60%) saturate(600%) hue-rotate(190deg) brightness(90%)",
+                opacity: 0.5,
+              }}
             />
 
-            {/* Flag Pins overlaid on top */}
             {countries.map((c, i) => (
               <div
                 key={c.name}
@@ -102,7 +102,6 @@ const MiddleEastMapSection = () => {
                 onMouseEnter={() => setHoveredCountry(c.name)}
                 onMouseLeave={() => setHoveredCountry(null)}
               >
-                {/* Tooltip */}
                 <div
                   className={`absolute -top-10 whitespace-nowrap rounded-lg border border-border/50 bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-lg transition-all duration-300 pointer-events-none z-10 ${
                     hoveredCountry === c.name
@@ -114,13 +113,11 @@ const MiddleEastMapSection = () => {
                   <div className="absolute left-1/2 -bottom-1 w-2 h-2 bg-card border-r border-b border-border/50 transform -translate-x-1/2 rotate-45" />
                 </div>
 
-                {/* Flag */}
-                <span className="text-xl sm:text-2xl md:text-3xl transition-transform duration-300 group-hover:scale-125 drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
+                <span className="text-lg sm:text-xl md:text-2xl transition-transform duration-300 group-hover:scale-125 drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
                   {c.flag}
                 </span>
 
-                {/* Pin line */}
-                <div className="w-px h-2.5 bg-primary/30 mt-0.5" />
+                <div className="w-px h-2 bg-primary/30 mt-0.5" />
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/40 shadow-[0_0_6px_hsl(var(--primary)/0.3)]" />
               </div>
             ))}
