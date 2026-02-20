@@ -173,8 +173,8 @@ Deno.serve(async (req) => {
 
       return new Response(
         JSON.stringify({
-          access_token: linkData.properties?.access_token,
-          refresh_token: linkData.properties?.refresh_token,
+          access_token: (linkData.properties as any)?.access_token,
+          refresh_token: (linkData.properties as any)?.refresh_token,
           email: userInfo.email,
           token: token,
           type: tokenType,
@@ -188,8 +188,8 @@ Deno.serve(async (req) => {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err?.message || "Unknown error" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
