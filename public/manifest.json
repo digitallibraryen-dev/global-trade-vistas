@@ -1,0 +1,16 @@
+{
+  "name": "Almonesi Global Trade",
+  "short_name": "Almonesi",
+  "description": "Professional sourcing and supply chain solutions from China to the Middle East and global markets.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#003f7f",
+  "theme_color": "#003f7f",
+  "icons": [
+    {
+      "src": "/logo-omt.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
