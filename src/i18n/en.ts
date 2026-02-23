@@ -521,6 +521,12 @@ const en = {
     title: "Trusted Platforms & Logistics Partners",
     subtitle: "Connecting you with reliable suppliers and seamless shipping solutions from China to the world.",
   },
+  cookies: {
+    message: "We use cookies to improve your experience.",
+    privacyPolicy: "Privacy Policy",
+    accept: "Accept",
+    decline: "Decline",
+  },
 };
 
 export default en;
