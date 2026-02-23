@@ -13,8 +13,7 @@ const flagPositions: Record<string, { x: number; y: number }> = {
   Syria: { x: 44, y: 19 },
   Cyprus: { x: 35, y: 17 },
   Lebanon: { x: 38, y: 24 },
-  Israel: { x: 37, y: 29 },
-  Palestine: { x: 38, y: 30 },
+  Palestine: { x: 37, y: 29 },
   Jordan: { x: 42, y: 32 },
   Iraq: { x: 55, y: 24 },
   Iran: { x: 73, y: 22 },
@@ -58,8 +57,8 @@ const MiddleEastMapSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section-padding gradient-dark relative overflow-hidden">
-      <div className="container-narrow relative z-10">
+    <section ref={sectionRef} className="py-20 relative overflow-hidden bg-background">
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Regional Reach
@@ -72,7 +71,14 @@ const MiddleEastMapSection = () => {
           </p>
         </div>
 
-        <div className="me-map-container relative mx-auto max-w-5xl" style={{ perspective: "1200px" }}>
+        <div
+          className="me-map-container relative mx-auto max-w-5xl"
+          style={{
+            perspective: "1200px",
+            transform: "rotateX(8deg) rotateZ(-2deg)",
+            transformStyle: "preserve-3d",
+          }}
+        >
           <div className="relative w-full">
             <MiddleEastSVGMap hoveredCountry={hoveredCountry} onHover={setHoveredCountry} />
 
