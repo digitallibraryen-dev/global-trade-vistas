@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { getCountryFlag } from "@/lib/countryFlag";
 
 interface DbReview {
   id: string;
@@ -18,7 +19,7 @@ interface DbReview {
   title: string | null;
   comment: string;
   created_at: string;
-  profiles: { full_name: string | null } | null;
+  profiles: { full_name: string | null; country: string | null } | null;
 }
 
 const INITIAL_COUNT = 4;
@@ -40,7 +41,7 @@ const ReviewsSection = () => {
   const fetchDbReviews = async () => {
     const { data } = await supabase
       .from("reviews")
-      .select("id, rating, title, comment, created_at, profiles(full_name)")
+      .select("id, rating, title, comment, created_at, profiles(full_name, country)")
       .eq("status", "approved")
       .order("created_at", { ascending: false });
     setDbReviews((data as unknown as DbReview[]) ?? []);
@@ -53,7 +54,7 @@ const ReviewsSection = () => {
     const dbMapped = dbReviews.map((r, i) => ({
       id: r.id,
       user: r.profiles?.full_name || "User",
-      country: "🌍",
+      country: getCountryFlag(r.profiles?.country),
       rating: r.rating,
       title: r.title || undefined,
       description: r.comment,
