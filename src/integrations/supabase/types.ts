@@ -338,6 +338,7 @@ export type Database = {
           id: string
           label: string
           platform: string
+          qr_code_url: string | null
           sort_order: number
           updated_at: string
           value: string
@@ -348,6 +349,7 @@ export type Database = {
           id?: string
           label?: string
           platform: string
+          qr_code_url?: string | null
           sort_order?: number
           updated_at?: string
           value: string
@@ -358,6 +360,7 @@ export type Database = {
           id?: string
           label?: string
           platform?: string
+          qr_code_url?: string | null
           sort_order?: number
           updated_at?: string
           value?: string
