@@ -516,6 +516,11 @@ const en = {
     title: "Our Presence in the Middle East",
     description: "Serving businesses across the Middle East and North Africa with dedicated local support and logistics infrastructure.",
   },
+  trustedPartners: {
+    tag: "Our Network",
+    title: "Trusted Platforms & Logistics Partners",
+    subtitle: "Connecting you with reliable suppliers and seamless shipping solutions from China to the world.",
+  },
 };
 
 export default en;

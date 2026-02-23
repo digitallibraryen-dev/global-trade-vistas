@@ -516,6 +516,11 @@ const zh = {
     title: "我们在中东的业务",
     description: "为中东和北非地区的企业提供专属本地支持和物流基础设施服务。",
   },
+  trustedPartners: {
+    tag: "我们的网络",
+    title: "可信赖的平台与物流合作伙伴",
+    subtitle: "为您连接可靠的供应商，提供从中国到全球的无缝物流解决方案。",
+  },
 };
 
 export default zh;
