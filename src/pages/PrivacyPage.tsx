@@ -10,10 +10,13 @@ const PrivacyPage = () => {
   const sections = [
     { title: t("privacyPage.infoCollect.title"), content: t("privacyPage.infoCollect.content") },
     { title: t("privacyPage.howWeUse.title"), content: t("privacyPage.howWeUse.content") },
-    { title: t("privacyPage.dataProtection.title"), content: t("privacyPage.dataProtection.content") },
     { title: t("privacyPage.cookies.title"), content: t("privacyPage.cookies.content") },
     { title: t("privacyPage.thirdParty.title"), content: t("privacyPage.thirdParty.content") },
-    { title: t("privacyPage.userRights.title"), content: t("privacyPage.userRights.content") },
+    { title: t("privacyPage.dataSecurity.title"), content: t("privacyPage.dataSecurity.content") },
+    { title: t("privacyPage.internationalTransfers.title"), content: t("privacyPage.internationalTransfers.content") },
+    { title: t("privacyPage.externalLinks.title"), content: t("privacyPage.externalLinks.content") },
+    { title: t("privacyPage.children.title"), content: t("privacyPage.children.content") },
+    { title: t("privacyPage.changes.title"), content: t("privacyPage.changes.content") },
     { title: t("privacyPage.contact.title"), content: t("privacyPage.contact.content") },
   ];
 
@@ -27,7 +30,9 @@ const PrivacyPage = () => {
         <PageHeader tag={t("privacyPage.tag")} title={t("privacyPage.title")} />
         <div className="container-narrow section-padding">
           <div className="mx-auto max-w-3xl space-y-8">
-            <p className="text-sm text-muted-foreground">{t("privacyPage.lastUpdated")}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+              {t("privacyPage.intro")}
+            </p>
             {sections.map((section, i) => (
               <div key={i}>
                 <h2 className="text-lg font-semibold text-foreground mb-2">{i + 1}. {section.title}</h2>
