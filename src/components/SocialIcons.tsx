@@ -175,7 +175,7 @@ const SocialIcons = ({ size = 20, className = "" }: Props) => {
 
   return (
     <div className={`flex items-center gap-1.5 ${className}`}>
-      {links.map((link, i) => {
+      {links.filter((link) => link.platform !== "wechat").map((link, i) => {
         const href = platformUrl(link.platform, link.value);
         return (
           <SocialIcon
