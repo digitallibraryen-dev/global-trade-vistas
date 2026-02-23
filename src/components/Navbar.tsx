@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { List, X, Sun, Moon, SignIn, SignOut, GearSix, UserCircle, CaretDown, DotsThreeVertical } from "@phosphor-icons/react";
+import { List, X, Sun, Moon, SignIn, SignOut, GearSix, UserCircle, CaretDown } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
@@ -115,7 +115,6 @@ const Navbar = () => {
           >
             {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <ThreeDotsMenu navItems={navItems} goTo={goTo} isActive={isActive} />
           <button
             onClick={() => goTo("/contact")}
             className="rounded-lg gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-shadow hover:glow-primary"
@@ -325,95 +324,6 @@ const DesktopDropdown = ({
           </div>
         </div>
       )}
-    </div>
-  );
-};
-
-/* ── Three-dots menu ── */
-const ThreeDotsMenu = ({
-  navItems,
-  goTo,
-  isActive,
-}: {
-  navItems: NavItem[];
-  goTo: (href: string) => void;
-  isActive: (href: string) => boolean;
-}) => {
-  const [open, setOpen] = useState(false);
-  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-        setExpandedGroup(null);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => { setOpen((v) => !v); if (open) setExpandedGroup(null); }}
-        className="rounded-lg p-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
-        aria-label="More menu"
-      >
-        <DotsThreeVertical size={20} weight="bold" />
-      </button>
-
-      <div
-        className={`absolute right-0 top-full mt-1 z-[70] min-w-[240px] origin-top-right rounded-xl border border-border bg-popover shadow-xl transition-all duration-200 ease-out ${
-          open
-            ? "opacity-100 scale-100 translate-y-0"
-            : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-        }`}
-      >
-        <div className="p-1.5">
-          {navItems.map((group) => (
-            <div key={group.key}>
-              <button
-                onClick={() => setExpandedGroup((prev) => (prev === group.key ? null : group.key))}
-                onMouseEnter={() => setExpandedGroup(group.key)}
-                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-              >
-                {group.label}
-                <CaretDown
-                  size={14}
-                  className={`text-muted-foreground transition-transform duration-200 ${expandedGroup === group.key ? "rotate-180" : ""}`}
-                />
-              </button>
-              <div
-                className={`overflow-hidden transition-all duration-200 ease-out ${
-                  expandedGroup === group.key ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                }`}
-              >
-                <div className="ml-2 border-l-2 border-primary/20 pl-2 pb-1">
-                  {group.children.map((child) => (
-                    <button
-                      key={child.key}
-                      onClick={() => {
-                        setOpen(false);
-                        setExpandedGroup(null);
-                        goTo(child.href);
-                      }}
-                      className={`block w-full rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors ${
-                        isActive(child.href)
-                          ? "text-primary bg-primary/10"
-                          : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                      }`}
-                    >
-                      {child.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
