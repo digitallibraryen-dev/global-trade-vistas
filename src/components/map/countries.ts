@@ -38,10 +38,17 @@ export const middleEastCountries: CountryData[] = [
     labelY: 170,
   },
   {
+    name: "Israel",
+    flag: "🇮🇱",
+    path: "M 365,190 L 378,185 L 385,195 L 382,215 L 375,230 L 368,225 L 360,210 L 358,200 Z",
+    labelX: 372,
+    labelY: 205,
+  },
+  {
     name: "Palestine",
     flag: "🇵🇸",
-    path: "M 358,190 L 378,185 L 385,195 L 382,215 L 375,230 L 368,225 L 360,210 L 358,200 Z",
-    labelX: 372,
+    path: "M 370,200 L 378,198 L 380,210 L 376,218 L 370,215 Z",
+    labelX: 375,
     labelY: 210,
   },
   {

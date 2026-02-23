@@ -10,35 +10,52 @@ const MiddleEastSVGMap = ({ hoveredCountry, onHover }: Props) => (
     viewBox="0 0 1000 700"
     className="w-full h-auto"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ filter: "drop-shadow(8px 12px 16px rgba(0,0,0,0.25))" }}
   >
     <defs>
+      <linearGradient id="waterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="hsl(220, 8%, 12%)" />
+        <stop offset="100%" stopColor="hsl(220, 10%, 10%)" />
+      </linearGradient>
       <linearGradient id="landGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="hsl(210, 15%, 88%)" />
-        <stop offset="100%" stopColor="hsl(210, 10%, 82%)" />
+        <stop offset="0%" stopColor="hsl(220, 6%, 28%)" />
+        <stop offset="100%" stopColor="hsl(220, 5%, 22%)" />
       </linearGradient>
       <linearGradient id="landHover" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="hsl(215, 80%, 55%)" />
-        <stop offset="100%" stopColor="hsl(215, 70%, 45%)" />
-      </linearGradient>
-      <linearGradient id="shadowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="hsl(210, 10%, 60%)" />
-        <stop offset="100%" stopColor="hsl(210, 8%, 50%)" />
+        <stop offset="0%" stopColor="hsl(220, 8%, 36%)" />
+        <stop offset="100%" stopColor="hsl(220, 6%, 30%)" />
       </linearGradient>
       <filter id="countryShadow">
-        <feDropShadow dx="2" dy="3" stdDeviation="3" floodColor="rgba(0,0,0,0.3)" />
+        <feDropShadow dx="2" dy="3" stdDeviation="3" floodColor="rgba(0,0,0,0.4)" />
+      </filter>
+      <filter id="glowEffect">
+        <feGaussianBlur stdDeviation="4" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
       </filter>
     </defs>
 
-    {/* 3D shadow layer - offset version of all countries */}
-    {middleEastCountries.map((country) => (
-      <path
-        key={`shadow-${country.name}`}
-        d={country.path}
-        fill="hsl(210, 8%, 55%)"
-        opacity="0.4"
-        transform="translate(6, 8)"
-        className="pointer-events-none"
+    {/* Water background */}
+    <rect width="1000" height="700" fill="url(#waterGrad)" rx="12" />
+
+    {/* Grid lines */}
+    {[100, 200, 300, 400, 500, 600].map((y) => (
+      <line
+        key={`h${y}`}
+        x1="0" y1={y} x2="1000" y2={y}
+        stroke="hsl(220, 8%, 16%)"
+        strokeWidth="0.4"
+        strokeDasharray="6 12"
+      />
+    ))}
+    {[100, 200, 300, 400, 500, 600, 700, 800, 900].map((x) => (
+      <line
+        key={`v${x}`}
+        x1={x} y1="0" x2={x} y2="700"
+        stroke="hsl(220, 8%, 16%)"
+        strokeWidth="0.4"
+        strokeDasharray="6 12"
       />
     ))}
 
@@ -50,8 +67,8 @@ const MiddleEastSVGMap = ({ hoveredCountry, onHover }: Props) => (
           <path
             d={country.path}
             fill={isHovered ? "url(#landHover)" : "url(#landGrad)"}
-            stroke={isHovered ? "hsl(215, 80%, 50%)" : "hsl(210, 10%, 72%)"}
-            strokeWidth={isHovered ? "1.5" : "0.6"}
+            stroke={isHovered ? "hsl(var(--primary))" : "hsl(220, 10%, 38%)"}
+            strokeWidth={isHovered ? "1.5" : "0.7"}
             filter={isHovered ? "url(#countryShadow)" : undefined}
             className="transition-all duration-300 cursor-pointer"
             onMouseEnter={() => onHover(country.name)}
@@ -62,7 +79,7 @@ const MiddleEastSVGMap = ({ hoveredCountry, onHover }: Props) => (
             x={country.labelX}
             y={country.labelY}
             textAnchor="middle"
-            fill={isHovered ? "hsl(0, 0%, 100%)" : "hsl(210, 10%, 45%)"}
+            fill={isHovered ? "hsl(0, 0%, 95%)" : "hsl(0, 0%, 60%)"}
             fontSize={country.name === "Bahrain" || country.name === "Qatar" || country.name === "Palestine" ? "7" : "9"}
             fontWeight="500"
             className="pointer-events-none select-none transition-all duration-300"
