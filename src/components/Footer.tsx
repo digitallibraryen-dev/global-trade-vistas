@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import SocialIcons from "./SocialIcons";
+import WeChatButton from "./WeChatButton";
 import { Envelope, MapPin } from "@phosphor-icons/react";
 
 const Footer = () => {
@@ -58,8 +59,9 @@ const Footer = () => {
           <p className="text-sm text-white/60 max-w-md leading-relaxed">
             {t("footer.tagline")}
           </p>
-          <div className="mt-1">
+          <div className="mt-1 flex items-center gap-2">
             <SocialIcons size={18} />
+            <WeChatButton variant="inline" />
           </div>
         </div>
 
