@@ -1,17 +1,31 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SealCheck } from "@phosphor-icons/react";
+import { SealCheck, PencilSimple } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import ScrollReveal from "./ScrollReveal";
 import { staticReviewsSorted, type StaticReview } from "@/data/staticReviews";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_COUNT = 4;
 const LOAD_MORE_COUNT = 10;
 
 const ReviewsSection = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+  const [showForm, setShowForm] = useState(false);
+  const [rating, setRating] = useState(5);
+  const [title, setTitle] = useState("");
+  const [comment, setComment] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const visibleReviews = staticReviewsSorted.slice(0, visibleCount);
   const hasMore = visibleCount < staticReviewsSorted.length;
@@ -32,7 +46,66 @@ const ReviewsSection = () => {
             <span className="text-sm text-muted-foreground">({staticReviewsSorted.length} {t("reviews.reviews")})</span>
           </div>
           <p className="text-muted-foreground max-w-lg mx-auto">{t("reviews.subtitle")}</p>
+          <div className="mt-4">
+            {user ? (
+              <Button onClick={() => setShowForm((v) => !v)} className="gap-2">
+                <PencilSimple size={16} weight="bold" />
+                {t("reviews.writeReview")}
+              </Button>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                <button onClick={() => navigate("/auth")} className="text-primary underline hover:text-primary/80">
+                  {t("reviews.signInToReview")}
+                </button>{" "}
+                {t("reviews.signInToReviewSuffix")}
+              </p>
+            )}
+          </div>
         </ScrollReveal>
+
+        {showForm && user && (
+          <div className="glass-strong rounded-xl p-5 mb-8 space-y-4 max-w-lg mx-auto">
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">{t("reviews.ratingLabel")}</label>
+              <StarRating rating={rating} onChange={setRating} size={24} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">{t("reviews.titleLabel")}</label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("reviews.titlePlaceholder")} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">{t("reviews.commentLabel")}</label>
+              <Textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder={t("reviews.commentPlaceholder")} rows={4} />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                disabled={submitting || !comment.trim()}
+                onClick={async () => {
+                  setSubmitting(true);
+                  const { error } = await supabase.from("reviews").insert({
+                    user_id: user.id,
+                    rating,
+                    title: title.trim() || null,
+                    comment: comment.trim(),
+                  });
+                  setSubmitting(false);
+                  if (error) {
+                    toast({ title: t("reviews.error"), description: error.message, variant: "destructive" });
+                  } else {
+                    toast({ title: t("reviews.submitted"), description: t("reviews.submittedDesc") });
+                    setShowForm(false);
+                    setRating(5);
+                    setTitle("");
+                    setComment("");
+                  }
+                }}
+              >
+                {submitting ? t("reviews.submitting") : t("reviews.submit")}
+              </Button>
+              <Button variant="outline" onClick={() => setShowForm(false)}>{t("reviews.cancel")}</Button>
+            </div>
+          </div>
+        )}
 
         <ScrollReveal animation="card" stagger={0.08} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visibleReviews.map((r: StaticReview) => (
