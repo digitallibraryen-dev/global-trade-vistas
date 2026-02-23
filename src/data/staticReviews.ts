@@ -458,6 +458,16 @@ const maleImages: string[] = [
   "/profile-images/pin-78.jpg",
   "/profile-images/pin-79.jpg",
   "/profile-images/pin-80.jpg",
+  "/profile-images/pin-81.jpg",
+  "/profile-images/pin-82.jpg",
+  "/profile-images/pin-83.jpg",
+  "/profile-images/pin-84.jpg",
+  "/profile-images/pin-85.jpg",
+  "/profile-images/pin-86.jpg",
+  "/profile-images/pin-87.jpg",
+  "/profile-images/pin-88.jpg",
+  "/profile-images/pin-89.jpg",
+  "/profile-images/pin-90.jpg",
 ];
 
 // Female-themed images: local pin images
