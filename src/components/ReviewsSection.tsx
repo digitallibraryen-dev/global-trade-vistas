@@ -91,7 +91,7 @@ const ReviewsSection = () => {
               </Button>
             ) : (
               <p className="text-sm text-muted-foreground">
-                <button onClick={() => navigate("/auth")} className="text-primary underline hover:text-primary/80">
+                <button onClick={() => navigate("/login")} className="text-primary underline hover:text-primary/80">
                   {t("reviews.signInToReview")}
                 </button>{" "}
                 {t("reviews.signInToReviewSuffix")}
