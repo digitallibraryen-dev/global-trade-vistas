@@ -19,6 +19,8 @@ import BlogPostPage from "./pages/BlogPostPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import ServicesPage from "./pages/ServicesPage";
 import FAQPage from "./pages/FAQPage";
+import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import AdminGuard from "./components/AdminGuard";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -43,6 +45,8 @@ const App = () => (
               <Route path="/how-it-works" element={<HowItWorksPage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/faq" element={<FAQPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/login" element={<AuthPage />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/account" element={<MyAccountPage />} />
