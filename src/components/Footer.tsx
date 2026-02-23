@@ -10,38 +10,38 @@ const Footer = () => {
   const companyLinks = [
     { label: t("footer.aboutUs"), to: "/about-us" },
     { label: t("footer.ourServices"), to: "/services" },
-    { label: t("footer.whyChooseUs"), to: "/#why-choose" },
+    { label: t("footer.whyChooseUs"), to: "/why-us" },
     { label: t("footer.ourProcess"), to: "/how-it-works" },
     { label: t("footer.contactUs"), to: "/contact" },
   ];
 
   const serviceLinks = [
-    { label: t("footer.chinaSourcing") },
-    { label: t("footer.supplierVerification") },
-    { label: t("footer.qualityInspection") },
-    { label: t("footer.privateLabeling") },
-    { label: t("footer.logisticsShipping") },
-    { label: t("footer.productResearch") },
+    { label: t("footer.chinaSourcing"), to: "/services" },
+    { label: t("footer.supplierVerification"), to: "/supplier-verification" },
+    { label: t("footer.qualityInspection"), to: "/quality-inspection" },
+    { label: t("footer.privateLabeling"), to: "/private-labeling" },
+    { label: t("footer.logisticsShipping"), to: "/logistics-shipping" },
+    { label: t("footer.productResearch"), to: "/product-research" },
   ];
 
   const marketLinks = [
-    { label: t("footer.middleEast") },
-    { label: t("footer.saudiArabia") },
-    { label: t("footer.uae") },
-    { label: t("footer.qatar") },
-    { label: t("footer.kuwait") },
-    { label: t("footer.oman") },
-    { label: t("footer.jordan") },
-    { label: t("footer.yemen") },
-    { label: t("footer.turkey") },
+    { label: t("footer.middleEast"), to: "/markets" },
+    { label: t("footer.saudiArabia"), to: "/markets" },
+    { label: t("footer.uae"), to: "/markets" },
+    { label: t("footer.qatar"), to: "/markets" },
+    { label: t("footer.kuwait"), to: "/markets" },
+    { label: t("footer.oman"), to: "/markets" },
+    { label: t("footer.jordan"), to: "/markets" },
+    { label: t("footer.yemen"), to: "/markets" },
+    { label: t("footer.turkey"), to: "/markets" },
   ];
 
   const resourceLinks = [
     { label: t("footer.blog"), to: "/blog" },
     { label: t("footer.industryInsights"), to: "/blog" },
-    { label: t("footer.importGuide"), to: "/blog" },
+    { label: t("footer.importGuide"), to: "/import-guide" },
     { label: t("footer.faqs"), to: "/faq" },
-    { label: t("footer.sourcingGuide"), to: "/blog" },
+    { label: t("footer.sourcingGuide"), to: "/sourcing-guide" },
   ];
 
   const legalLinks = [
@@ -83,14 +83,14 @@ const Footer = () => {
           {/* Services */}
           <FooterColumn title={t("footer.servicesCol")}>
             {serviceLinks.map((link) => (
-              <FooterLink key={link.label} to="/services">{link.label}</FooterLink>
+              <FooterLink key={link.label} to={link.to}>{link.label}</FooterLink>
             ))}
           </FooterColumn>
 
           {/* Markets */}
           <FooterColumn title={t("footer.marketsCol")}>
             {marketLinks.map((link) => (
-              <FooterLink key={link.label}>{link.label}</FooterLink>
+              <FooterLink key={link.label} to={link.to}>{link.label}</FooterLink>
             ))}
           </FooterColumn>
 

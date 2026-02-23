@@ -21,6 +21,15 @@ import ServicesPage from "./pages/ServicesPage";
 import FAQPage from "./pages/FAQPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import WhyUsPage from "./pages/WhyUsPage";
+import SupplierVerificationPage from "./pages/SupplierVerificationPage";
+import QualityInspectionPage from "./pages/QualityInspectionPage";
+import PrivateLabelingPage from "./pages/PrivateLabelingPage";
+import LogisticsShippingPage from "./pages/LogisticsShippingPage";
+import ProductResearchPage from "./pages/ProductResearchPage";
+import MarketsPage from "./pages/MarketsPage";
+import ImportGuidePage from "./pages/ImportGuidePage";
+import SourcingGuidePage from "./pages/SourcingGuidePage";
 import AdminGuard from "./components/AdminGuard";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -47,6 +56,15 @@ const App = () => (
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/why-us" element={<WhyUsPage />} />
+              <Route path="/supplier-verification" element={<SupplierVerificationPage />} />
+              <Route path="/quality-inspection" element={<QualityInspectionPage />} />
+              <Route path="/private-labeling" element={<PrivateLabelingPage />} />
+              <Route path="/logistics-shipping" element={<LogisticsShippingPage />} />
+              <Route path="/product-research" element={<ProductResearchPage />} />
+              <Route path="/markets" element={<MarketsPage />} />
+              <Route path="/import-guide" element={<ImportGuidePage />} />
+              <Route path="/sourcing-guide" element={<SourcingGuidePage />} />
               <Route path="/login" element={<AuthPage />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/account" element={<MyAccountPage />} />
