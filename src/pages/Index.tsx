@@ -15,7 +15,7 @@ import FAQSection from "@/components/FAQSection";
 import TrustedPartnersSlider from "@/components/TrustedPartnersSlider";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-
+import WeChatButton from "@/components/WeChatButton";
 
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
@@ -45,7 +45,7 @@ const Index = () => {
         </main>
         <Footer />
         <WhatsAppButton />
-        
+        <WeChatButton />
       </div>
     </>
   );
