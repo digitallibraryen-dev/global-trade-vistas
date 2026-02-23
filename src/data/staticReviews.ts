@@ -10,30 +10,6 @@ export interface StaticReview {
   description: string;
   rating: number;
   date: string;
-  profileImage: string | null;
-}
-
-// Female name patterns for avatar style selection
-const femaleNames = [
-  "fatima", "sara", "maryam", "huda", "rania", "sheikha", "شيخة", "مريم",
-  "emily", "grace", "sophie", "mia", "charlotte", "lily", "ella", "scarlett",
-  "um.", "هدى", "رانيا"
-];
-
-function isFemale(name: string): boolean {
-  const lower = name.toLowerCase();
-  return femaleNames.some(n => lower.includes(n));
-}
-
-// Select 112 indices using seeded random
-function getProfileIndices(total: number, count: number): Set<number> {
-  const indices = new Set<number>();
-  let seed = 42;
-  while (indices.size < count && indices.size < total) {
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    indices.add(seed % total);
-  }
-  return indices;
 }
 
 // Generate a date between start and end based on index
@@ -398,25 +374,16 @@ const rawReviews: [string, string, string, string][] = [
 ];
 
 const TOTAL = rawReviews.length;
-const profileIndices = getProfileIndices(TOTAL, 112);
 
-export const staticReviews: StaticReview[] = rawReviews.map((r, i) => {
-  const hasProfile = profileIndices.has(i);
-  const female = isFemale(r[1]);
-  const style = female ? "lorelei" : "bottts";
-  return {
-    id: i + 1,
-    country: r[0],
-    user: r[1],
-    title: r[2],
-    description: r[3],
-    rating: seededRating(i),
-    date: generateDate(i, TOTAL),
-    profileImage: hasProfile
-      ? `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(r[1])}`
-      : null,
-  };
-});
+export const staticReviews: StaticReview[] = rawReviews.map((r, i) => ({
+  id: i + 1,
+  country: r[0],
+  user: r[1],
+  title: r[2],
+  description: r[3],
+  rating: seededRating(i),
+  date: generateDate(i, TOTAL),
+}));
 
 // Sort newest first
 export const staticReviewsSorted = [...staticReviews].sort(
