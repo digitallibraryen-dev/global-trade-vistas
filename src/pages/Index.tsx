@@ -3,12 +3,12 @@ import Preloader from "@/components/Preloader";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutPreview from "@/components/AboutPreview";
+import OurImpactSection from "@/components/OurImpactSection";
 import ServiceProcessSection from "@/components/ServiceProcessSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import FeaturedServicesSection from "@/components/FeaturedServicesSection";
 import ProductsSection from "@/components/ProductsSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
-import LiveStatsSection from "@/components/LiveStatsSection";
 import MiddleEastMapSection from "@/components/MiddleEastMapSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import FAQSection from "@/components/FAQSection";
@@ -32,6 +32,7 @@ const Index = () => {
         <main>
           <HeroSection />
           <AboutPreview />
+          <OurImpactSection />
           <ServiceProcessSection />
           <HowItWorksSection />
           <FeaturedServicesSection />
