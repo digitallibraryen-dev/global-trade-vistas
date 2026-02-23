@@ -39,9 +39,13 @@ const ReviewsSection = () => {
             <div key={r.id} className="glass-strong rounded-xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
-                    {r.user[0].toUpperCase()}
-                  </div>
+                  {r.profile_image ? (
+                    <img src={r.profile_image} alt={r.user} className="h-8 w-8 rounded-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                      {r.user[0].toUpperCase()}
+                    </div>
+                  )}
                   <div>
                     <p className="text-sm font-medium text-foreground flex items-center gap-1">
                       {r.user.replace(/_/g, " ")}
