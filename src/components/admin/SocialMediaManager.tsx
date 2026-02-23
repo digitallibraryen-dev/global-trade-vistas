@@ -95,13 +95,12 @@ const normalizePlatformValue = (platform: string, raw: string): string => {
 const isValidInput = (platform: string, str: string) => {
   const v = str.trim();
   if (!v) return true; // empty is ok
-  if (SKIP_NORMALIZE.has(platform)) {
-    // For whatsapp/wechat keep original validation
-    try { new URL(v); return true; } catch { return /^@[\w.]+$/.test(v) || /^\+?\d[\d\s-]{5,}$/.test(v); }
-  }
+  // WhatsApp & WeChat: accept anything (phone, ID, URL, etc.)
+  if (SKIP_NORMALIZE.has(platform)) return true;
   // For other platforms: accept URL, @handle, or plain username
   try { new URL(v); return true; } catch { /* not a url */ }
-  return /^@?[\w.@-]+$/.test(v);
+  // Accept usernames with letters, numbers, dots, underscores, hyphens
+  return /^@?[\w.\-]+$/.test(v);
 };
 
 const SocialMediaManager = () => {
