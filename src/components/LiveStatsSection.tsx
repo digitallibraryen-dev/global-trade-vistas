@@ -1,38 +1,74 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Users, ShieldCheck, Headset, Globe, TrendingUp, Package } from "lucide-react";
+import { Eye, Users, Globe, ShieldCheck, TrendingUp, Package } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── localStorage-based daily auto-incrementing counter ── */
-const STORAGE_KEY = "almonesi_client_count";
-const BASE_COUNT = 1721;
+/* ── Unique visitor counter (cookie-based, starts at 1,828,292) ── */
+const VISITOR_KEY = "almonesi_visitor_count";
+const VISITOR_SEEN = "almonesi_visitor_seen";
+const BASE_VISITORS = 1828292;
 
-function getClientCount(): number {
+function getVisitorCount(): number {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      const data = { count: BASE_COUNT, date: new Date().toDateString() };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      return BASE_COUNT;
-    }
-    const { count, date } = JSON.parse(raw);
+    const raw = localStorage.getItem(VISITOR_KEY);
+    const seen = localStorage.getItem(VISITOR_SEEN);
     const today = new Date().toDateString();
+
+    if (!raw) {
+      const isNew = !seen;
+      const count = isNew ? BASE_VISITORS + 1 : BASE_VISITORS;
+      localStorage.setItem(VISITOR_KEY, JSON.stringify({ count, date: today }));
+      localStorage.setItem(VISITOR_SEEN, "1");
+      return count;
+    }
+
+    const { count, date } = JSON.parse(raw);
     if (date === today) return count;
 
-    // Calculate days passed and increment randomly 1-3 per day
+    // Simulate daily organic growth (50-150 per day)
     const lastDate = new Date(date);
     const now = new Date();
     const daysPassed = Math.max(1, Math.floor((now.getTime() - lastDate.getTime()) / 86400000));
     let newCount = count;
     for (let i = 0; i < daysPassed; i++) {
-      newCount += Math.floor(Math.random() * 3) + 1; // 1-3 per day
+      newCount += Math.floor(Math.random() * 101) + 50;
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ count: newCount, date: today }));
+    localStorage.setItem(VISITOR_KEY, JSON.stringify({ count: newCount, date: today }));
     return newCount;
   } catch {
-    return BASE_COUNT;
+    return BASE_VISITORS;
+  }
+}
+
+/* ── Satisfied clients counter (localStorage daily increment, starts at 1721) ── */
+const CLIENT_KEY = "almonesi_client_count";
+const BASE_CLIENTS = 1721;
+
+function getClientCount(): number {
+  try {
+    const raw = localStorage.getItem(CLIENT_KEY);
+    if (!raw) {
+      const data = { count: BASE_CLIENTS, date: new Date().toDateString() };
+      localStorage.setItem(CLIENT_KEY, JSON.stringify(data));
+      return BASE_CLIENTS;
+    }
+    const { count, date } = JSON.parse(raw);
+    const today = new Date().toDateString();
+    if (date === today) return count;
+    const lastDate = new Date(date);
+    const now = new Date();
+    const daysPassed = Math.max(1, Math.floor((now.getTime() - lastDate.getTime()) / 86400000));
+    let newCount = count;
+    for (let i = 0; i < daysPassed; i++) {
+      newCount += Math.floor(Math.random() * 3) + 1;
+    }
+    localStorage.setItem(CLIENT_KEY, JSON.stringify({ count: newCount, date: today }));
+    return newCount;
+  } catch {
+    return BASE_CLIENTS;
   }
 }
 
@@ -73,54 +109,53 @@ const AnimatedCounter = ({
 };
 
 /* ── Stats data ── */
-const stats = [
+const getStats = (visitorCount: number, clientCount: number) => [
+  {
+    icon: Eye,
+    value: visitorCount,
+    suffix: "",
+    label: "Visitors",
+  },
   {
     icon: Users,
-    getValue: getClientCount,
+    value: clientCount,
     suffix: "+",
     label: "Satisfied Clients",
-    dynamic: true,
-  },
-  {
-    icon: ShieldCheck,
-    getValue: () => 2000,
-    suffix: "+",
-    label: "Verified Suppliers",
-    dynamic: false,
-  },
-  {
-    icon: Headset,
-    getValue: () => 24,
-    suffix: "/7",
-    label: "Customer Support",
-    dynamic: false,
   },
   {
     icon: Globe,
-    getValue: () => 50,
+    value: 50,
     suffix: "+",
-    label: "Countries Served",
-    dynamic: false,
+    label: "Countries Served 🌍",
+  },
+  {
+    icon: ShieldCheck,
+    value: 0, // special — not a counter
+    suffix: "",
+    label: "Secure & Trusted",
+    isSSL: true,
   },
   {
     icon: TrendingUp,
-    getValue: () => 12,
+    value: 12,
     suffix: "+",
     label: "Years Experience",
-    dynamic: false,
   },
   {
     icon: Package,
-    getValue: () => 98,
+    value: 98,
     suffix: "%",
     label: "Delivery Success",
-    dynamic: false,
   },
 ];
 
 const LiveStatsSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
+  const [visitorCount] = useState(() => getVisitorCount());
+  const [clientCount] = useState(() => getClientCount());
+
+  const stats = getStats(visitorCount, clientCount);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -131,7 +166,6 @@ const LiveStatsSection = () => {
         once: true,
       });
 
-      // Staggered icon reveal
       gsap.from(".stat-icon", {
         scrollTrigger: { trigger: ".stats-grid", start: "top 80%" },
         opacity: 0,
@@ -141,7 +175,6 @@ const LiveStatsSection = () => {
         ease: "back.out(1.7)",
       });
 
-      // Cards fade up
       gsap.from(".stat-card", {
         scrollTrigger: { trigger: ".stats-grid", start: "top 80%" },
         opacity: 0,
@@ -157,7 +190,6 @@ const LiveStatsSection = () => {
 
   return (
     <section ref={sectionRef} className="section-padding relative overflow-hidden">
-      {/* Subtle radial glow background */}
       <div className="absolute inset-0 gradient-radial-glow opacity-50 pointer-events-none" />
 
       <div className="container-narrow relative z-10">
@@ -181,7 +213,7 @@ const LiveStatsSection = () => {
               key={s.label}
               className="stat-card group relative rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm p-6 text-center transition-all duration-500 hover:border-primary/30 hover:shadow-[0_0_30px_hsl(var(--primary)/0.1)]"
             >
-              {/* Icon — outline only with glow */}
+              {/* Icon */}
               <div className="stat-icon mx-auto mb-4 relative">
                 <s.icon
                   size={32}
@@ -193,13 +225,17 @@ const LiveStatsSection = () => {
                 />
               </div>
 
-              {/* Counter */}
+              {/* Counter or SSL badge */}
               <div className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-                <AnimatedCounter
-                  target={s.getValue()}
-                  suffix={s.suffix}
-                  triggered={triggered}
-                />
+                {s.isSSL ? (
+                  <span className="text-primary">🔒</span>
+                ) : (
+                  <AnimatedCounter
+                    target={s.value}
+                    suffix={s.suffix}
+                    triggered={triggered}
+                  />
+                )}
               </div>
 
               {/* Label */}
@@ -211,7 +247,6 @@ const LiveStatsSection = () => {
         </div>
       </div>
 
-      {/* Floating icon keyframes */}
       <style>{`
         @keyframes floatIcon {
           0%, 100% { transform: translateY(0); }
