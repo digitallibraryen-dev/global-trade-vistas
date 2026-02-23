@@ -3,30 +3,37 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MiddleEastSVGMap from "./map/MiddleEastSVGMap";
 import Flag3D from "./map/Flag3D";
-import { middleEastCountries } from "./map/countries";
+import { middleEastCountries, MAP_BOUNDS } from "./map/countries";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Flag positions as percentages of the map container
+// Compute flag positions from real geographic centers (lon, lat) → percentage of map
+function geoToPercent(lon: number, lat: number): { x: number; y: number } {
+  return {
+    x: ((lon - MAP_BOUNDS.minLon) / (MAP_BOUNDS.maxLon - MAP_BOUNDS.minLon)) * 100,
+    y: ((MAP_BOUNDS.maxLat - lat) / (MAP_BOUNDS.maxLat - MAP_BOUNDS.minLat)) * 100,
+  };
+}
+
 const flagPositions: Record<string, { x: number; y: number }> = {
-  Turkey: { x: 40, y: 10 },
-  Syria: { x: 44, y: 19 },
-  Cyprus: { x: 35, y: 17 },
-  Lebanon: { x: 38, y: 24 },
-  Israel: { x: 37, y: 29 },
-  Palestine: { x: 38, y: 30 },
-  Jordan: { x: 42, y: 32 },
-  Iraq: { x: 55, y: 24 },
-  Iran: { x: 73, y: 22 },
-  Kuwait: { x: 57, y: 36 },
-  Bahrain: { x: 62, y: 43 },
-  Qatar: { x: 63, y: 46 },
-  UAE: { x: 70, y: 45 },
-  "Saudi Arabia": { x: 49, y: 54 },
-  Oman: { x: 73, y: 59 },
-  Yemen: { x: 57, y: 74 },
-  Egypt: { x: 27, y: 42 },
-  Morocco: { x: 8, y: 26 },
+  Turkey: geoToPercent(35, 39.5),
+  Syria: geoToPercent(38.5, 35.5),
+  Cyprus: geoToPercent(33.4, 35.1),
+  Lebanon: geoToPercent(35.8, 33.9),
+  Israel: geoToPercent(35, 31.5),
+  Palestine: geoToPercent(35.3, 32),
+  Jordan: geoToPercent(37, 31),
+  Iraq: geoToPercent(43.5, 33.5),
+  Iran: geoToPercent(53, 33),
+  Kuwait: geoToPercent(47.5, 29.4),
+  Bahrain: geoToPercent(50.5, 26),
+  Qatar: geoToPercent(51.2, 25.5),
+  UAE: geoToPercent(54, 24),
+  "Saudi Arabia": geoToPercent(44, 24),
+  Oman: geoToPercent(57, 21),
+  Yemen: geoToPercent(47, 15.5),
+  Egypt: geoToPercent(30, 27),
+  Morocco: geoToPercent(-8, 32),
 };
 
 const MiddleEastMapSection = () => {
