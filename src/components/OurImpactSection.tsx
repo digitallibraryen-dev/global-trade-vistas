@@ -6,37 +6,33 @@ import { supabase } from "@/integrations/supabase/client";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Unique visitor counter (localStorage-based, starts at 1,828,292) ── */
-const VISITOR_KEY = "almonesi_visitor_count";
-const VISITOR_SEEN = "almonesi_visitor_seen";
-const BASE_VISITORS = 1828292;
+/* ── Cookie helpers ── */
+function setCookie(name: string, value: string, days: number) {
+  const d = new Date();
+  d.setTime(d.getTime() + days * 86400000);
+  document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/;SameSite=Lax`;
+}
+
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+  return match ? match[2] : null;
+}
+
+/* ── Unique visitor counter (cookie-based, starts at 1,828,293) ── */
+const BASE_VISITORS = 1828293;
 
 function getVisitorCount(): number {
   try {
-    const raw = localStorage.getItem(VISITOR_KEY);
-    const seen = localStorage.getItem(VISITOR_SEEN);
-    const today = new Date().toDateString();
-
-    if (!raw) {
-      const isNew = !seen;
-      const count = isNew ? BASE_VISITORS + 1 : BASE_VISITORS;
-      localStorage.setItem(VISITOR_KEY, JSON.stringify({ count, date: today }));
-      localStorage.setItem(VISITOR_SEEN, "1");
-      return count;
+    const existing = getCookie("almonesi_vc");
+    if (existing) {
+      return parseInt(existing, 10);
     }
-
-    const { count, date } = JSON.parse(raw);
-    if (date === today) return count;
-
-    const lastDate = new Date(date);
-    const now = new Date();
-    const daysPassed = Math.max(1, Math.floor((now.getTime() - lastDate.getTime()) / 86400000));
-    let newCount = count;
-    for (let i = 0; i < daysPassed; i++) {
-      newCount += Math.floor(Math.random() * 101) + 50;
-    }
-    localStorage.setItem(VISITOR_KEY, JSON.stringify({ count: newCount, date: today }));
-    return newCount;
+    // New visitor — increment
+    const storedTotal = getCookie("almonesi_vt");
+    const total = storedTotal ? parseInt(storedTotal, 10) + 1 : BASE_VISITORS + 1;
+    setCookie("almonesi_vt", String(total), 365);
+    setCookie("almonesi_vc", String(total), 365);
+    return total;
   } catch {
     return BASE_VISITORS;
   }
@@ -79,7 +75,7 @@ const OurImpactSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
   const [visitorCount] = useState(() => getVisitorCount());
-  const [happyClients, setHappyClients] = useState(5230);
+  const [happyClients, setHappyClients] = useState(339);
 
   // Fetch approved review count dynamically
   useEffect(() => {
@@ -89,8 +85,7 @@ const OurImpactSection = () => {
         .select("*", { count: "exact", head: true })
         .eq("status", "approved");
       if (count && count > 0) {
-        // Base + approved reviews to inflate naturally
-        setHappyClients(5230 + count);
+        setHappyClients(339 + count);
       }
     };
     fetchClients();
@@ -120,7 +115,7 @@ const OurImpactSection = () => {
   const stats = [
     { icon: Eye, value: visitorCount, suffix: "", label: "Visitors" },
     { icon: Users, value: happyClients, suffix: "+", label: "Satisfied Clients" },
-    { icon: Globe, value: 50, suffix: "+", label: "Countries Served 🌍" },
+    { icon: Globe, value: 24, suffix: "", label: "Countries Served 🌍" },
     { icon: ShieldCheck, value: 0, label: "Secure & Trusted", isSSL: true },
   ];
 

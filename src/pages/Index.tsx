@@ -16,6 +16,7 @@ import TrustedPartnersSlider from "@/components/TrustedPartnersSlider";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import WeChatButton from "@/components/WeChatButton";
+import CookieConsent from "@/components/CookieConsent";
 
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
@@ -46,6 +47,7 @@ const Index = () => {
         <Footer />
         <WhatsAppButton />
         <WeChatButton />
+        <CookieConsent />
       </div>
     </>
   );
