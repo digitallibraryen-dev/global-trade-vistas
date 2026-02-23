@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SealCheck, PencilSimple } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
@@ -11,6 +11,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+
+interface DbReview {
+  id: string;
+  rating: number;
+  title: string | null;
+  comment: string;
+  created_at: string;
+  profiles: { full_name: string | null } | null;
+}
 
 const INITIAL_COUNT = 4;
 const LOAD_MORE_COUNT = 10;
@@ -26,13 +35,40 @@ const ReviewsSection = () => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [dbReviews, setDbReviews] = useState<DbReview[]>([]);
 
-  const visibleReviews = staticReviewsSorted.slice(0, visibleCount);
-  const hasMore = visibleCount < staticReviewsSorted.length;
+  const fetchDbReviews = async () => {
+    const { data } = await supabase
+      .from("reviews")
+      .select("id, rating, title, comment, created_at, profiles(full_name)")
+      .eq("status", "approved")
+      .order("created_at", { ascending: false });
+    setDbReviews((data as unknown as DbReview[]) ?? []);
+  };
+
+  useEffect(() => { fetchDbReviews(); }, []);
+
+  // Merge DB reviews (shown first) with static reviews
+  const allReviews = useMemo(() => {
+    const dbMapped = dbReviews.map((r, i) => ({
+      id: r.id,
+      user: r.profiles?.full_name || "User",
+      country: "🌍",
+      rating: r.rating,
+      title: r.title || undefined,
+      description: r.comment,
+      date: r.created_at,
+      profile_image: undefined,
+    }));
+    return [...dbMapped, ...staticReviewsSorted];
+  }, [dbReviews]);
+
+  const visibleReviews = allReviews.slice(0, visibleCount);
+  const hasMore = visibleCount < allReviews.length;
 
   const avgRating =
-    staticReviewsSorted.length > 0
-      ? (staticReviewsSorted.reduce((sum, r) => sum + r.rating, 0) / staticReviewsSorted.length).toFixed(1)
+    allReviews.length > 0
+      ? (allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length).toFixed(1)
       : "0";
 
   return (
@@ -43,7 +79,7 @@ const ReviewsSection = () => {
           <div className="flex items-center justify-center gap-3 mb-2">
             <StarRating rating={Math.round(Number(avgRating))} readonly size={24} />
             <span className="text-xl font-semibold text-foreground">{avgRating}</span>
-            <span className="text-sm text-muted-foreground">({staticReviewsSorted.length} {t("reviews.reviews")})</span>
+            <span className="text-sm text-muted-foreground">({allReviews.length} {t("reviews.reviews")})</span>
           </div>
           <p className="text-muted-foreground max-w-lg mx-auto">{t("reviews.subtitle")}</p>
           <div className="mt-4">
@@ -108,7 +144,7 @@ const ReviewsSection = () => {
         )}
 
         <ScrollReveal animation="card" stagger={0.08} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleReviews.map((r: StaticReview) => (
+          {visibleReviews.map((r) => (
             <div key={r.id} className="glass-strong rounded-xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -140,9 +176,9 @@ const ReviewsSection = () => {
           <div className="text-center mt-8">
             <Button
               variant="outline"
-              onClick={() => setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, staticReviewsSorted.length))}
+              onClick={() => setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, allReviews.length))}
             >
-              {t("reviews.loadMore", "Load More")} ({staticReviewsSorted.length - visibleCount} {t("reviews.remaining", "remaining")})
+              {t("reviews.loadMore", "Load More")} ({allReviews.length - visibleCount} {t("reviews.remaining", "remaining")})
             </Button>
           </div>
         )}
