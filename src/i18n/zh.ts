@@ -521,6 +521,12 @@ const zh = {
     title: "可信赖的平台与物流合作伙伴",
     subtitle: "为您连接可靠的供应商，提供从中国到全球的无缝物流解决方案。",
   },
+  cookies: {
+    message: "我们使用Cookie来改善您的体验。",
+    privacyPolicy: "隐私政策",
+    accept: "接受",
+    decline: "拒绝",
+  },
 };
 
 export default zh;

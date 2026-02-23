@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Cookie } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -15,6 +16,7 @@ function setCookie(name: string, value: string, days: number) {
 }
 
 const CookieConsent = () => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -47,9 +49,9 @@ const CookieConsent = () => {
         {/* Content */}
         <div className="flex-1 min-w-0">
           <p className="text-xs text-muted-foreground leading-relaxed">
-            We use cookies to improve your experience.{" "}
+            {t("cookies.message")}{" "}
             <Link to="/privacy" className="text-primary underline-offset-2 hover:underline">
-              Privacy Policy
+              {t("cookies.privacyPolicy")}
             </Link>
           </p>
 
@@ -60,7 +62,7 @@ const CookieConsent = () => {
               onClick={handleAccept}
               className="h-7 px-3 text-xs font-medium"
             >
-              Accept
+              {t("cookies.accept")}
             </Button>
             <Button
               variant="ghost"
@@ -68,7 +70,7 @@ const CookieConsent = () => {
               onClick={handleDecline}
               className="h-7 px-3 text-xs text-muted-foreground hover:text-foreground"
             >
-              Decline
+              {t("cookies.decline")}
             </Button>
           </div>
         </div>
