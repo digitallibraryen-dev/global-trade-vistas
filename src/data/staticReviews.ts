@@ -415,6 +415,14 @@ const maleImages: string[] = [
   "/profile-images/pin-28.jpg",
   "/profile-images/pin-29.jpg",
   "/profile-images/pin-30.jpg",
+  "/profile-images/pin-31.jpg",
+  "/profile-images/pin-32.jpg",
+  "/profile-images/pin-33.jpg",
+  "/profile-images/pin-35.jpg",
+  "/profile-images/pin-37.jpg",
+  "/profile-images/pin-38.jpg",
+  "/profile-images/pin-39.jpg",
+  "/profile-images/pin-40.jpg",
 ];
 
 // Female-themed images: local pin images
@@ -425,6 +433,8 @@ const femaleImages: string[] = [
   "/profile-images/pin-10.jpg",
   "/profile-images/pin-13.jpg",
   "/profile-images/pin-27.jpg",
+  "/profile-images/pin-34.jpg",
+  "/profile-images/pin-36.jpg",
 ];
 
 // Deterministically pick 112 indices to receive profile images
