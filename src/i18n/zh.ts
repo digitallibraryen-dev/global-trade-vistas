@@ -502,6 +502,15 @@ const zh = {
       { title: "与采购代理合作", content: "像阿尔蒙尼西这样的专业采购代理简化了整个过程。我们处理供应商验证、质量检验、谈判和物流——为您节省时间、降低风险并确保您获得最佳投资价值。" },
     ],
   },
+  ourImpact: {
+    subtitle: "我们的影响",
+    title: "数字说话",
+    description: "通过持续交付和对全球卓越的坚定承诺建立信任。",
+    visitors: "访客",
+    satisfiedClients: "满意客户",
+    countriesServed: "服务国家 🌍",
+    secureAndTrusted: "安全可信",
+  },
 };
 
 export default zh;

@@ -502,6 +502,15 @@ const en = {
       { title: "Working with a Sourcing Agent", content: "A professional sourcing agent like Almonesi simplifies the entire process. We handle supplier verification, quality inspections, negotiations, and logistics — saving you time, reducing risks, and ensuring you get the best value for your investment." },
     ],
   },
+  ourImpact: {
+    subtitle: "Our Impact",
+    title: "Numbers That Speak",
+    description: "Building trust through consistent delivery and unwavering commitment to excellence across the globe.",
+    visitors: "Visitors",
+    satisfiedClients: "Satisfied Clients",
+    countriesServed: "Countries Served 🌍",
+    secureAndTrusted: "Secure & Trusted",
+  },
 };
 
 export default en;
