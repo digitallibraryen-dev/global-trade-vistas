@@ -97,30 +97,20 @@ const OurImpactSection = () => {
   }, []);
 
   useEffect(() => {
+    if (!sectionRef.current) return;
+
+    // If already in viewport, trigger immediately
+    const rect = sectionRef.current.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.75) {
+      setTriggered(true);
+    }
+
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top 75%",
         onEnter: () => setTriggered(true),
         once: true,
-      });
-
-      gsap.from(".impact-card", {
-        scrollTrigger: { trigger: ".impact-grid", start: "top 80%" },
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-      });
-
-      gsap.from(".impact-icon", {
-        scrollTrigger: { trigger: ".impact-grid", start: "top 80%" },
-        opacity: 0,
-        scale: 0.5,
-        duration: 0.7,
-        stagger: 0.12,
-        ease: "back.out(1.7)",
       });
     }, sectionRef);
 
