@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Eye, Users, Globe, ShieldCheck } from "lucide-react";
@@ -72,6 +73,7 @@ const AnimatedCounter = ({
 };
 
 const OurImpactSection = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
   const [visitorCount] = useState(() => getVisitorCount());
@@ -113,10 +115,10 @@ const OurImpactSection = () => {
   }, []);
 
   const stats = [
-    { icon: Eye, value: visitorCount, suffix: "", label: "Visitors" },
-    { icon: Users, value: happyClients, suffix: "+", label: "Satisfied Clients" },
-    { icon: Globe, value: 24, suffix: "", label: "Countries Served 🌍" },
-    { icon: ShieldCheck, value: 0, label: "Secure & Trusted", isSSL: true },
+    { icon: Eye, value: visitorCount, suffix: "", label: t("ourImpact.visitors") },
+    { icon: Users, value: happyClients, suffix: "+", label: t("ourImpact.satisfiedClients") },
+    { icon: Globe, value: 24, suffix: "", label: t("ourImpact.countriesServed") },
+    { icon: ShieldCheck, value: 0, label: t("ourImpact.secureAndTrusted"), isSSL: true },
   ];
 
   return (
@@ -131,14 +133,13 @@ const OurImpactSection = () => {
         {/* Header */}
         <div className="text-center mb-14">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-            Our Impact
+            {t("ourImpact.subtitle")}
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Numbers That Speak
+            {t("ourImpact.title")}
           </h2>
           <p className="mt-4 max-w-xl mx-auto text-muted-foreground text-sm leading-relaxed">
-            Building trust through consistent delivery and unwavering commitment
-            to excellence across the globe.
+            {t("ourImpact.description")}
           </p>
         </div>
 
