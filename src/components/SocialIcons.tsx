@@ -7,6 +7,9 @@ import {
   WechatLogo,
   TelegramLogo,
   FacebookLogo,
+  LinkedinLogo,
+  YoutubeLogo,
+  XLogo,
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
@@ -19,6 +22,9 @@ const platformIcon: Record<string, React.ElementType> = {
   wechat: WechatLogo,
   telegram: TelegramLogo,
   facebook: FacebookLogo,
+  linkedin: LinkedinLogo,
+  youtube: YoutubeLogo,
+  x: XLogo,
 };
 
 const platformGlow: Record<string, string> = {
@@ -29,6 +35,9 @@ const platformGlow: Record<string, string> = {
   wechat: "135, 54%, 46%",
   telegram: "200, 80%, 54%",
   facebook: "220, 46%, 48%",
+  linkedin: "210, 70%, 45%",
+  youtube: "0, 80%, 50%",
+  x: "0, 0%, 30%",
 };
 
 const platformAccent: Record<string, string> = {
@@ -39,6 +48,9 @@ const platformAccent: Record<string, string> = {
   wechat: "from-[hsl(135,54%,40%)] to-[hsl(135,54%,50%)]",
   telegram: "from-[hsl(200,80%,50%)] to-[hsl(200,80%,60%)]",
   facebook: "from-[hsl(220,46%,44%)] to-[hsl(220,46%,54%)]",
+  linkedin: "from-[hsl(210,70%,40%)] to-[hsl(210,70%,50%)]",
+  youtube: "from-[hsl(0,80%,45%)] to-[hsl(0,80%,55%)]",
+  x: "from-[hsl(0,0%,20%)] to-[hsl(0,0%,35%)]",
 };
 
 const platformUrl = (platform: string, value: string): string => {
@@ -57,6 +69,12 @@ const platformUrl = (platform: string, value: string): string => {
       return value.startsWith("http") ? value : `https://t.me/${value.replace(/^@/, "")}`;
     case "facebook":
       return value.startsWith("http") ? value : `https://facebook.com/${value}`;
+    case "linkedin":
+      return value.startsWith("http") ? value : `https://linkedin.com/in/${value}`;
+    case "youtube":
+      return value.startsWith("http") ? value : `https://youtube.com/@${value}`;
+    case "x":
+      return value.startsWith("http") ? value : `https://x.com/${value}`;
     default:
       return "#";
   }
