@@ -49,14 +49,59 @@ const defaultState = (): StateMap =>
     PLATFORMS.map((p) => [p.key, { id: null, value: "", enabled: false, qr_code_url: null }])
   );
 
-const isValidUrl = (str: string) => {
-  if (!str.trim()) return true; // empty is ok, just won't display
+// Platforms that should NOT be normalized (keep as-is)
+const SKIP_NORMALIZE = new Set(["whatsapp", "wechat"]);
+
+// Normalize a raw input into a full URL for the given platform
+const normalizePlatformValue = (platform: string, raw: string): string => {
+  const v = raw.trim();
+  if (!v) return "";
+  if (SKIP_NORMALIZE.has(platform)) return v;
+
+  // If already a valid URL, accept it
   try {
-    new URL(str);
-    return true;
+    new URL(v);
+    return v;
   } catch {
-    return /^@[\w.]+$/.test(str) || /^\+?\d[\d\s-]{5,}$/.test(str); // allow @handle or phone
+    // not a URL — treat as username
   }
+
+  // Strip leading @ if present
+  const handle = v.replace(/^@/, "");
+  if (!handle) return "";
+
+  switch (platform) {
+    case "telegram":
+      return `https://t.me/${handle}`;
+    case "instagram":
+      return `https://instagram.com/${handle}`;
+    case "facebook":
+      return `https://facebook.com/${handle}`;
+    case "tiktok":
+      return `https://tiktok.com/@${handle}`;
+    case "youtube":
+      return `https://youtube.com/@${handle}`;
+    case "x":
+      return `https://x.com/${handle}`;
+    case "snapchat":
+      return `https://snapchat.com/add/${handle}`;
+    case "linkedin":
+      return `https://linkedin.com/in/${handle}`;
+    default:
+      return v;
+  }
+};
+
+const isValidInput = (platform: string, str: string) => {
+  const v = str.trim();
+  if (!v) return true; // empty is ok
+  if (SKIP_NORMALIZE.has(platform)) {
+    // For whatsapp/wechat keep original validation
+    try { new URL(v); return true; } catch { return /^@[\w.]+$/.test(v) || /^\+?\d[\d\s-]{5,}$/.test(v); }
+  }
+  // For other platforms: accept URL, @handle, or plain username
+  try { new URL(v); return true; } catch { /* not a url */ }
+  return /^@?[\w.@-]+$/.test(v);
 };
 
 const SocialMediaManager = () => {
@@ -128,20 +173,30 @@ const SocialMediaManager = () => {
   };
 
   const handleSave = async () => {
-    // Validate all non-empty URLs
+    // Validate all non-empty values
     for (const p of PLATFORMS) {
       const val = state[p.key].value;
-      if (val && !isValidUrl(val)) {
-        toast({ title: `Invalid URL for ${p.label}`, description: "Please enter a valid link, @handle, or phone number.", variant: "destructive" });
+      if (val && !isValidInput(p.key, val)) {
+        toast({ title: `Invalid input for ${p.label}`, description: "Please enter a valid URL, @handle, or username.", variant: "destructive" });
         return;
       }
     }
+
+    // Normalize values before saving
+    const normalized = { ...state };
+    for (const p of PLATFORMS) {
+      const val = normalized[p.key].value;
+      if (val.trim()) {
+        normalized[p.key] = { ...normalized[p.key], value: normalizePlatformValue(p.key, val) };
+      }
+    }
+    setState(normalized);
 
     setSaving(true);
     try {
       for (let i = 0; i < PLATFORMS.length; i++) {
         const p = PLATFORMS[i];
-        const s = state[p.key];
+        const s = normalized[p.key];
         const shouldEnable = s.enabled && (s.value.trim() !== "" || (p.key === "wechat" && !!s.qr_code_url));
 
         if (s.id) {
