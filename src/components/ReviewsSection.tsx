@@ -19,7 +19,7 @@ interface DbReview {
   title: string | null;
   comment: string;
   created_at: string;
-  profiles: { full_name: string | null; country: string | null } | null;
+  profiles: { full_name: string | null; country: string | null; avatar_url: string | null } | null;
 }
 
 const INITIAL_COUNT = 4;
@@ -41,7 +41,7 @@ const ReviewsSection = () => {
   const fetchDbReviews = async () => {
     const { data } = await supabase
       .from("reviews")
-      .select("id, rating, title, comment, created_at, profiles(full_name, country)")
+      .select("id, rating, title, comment, created_at, profiles(full_name, country, avatar_url)")
       .eq("status", "approved")
       .order("created_at", { ascending: false });
     setDbReviews((data as unknown as DbReview[]) ?? []);
@@ -59,7 +59,7 @@ const ReviewsSection = () => {
       title: r.title || undefined,
       description: r.comment,
       date: r.created_at,
-      profile_image: undefined,
+      profile_image: r.profiles?.avatar_url || undefined,
     }));
     return [...dbMapped, ...staticReviewsSorted];
   }, [dbReviews]);
