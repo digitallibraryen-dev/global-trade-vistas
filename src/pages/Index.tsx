@@ -37,7 +37,6 @@ const Index = () => {
           <FeaturedServicesSection />
           <ProductsSection />
           <WhyChooseSection />
-          <LiveStatsSection />
           <MiddleEastMapSection />
           <TrustedPartnersSlider />
           <ReviewsSection />
