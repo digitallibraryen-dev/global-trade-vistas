@@ -511,6 +511,11 @@ const en = {
     countriesServed: "Countries Served 🌍",
     secureAndTrusted: "Secure & Trusted",
   },
+  middleEastMap: {
+    subtitle: "Regional Reach",
+    title: "Our Presence in the Middle East",
+    description: "Serving businesses across the Middle East and North Africa with dedicated local support and logistics infrastructure.",
+  },
 };
 
 export default en;

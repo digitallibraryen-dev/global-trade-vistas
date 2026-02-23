@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MiddleEastSVGMap from "./map/MiddleEastSVGMap";
@@ -35,6 +36,7 @@ const flagPositions: Record<string, { x: number; y: number }> = {
 };
 
 const MiddleEastMapSection = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
@@ -67,13 +69,13 @@ const MiddleEastMapSection = () => {
       <div className="container-narrow relative z-10">
         <div className="text-center mb-12">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-            Regional Reach
+            {t("middleEastMap.subtitle")}
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Our Presence in the Middle East
+            {t("middleEastMap.title")}
           </h2>
           <p className="mt-4 max-w-lg mx-auto text-muted-foreground text-sm leading-relaxed">
-            Serving businesses across the Middle East and North Africa with dedicated local support and logistics infrastructure.
+            {t("middleEastMap.description")}
           </p>
         </div>
 
