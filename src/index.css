@@ -265,3 +265,24 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--steel));
 }
+
+/* Map country styles */
+.map-country {
+  fill: hsl(220, 13%, 91%);
+  stroke: hsl(220, 13%, 82%);
+  stroke-width: 0.7;
+}
+.map-country-hover {
+  fill: hsl(var(--primary));
+  stroke: hsl(var(--primary));
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 6px hsl(var(--primary) / 0.4));
+}
+.dark .map-country {
+  fill: hsl(0, 0%, 16%);
+  stroke: hsl(0, 0%, 27%);
+}
+.dark .map-country-hover {
+  fill: hsl(var(--primary));
+  stroke: hsl(var(--primary));
+}

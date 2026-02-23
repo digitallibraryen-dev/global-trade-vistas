@@ -33,7 +33,6 @@ const flagPositions: Record<string, { x: number; y: number }> = {
   Oman: geoToPercent(57, 21),
   Yemen: geoToPercent(47, 15.5),
   Egypt: geoToPercent(30, 27),
-  Morocco: geoToPercent(-8, 32),
 };
 
 const MiddleEastMapSection = () => {
@@ -65,7 +64,7 @@ const MiddleEastMapSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section-padding gradient-dark relative overflow-hidden">
+    <section ref={sectionRef} className="section-padding relative overflow-hidden">
       <div className="container-narrow relative z-10">
         <div className="text-center mb-12">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
@@ -79,7 +78,7 @@ const MiddleEastMapSection = () => {
           </p>
         </div>
 
-        <div className="me-map-container relative mx-auto max-w-5xl" style={{ perspective: "1200px" }}>
+        <div className="me-map-container relative mx-auto flex justify-center items-center" style={{ maxWidth: "1000px", perspective: "1200px" }}>
           <div className="relative w-full">
             <MiddleEastSVGMap hoveredCountry={hoveredCountry} onHover={setHoveredCountry} />
 
