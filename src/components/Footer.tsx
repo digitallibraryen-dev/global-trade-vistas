@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import SocialIcons from "./SocialIcons";
 import ScrollReveal from "./ScrollReveal";
@@ -43,9 +44,9 @@ const Footer = () => {
             </div>
             <div className="flex items-center gap-6">
               <SocialIcons size={18} />
-              {[t("footer.privacy"), t("footer.terms")].map((l) => (
-                <a key={l} href="#" className="text-xs text-white/60 transition-colors hover:text-white">{l}</a>
-              ))}
+              <Link to="/terms" className="text-xs text-white/60 transition-colors hover:text-white">{t("footer.terms")}</Link>
+              <span className="text-white/30">|</span>
+              <Link to="/privacy" className="text-xs text-white/60 transition-colors hover:text-white">{t("footer.privacy")}</Link>
             </div>
           </div>
         </ScrollReveal>
