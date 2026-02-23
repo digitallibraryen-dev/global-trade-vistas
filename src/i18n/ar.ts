@@ -511,6 +511,11 @@ const ar = {
     countriesServed: "دول نخدمها 🌍",
     secureAndTrusted: "آمن وموثوق",
   },
+  middleEastMap: {
+    subtitle: "الانتشار الإقليمي",
+    title: "تواجدنا في الشرق الأوسط",
+    description: "نخدم الشركات في جميع أنحاء الشرق الأوسط وشمال أفريقيا بدعم محلي مخصص وبنية تحتية لوجستية.",
+  },
 };
 
 export default ar;

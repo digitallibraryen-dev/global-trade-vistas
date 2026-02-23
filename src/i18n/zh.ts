@@ -511,6 +511,11 @@ const zh = {
     countriesServed: "服务国家 🌍",
     secureAndTrusted: "安全可信",
   },
+  middleEastMap: {
+    subtitle: "区域覆盖",
+    title: "我们在中东的业务",
+    description: "为中东和北非地区的企业提供专属本地支持和物流基础设施服务。",
+  },
 };
 
 export default zh;
