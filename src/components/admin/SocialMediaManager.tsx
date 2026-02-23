@@ -13,6 +13,10 @@ import {
   FacebookLogo,
   SnapchatLogo,
   WechatLogo,
+  TiktokLogo,
+  LinkedinLogo,
+  YoutubeLogo,
+  XLogo,
   FloppyDisk,
   UploadSimple,
   Trash,
@@ -24,6 +28,10 @@ const PLATFORMS = [
   { key: "instagram", label: "Instagram", icon: InstagramLogo, placeholder: "https://instagram.com/username" },
   { key: "facebook", label: "Facebook", icon: FacebookLogo, placeholder: "https://facebook.com/page" },
   { key: "snapchat", label: "Snapchat", icon: SnapchatLogo, placeholder: "https://snapchat.com/add/username" },
+  { key: "tiktok", label: "TikTok", icon: TiktokLogo, placeholder: "https://tiktok.com/@username" },
+  { key: "linkedin", label: "LinkedIn", icon: LinkedinLogo, placeholder: "https://linkedin.com/in/username" },
+  { key: "youtube", label: "YouTube", icon: YoutubeLogo, placeholder: "https://youtube.com/@channel" },
+  { key: "x", label: "X (Twitter)", icon: XLogo, placeholder: "https://x.com/username" },
   { key: "wechat", label: "WeChat", icon: WechatLogo, placeholder: "WeChat ID (optional)", hasQr: true },
 ] as const;
 
