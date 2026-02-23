@@ -3,7 +3,7 @@ import { WechatLogo, DownloadSimple, X } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
 
-const WeChatButton = () => {
+const WeChatButton = ({ variant = "floating" }: { variant?: "floating" | "inline" }) => {
   const [open, setOpen] = useState(false);
   const { data: links = [], isLoading } = useSocialLinks();
 
@@ -29,21 +29,32 @@ const WeChatButton = () => {
     }
   };
 
+  const triggerButton = variant === "inline" ? (
+    <button
+      onClick={() => setOpen(true)}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-white/55 transition-colors duration-200 hover:text-white"
+      aria-label="Contact us on WeChat"
+    >
+      <WechatLogo size={18} weight="fill" />
+    </button>
+  ) : (
+    <motion.button
+      onClick={() => setOpen(true)}
+      className="fixed bottom-24 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#07C160] shadow-lg"
+      aria-label="Contact us on WeChat"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <WechatLogo size={28} weight="fill" className="text-white" />
+    </motion.button>
+  );
+
   return (
     <>
-      {/* Floating Button */}
-      <motion.button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-24 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#07C160] shadow-lg"
-        aria-label="Contact us on WeChat"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 1.2, type: "spring", stiffness: 200 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <WechatLogo size={28} weight="fill" className="text-white" />
-      </motion.button>
+      {triggerButton}
 
       {/* QR Code Modal */}
       <AnimatePresence>

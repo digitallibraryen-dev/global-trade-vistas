@@ -6,7 +6,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/logo.png";
-import SocialIcons from "./SocialIcons";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 interface NavItem {
@@ -159,7 +158,6 @@ const Navbar = () => {
               <SignIn size={16} /> {t("nav.signIn")}
             </button>
           )}
-          <SocialIcons size={18} />
         </div>
 
         {/* Mobile controls */}
