@@ -391,20 +391,30 @@ const femaleNames = new Set([
 
 // Male-themed images: diverse objects — cars, architecture, watches, boats, coffee, sports, landscapes — NO people (55 unique)
 const maleImages: string[] = [
-  "/profile-images/pin-01.jpg", // sword warrior
-  "/profile-images/pin-02.jpg", // stylized portrait
-  "/profile-images/pin-03.jpg", // Porsche car
-  "/profile-images/pin-05.jpg", // masked figure
-  "/profile-images/pin-06.jpg", // Dubai skyline
-  "/profile-images/pin-07.jpg", // avatar silhouette
+  "/profile-images/pin-01.jpg",
+  "/profile-images/pin-02.jpg",
+  "/profile-images/pin-03.jpg",
+  "/profile-images/pin-05.jpg",
+  "/profile-images/pin-06.jpg",
+  "/profile-images/pin-07.jpg",
+  "/profile-images/pin-11.jpg",
+  "/profile-images/pin-12.jpg",
+  "/profile-images/pin-14.jpg",
+  "/profile-images/pin-15.jpg",
+  "/profile-images/pin-16.jpg",
+  "/profile-images/pin-17.jpg",
+  "/profile-images/pin-18.jpg",
+  "/profile-images/pin-19.jpg",
+  "/profile-images/pin-20.jpg",
 ];
 
 // Female-themed images: local pin images
 const femaleImages: string[] = [
-  "/profile-images/pin-04.jpg", // ring light
-  "/profile-images/pin-08.jpg", // moonlit ocean
-  "/profile-images/pin-09.jpg", // birds at sunset
-  "/profile-images/pin-10.jpg", // white eagle
+  "/profile-images/pin-04.jpg",
+  "/profile-images/pin-08.jpg",
+  "/profile-images/pin-09.jpg",
+  "/profile-images/pin-10.jpg",
+  "/profile-images/pin-13.jpg",
 ];
 
 // Deterministically pick 112 indices to receive profile images
