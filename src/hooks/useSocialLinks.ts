@@ -8,6 +8,7 @@ export interface SocialLink {
   value: string;
   enabled: boolean;
   sort_order: number;
+  qr_code_url?: string | null;
 }
 
 export const useSocialLinks = () => {
