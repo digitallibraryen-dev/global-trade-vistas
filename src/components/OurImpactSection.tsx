@@ -19,7 +19,7 @@ function getCookie(name: string): string | null {
 }
 
 /* ── Unique visitor counter (cookie-based, starts at 1,828,293) ── */
-const BASE_VISITORS = 1828293;
+const BASE_VISITORS = 1449;
 
 function getVisitorCount(): number {
   try {
