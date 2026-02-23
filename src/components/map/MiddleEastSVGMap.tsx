@@ -1,4 +1,4 @@
-import { middleEastCountries } from "./countries";
+import { middleEastCountries, polygonToPath, getPolygonCentroid } from "./countries";
 
 interface Props {
   hoveredCountry: string | null;
@@ -62,25 +62,33 @@ const MiddleEastSVGMap = ({ hoveredCountry, onHover }: Props) => (
     {/* Country shapes */}
     {middleEastCountries.map((country) => {
       const isHovered = hoveredCountry === country.name;
+      const [cx, cy] = getPolygonCentroid(country.polygons[0]);
+      const isSmall = country.name === "Bahrain" || country.name === "Qatar" || country.name === "Palestine" || country.name === "Lebanon" || country.name === "Cyprus" || country.name === "Kuwait";
+
       return (
         <g key={country.name}>
-          <path
-            d={country.path}
-            fill={isHovered ? "url(#landHover)" : "url(#landGrad)"}
-            stroke={isHovered ? "hsl(var(--primary))" : "hsl(220, 10%, 38%)"}
-            strokeWidth={isHovered ? "1.5" : "0.7"}
-            filter={isHovered ? "url(#countryShadow)" : undefined}
-            className="transition-all duration-300 cursor-pointer"
-            onMouseEnter={() => onHover(country.name)}
-            onMouseLeave={() => onHover(null)}
-          />
+          {/* Render all polygons for this country */}
+          {country.polygons.map((polygon, pi) => (
+            <path
+              key={`${country.name}-${pi}`}
+              d={polygonToPath(polygon)}
+              fill={isHovered ? "url(#landHover)" : "url(#landGrad)"}
+              stroke={isHovered ? "hsl(var(--primary))" : "hsl(220, 10%, 38%)"}
+              strokeWidth={isHovered ? "1.5" : "0.7"}
+              filter={isHovered ? "url(#countryShadow)" : undefined}
+              className="transition-all duration-300 cursor-pointer"
+              onMouseEnter={() => onHover(country.name)}
+              onMouseLeave={() => onHover(null)}
+            />
+          ))}
           {/* Country name label */}
           <text
-            x={country.labelX}
-            y={country.labelY}
+            x={cx}
+            y={cy}
             textAnchor="middle"
+            dominantBaseline="central"
             fill={isHovered ? "hsl(0, 0%, 95%)" : "hsl(0, 0%, 60%)"}
-            fontSize={country.name === "Bahrain" || country.name === "Qatar" || country.name === "Palestine" ? "7" : "9"}
+            fontSize={isSmall ? "7" : "9"}
             fontWeight="500"
             className="pointer-events-none select-none transition-all duration-300"
             style={{ fontFamily: "system-ui, sans-serif" }}
