@@ -21,12 +21,14 @@ const HeroSection = () => {
   };
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen overflow-hidden">
-      <div className="hero-spline absolute inset-0 z-0">
+    <section ref={sectionRef} className="relative min-h-screen overflow-hidden max-w-[100vw]">
+      <div className="hero-spline absolute inset-0 z-0 overflow-hidden">
         <iframe
           src="https://my.spline.design/herobannerfortransportandlogisticscompanygmw2425-GYw1Ka0Iu2NG1giJfqOEBM46/"
           frameBorder="0" width="100%" height="100%"
-          className="pointer-events-none" title="3D Hero Background" loading="lazy" />
+          className="pointer-events-none absolute inset-0 w-full h-full" title="3D Hero Background" loading="lazy"
+          style={{ minWidth: 0 }}
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-transparent pointer-events-none z-[2]" />
         <div className="absolute bottom-0 right-0 w-[220px] h-[60px] pointer-events-none z-[5]" style={{ backgroundColor: "#003f7f" }} />
       </div>
