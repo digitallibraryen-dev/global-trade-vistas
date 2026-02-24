@@ -7,37 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Cookie helpers ── */
-function setCookie(name: string, value: string, days: number) {
-  const d = new Date();
-  d.setTime(d.getTime() + days * 86400000);
-  document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/;SameSite=Lax`;
-}
-
-function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-  return match ? match[2] : null;
-}
-
-/* ── Unique visitor counter (cookie-based, starts at 1,828,293) ── */
-const BASE_VISITORS = 1449;
-
-function getVisitorCount(): number {
-  try {
-    const existing = getCookie("almonesi_vc");
-    if (existing) {
-      return parseInt(existing, 10);
-    }
-    // New visitor — increment
-    const storedTotal = getCookie("almonesi_vt");
-    const total = storedTotal ? parseInt(storedTotal, 10) + 1 : BASE_VISITORS + 1;
-    setCookie("almonesi_vt", String(total), 365);
-    setCookie("almonesi_vc", String(total), 365);
-    return total;
-  } catch {
-    return BASE_VISITORS;
-  }
-}
+const VISITOR_COOKIE = "almonesi_counted";
 
 /* ── Animated counter ── */
 const AnimatedCounter = ({
@@ -76,8 +46,32 @@ const OurImpactSection = () => {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
-  const [visitorCount] = useState(() => getVisitorCount());
+  const [visitorCount, setVisitorCount] = useState(1449);
   const [happyClients, setHappyClients] = useState(339);
+
+  // Fetch visitor count from DB & increment if new visitor
+  useEffect(() => {
+    const trackVisitor = async () => {
+      // Check if already counted this session/browser
+      const counted = document.cookie.includes(VISITOR_COOKIE);
+      if (!counted) {
+        // Increment atomically in DB
+        const { data } = await supabase.rpc("increment_counter", { counter_id: "visitors" });
+        if (data) {
+          setVisitorCount(data as number);
+          // Set cookie so we don't count again for 24h
+          const d = new Date();
+          d.setTime(d.getTime() + 86400000);
+          document.cookie = `${VISITOR_COOKIE}=1;expires=${d.toUTCString()};path=/;SameSite=Lax`;
+        }
+      } else {
+        // Just read current value
+        const { data } = await supabase.from("site_counters").select("value").eq("id", "visitors").single();
+        if (data) setVisitorCount(data.value);
+      }
+    };
+    trackVisitor();
+  }, []);
 
   // Fetch approved review count dynamically
   useEffect(() => {

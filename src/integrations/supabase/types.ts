@@ -310,6 +310,24 @@ export type Database = {
         }
         Relationships: []
       }
+      site_counters: {
+        Row: {
+          id: string
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          id: string
+          updated_at?: string
+          value?: number
+        }
+        Update: {
+          id?: string
+          updated_at?: string
+          value?: number
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           id: string
@@ -393,6 +411,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      increment_counter: { Args: { counter_id: string }; Returns: number }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
