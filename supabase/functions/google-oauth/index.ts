@@ -152,9 +152,7 @@ Deno.serve(async (req) => {
         }
       }
 
-      // Generate a session for the user
-      // We'll use signInWithPassword won't work since password is random
-      // Instead, generate a magic link token or use admin.generateLink
+      // Generate a magic link and extract the token_hash for client-side verification
       const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
         type: "magiclink",
         email: userInfo.email,
@@ -167,18 +165,15 @@ Deno.serve(async (req) => {
         });
       }
 
-      // Extract the token from the generated link
-      const token = linkData.properties?.hashed_token;
-      const tokenType = "magiclink";
+      // Extract token_hash from the action_link URL
+      const actionLink = new URL(linkData.properties?.action_link || "");
+      const tokenHash = actionLink.searchParams.get("token") || linkData.properties?.hashed_token;
 
       return new Response(
         JSON.stringify({
-          access_token: (linkData.properties as any)?.access_token,
-          refresh_token: (linkData.properties as any)?.refresh_token,
+          token_hash: tokenHash,
           email: userInfo.email,
-          token: token,
-          type: tokenType,
-          redirect_type: "token",
+          type: "magiclink",
         }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );

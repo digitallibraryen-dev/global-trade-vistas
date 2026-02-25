@@ -37,15 +37,16 @@ const AuthCallback = () => {
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
-        if (data.email && data.token) {
-          // Verify the OTP token to establish a session
+        if (data.token_hash) {
+          // Use verifyOtp with token_hash for magiclink verification
           const { error } = await supabase.auth.verifyOtp({
-            email: data.email,
-            token: data.token,
-            type: "email",
+            token_hash: data.token_hash,
+            type: "magiclink",
           });
 
           if (error) throw error;
+        } else {
+          throw new Error("No authentication token received");
         }
 
         toast({ title: "Signed in successfully!" });
