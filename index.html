@@ -43,7 +43,14 @@
     <!-- Manifest -->
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- GA4 is loaded dynamically by CookieConsent after user accepts -->
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E42ZWPZC3E"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E42ZWPZC3E', { send_page_view: false });
+    </script>
   </head>
 
   <body>
