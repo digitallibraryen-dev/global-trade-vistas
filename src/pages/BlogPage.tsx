@@ -50,7 +50,7 @@ const BlogPage = () => {
           ) : posts.length === 0 ? (
             <p className="text-center text-muted-foreground">{t("blogPage.noPosts")}</p>
           ) : (
-            <ScrollReveal animation="card" stagger={0.12} className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <Link
                   key={post.id}
