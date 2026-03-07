@@ -78,7 +78,7 @@ const BlogPage = () => {
                   </div>
                 </Link>
               ))}
-            </ScrollReveal>
+            </div>
           )}
         </div>
       </main>
