@@ -55,7 +55,7 @@ const BlogPage = () => {
                 <Link
                   key={post.id}
                   to={`/blog/${post.slug}`}
-                  className="group glass rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  className="group rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card border border-border"
                 >
                   {post.image_url ? (
                     <img src={post.image_url} alt={post.title} className="h-48 w-full object-cover" />
