@@ -1,19 +1,10 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useSocialLinks } from "@/hooks/useSocialLinks";
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { data: links = [] } = useSocialLinks();
-
-  const whatsappLink = links.find((l) => l.platform === "whatsapp" && l.enabled);
-  const whatsappHref = whatsappLink
-    ? `https://wa.me/${whatsappLink.value.replace(/[^0-9+]/g, "").replace("+", "")}`
-    : "https://wa.me/";
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -24,6 +15,10 @@ const HeroSection = () => {
     }, sectionRef);
     return () => ctx.revert();
   }, []);
+
+  const scrollTo = (id: string) => {
+    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden max-w-[100vw]">
@@ -51,19 +46,11 @@ const HeroSection = () => {
             <p className="hero-sub mt-6 max-w-lg text-lg leading-relaxed text-white/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.2)]">
               {t("hero.subtitle")}
             </p>
-            <div className="relative z-20 mt-10 flex flex-wrap gap-4">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-cta btn-3d rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg opacity-100 inline-flex items-center"
-              >
+            <div className="mt-10 flex flex-wrap gap-4">
+              <button onClick={() => scrollTo("#quote")} className="hero-cta btn-3d rounded-lg gradient-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg">
                 {t("hero.cta1")}
-              </a>
-              <button
-                onClick={() => navigate("/about-us")}
-                className="hero-cta btn-3d rounded-lg bg-secondary px-8 py-3.5 text-sm font-semibold text-secondary-foreground shadow-lg opacity-100 border border-border inline-flex items-center"
-              >
+              </button>
+              <button onClick={() => scrollTo("#contact")} className="hero-cta btn-3d glass rounded-lg px-8 py-3.5 text-sm font-semibold text-white border-white/20">
                 {t("hero.cta2")}
               </button>
             </div>
