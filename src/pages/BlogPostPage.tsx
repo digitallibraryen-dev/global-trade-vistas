@@ -26,6 +26,12 @@ const BlogPostPage = () => {
   const { t } = useTranslation();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const { data: socialLinks = [] } = useSocialLinks();
+
+  const whatsappLink = socialLinks.find((l) => l.platform === "whatsapp" && l.enabled);
+  const dynamicWhatsappNumber = whatsappLink
+    ? whatsappLink.value.replace(/[^0-9+]/g, "").replace("+", "")
+    : "";
 
   useEffect(() => {
     if (!slug) return;
@@ -42,7 +48,6 @@ const BlogPostPage = () => {
   }, [slug]);
 
   const siteUrl = "https://almonesi.com";
-  const whatsappNumber = "8618559182592";
 
   // JSON-LD structured data
   const jsonLd = post
