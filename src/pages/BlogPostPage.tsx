@@ -153,7 +153,7 @@ const BlogPostPage = () => {
               })}
             </p>
             <a
-              href={`https://wa.me/${whatsappNumber}`}
+              href={`https://wa.me/${dynamicWhatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white shadow-md transition-transform hover:scale-105"
