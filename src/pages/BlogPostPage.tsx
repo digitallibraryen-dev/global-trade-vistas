@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-
+import { useSocialLinks } from "@/hooks/useSocialLinks";
 interface BlogPost {
   id: string;
   title: string;
@@ -26,6 +26,12 @@ const BlogPostPage = () => {
   const { t } = useTranslation();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const { data: socialLinks = [] } = useSocialLinks();
+
+  const whatsappLink = socialLinks.find((l) => l.platform === "whatsapp" && l.enabled);
+  const dynamicWhatsappNumber = whatsappLink
+    ? whatsappLink.value.replace(/[^0-9+]/g, "").replace("+", "")
+    : "";
 
   useEffect(() => {
     if (!slug) return;
@@ -42,7 +48,6 @@ const BlogPostPage = () => {
   }, [slug]);
 
   const siteUrl = "https://almonesi.com";
-  const whatsappNumber = "8618559182592";
 
   // JSON-LD structured data
   const jsonLd = post
@@ -148,7 +153,7 @@ const BlogPostPage = () => {
               })}
             </p>
             <a
-              href={`https://wa.me/${whatsappNumber}`}
+              href={`https://wa.me/${dynamicWhatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white shadow-md transition-transform hover:scale-105"
