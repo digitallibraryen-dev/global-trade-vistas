@@ -17,13 +17,15 @@ interface BlogPost {
   meta_title: string | null;
   meta_description: string | null;
   published: boolean;
+  author: string | null;
+  category: string | null;
 }
 
 const BlogManager = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [editing, setEditing] = useState<BlogPost | null>(null);
   const [form, setForm] = useState({
-    title: "", slug: "", excerpt: "", content: "", image_url: "", meta_title: "", meta_description: "", published: false,
+    title: "", slug: "", excerpt: "", content: "", image_url: "", meta_title: "", meta_description: "", published: false, author: "Almonesi Team", category: "General",
   });
 
   const fetchPosts = async () => {
@@ -37,7 +39,7 @@ const BlogManager = () => {
     title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
   const resetForm = () => {
-    setForm({ title: "", slug: "", excerpt: "", content: "", image_url: "", meta_title: "", meta_description: "", published: false });
+    setForm({ title: "", slug: "", excerpt: "", content: "", image_url: "", meta_title: "", meta_description: "", published: false, author: "Almonesi Team", category: "General" });
     setEditing(null);
   };
 
@@ -46,7 +48,16 @@ const BlogManager = () => {
       toast.error("Title and slug are required");
       return;
     }
-    const payload = { ...form, excerpt: form.excerpt || null, content: form.content || null, image_url: form.image_url || null, meta_title: form.meta_title || null, meta_description: form.meta_description || null };
+    const payload = {
+      ...form,
+      excerpt: form.excerpt || null,
+      content: form.content || null,
+      image_url: form.image_url || null,
+      meta_title: form.meta_title || null,
+      meta_description: form.meta_description || null,
+      author: form.author || "Almonesi Team",
+      category: form.category || "General",
+    };
     if (editing) {
       const { error } = await supabase.from("blog_posts").update(payload as any).eq("id", editing.id);
       if (error) { toast.error(error.message); return; }
@@ -71,7 +82,7 @@ const BlogManager = () => {
     setForm({
       title: p.title, slug: p.slug, excerpt: p.excerpt || "", content: p.content || "",
       image_url: p.image_url || "", meta_title: p.meta_title || "", meta_description: p.meta_description || "",
-      published: p.published,
+      published: p.published, author: p.author || "Almonesi Team", category: p.category || "General",
     });
   };
 
@@ -84,9 +95,13 @@ const BlogManager = () => {
           setForm({ ...form, title: e.target.value, slug: editing ? form.slug : generateSlug(e.target.value) });
         }} />
         <Input placeholder="Slug (URL)" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
+        <div className="grid grid-cols-2 gap-3">
+          <Input placeholder="Author" value={form.author} onChange={(e) => setForm({ ...form, author: e.target.value })} />
+          <Input placeholder="Category" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
+        </div>
         <Input placeholder="Image URL" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
         <Textarea placeholder="Excerpt (short summary)" value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} rows={2} />
-        <Textarea placeholder="Full content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={8} />
+        <Textarea placeholder="Full content (Markdown or HTML supported)" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={8} />
         <Input placeholder="SEO Meta Title" value={form.meta_title} onChange={(e) => setForm({ ...form, meta_title: e.target.value })} />
         <Input placeholder="SEO Meta Description" value={form.meta_description} onChange={(e) => setForm({ ...form, meta_description: e.target.value })} />
         <div className="flex items-center gap-3">
@@ -105,7 +120,7 @@ const BlogManager = () => {
           <div key={p.id} className="glass rounded-xl p-4 flex items-center justify-between gap-4">
             <div className="min-w-0">
               <h4 className="font-medium text-foreground truncate">{p.title}</h4>
-              <p className="text-xs text-muted-foreground">/blog/{p.slug} · {p.published ? "Published" : "Draft"}</p>
+              <p className="text-xs text-muted-foreground">/blog/{p.slug} · {p.published ? "Published" : "Draft"} · {p.category || "General"}</p>
             </div>
             <div className="flex gap-2 shrink-0">
               <button onClick={() => startEdit(p)} className="p-2 rounded-lg hover:bg-secondary text-muted-foreground">
