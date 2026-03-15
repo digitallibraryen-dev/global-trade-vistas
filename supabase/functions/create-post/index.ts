@@ -18,7 +18,6 @@ Deno.serve(async (req) => {
     });
   }
 
-  // Verify API key
   const authHeader = req.headers.get("Authorization");
   const apiKey = Deno.env.get("BLOG_API_KEY");
 
@@ -31,7 +30,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { title, content, image_url, slug, seo_meta_description, excerpt, published } = body;
+    const { title, content, image_url, slug, seo_meta_description, excerpt, published, author, category } = body;
 
     if (!title || !slug) {
       return new Response(
@@ -54,6 +53,8 @@ Deno.serve(async (req) => {
       meta_description: seo_meta_description || null,
       meta_title: title,
       published: published !== undefined ? published : true,
+      author: author || "Almonesi Team",
+      category: category || "General",
     }).select().single();
 
     if (error) {
