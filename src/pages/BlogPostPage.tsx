@@ -417,13 +417,17 @@ const BlogPostPage = () => {
                         to={`/blog/${rp.slug}`}
                         className="group rounded-2xl overflow-hidden border border-border bg-card shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                       >
-                        {rp.image_url ? (
-                          <img src={rp.image_url} alt={rp.title} className="h-40 w-full object-cover" loading="lazy" />
-                        ) : (
-                          <div className="h-40 w-full bg-primary/10 flex items-center justify-center">
-                            <span className="text-primary/30 text-sm">Blog</span>
-                          </div>
-                        )}
+                        <OptimizedImage
+                          src={rp.image_url}
+                          alt={rp.title}
+                          className="h-40 w-full object-cover"
+                          size="thumbnail"
+                          fallback={
+                            <div className="h-40 w-full bg-primary/10 flex items-center justify-center">
+                              <span className="text-primary/30 text-sm">Blog</span>
+                            </div>
+                          }
+                        />
                         <div className="p-4">
                           {rp.category && (
                             <span className="text-xs font-medium text-primary">{rp.category}</span>
