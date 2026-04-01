@@ -240,11 +240,11 @@ const BlogPostPage = () => {
         <section className="relative">
           {post.image_url && (
             <div className="w-full max-h-[520px] overflow-hidden">
-              <img
+              <OptimizedImage
                 src={post.image_url}
                 alt={post.title}
                 className="w-full h-full object-cover"
-                loading="eager"
+                size="medium"
               />
             </div>
           )}
