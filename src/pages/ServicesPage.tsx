@@ -75,13 +75,17 @@ const ServicesPage = () => {
                 const localDesc = loc(s, "description");
                 return (
                   <TiltCard key={s.id} className="glass rounded-2xl overflow-hidden">
-                    {s.image_url ? (
-                      <img src={s.image_url} alt={localTitle} className="h-48 w-full object-cover" />
-                    ) : (
-                      <div className="h-48 w-full flex items-center justify-center gradient-primary">
-                        <span className="text-primary-foreground/50 text-sm">Service</span>
-                      </div>
-                    )}
+                    <OptimizedImage
+                      src={s.image_url}
+                      alt={localTitle}
+                      className="h-48 w-full object-cover"
+                      size="thumbnail"
+                      fallback={
+                        <div className="h-48 w-full flex items-center justify-center gradient-primary">
+                          <span className="text-primary-foreground/50 text-sm">Service</span>
+                        </div>
+                      }
+                    />
                     <div className="p-5">
                       <h3 className="text-lg font-semibold text-foreground">{localTitle}</h3>
                       {localDesc && (
