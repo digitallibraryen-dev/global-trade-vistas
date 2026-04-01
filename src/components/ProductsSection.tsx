@@ -6,6 +6,7 @@ import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
+import OptimizedImage from "./OptimizedImage";
 
 interface Product {
   id: string;
@@ -66,13 +67,17 @@ const ProductsSection = () => {
             const localDesc = loc(p, "description");
             return (
               <TiltCard key={p.id} className="glass-strong rounded-xl overflow-hidden">
-                {p.image_url ? (
-                  <img src={p.image_url} alt={localName} className="w-full h-48 object-cover" loading="lazy" />
-                ) : (
-                  <div className="w-full h-48 bg-muted flex items-center justify-center">
-                    <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
-                  </div>
-                )}
+                <OptimizedImage
+                  src={p.image_url}
+                  alt={localName}
+                  className="w-full h-48 object-cover"
+                  size="thumbnail"
+                  fallback={
+                    <div className="w-full h-48 bg-muted flex items-center justify-center">
+                      <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
+                    </div>
+                  }
+                />
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-semibold text-foreground">{localName}</h3>
                   {localDesc && <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>}

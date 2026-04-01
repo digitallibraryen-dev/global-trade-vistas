@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface BlogPost {
   id: string;
@@ -57,13 +58,17 @@ const BlogPage = () => {
                   to={`/blog/${post.slug}`}
                   className="group rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg bg-card border border-border"
                 >
-                  {post.image_url ? (
-                    <img src={post.image_url} alt={post.title} className="h-48 w-full object-cover" />
-                  ) : (
-                    <div className="h-48 w-full flex items-center justify-center" style={{ backgroundColor: '#003f7f' }}>
-                      <span className="text-white/50 text-sm">Blog</span>
-                    </div>
-                  )}
+                  <OptimizedImage
+                    src={post.image_url}
+                    alt={post.title}
+                    className="h-48 w-full object-cover"
+                    size="thumbnail"
+                    fallback={
+                      <div className="h-48 w-full flex items-center justify-center bg-primary/80">
+                        <span className="text-primary-foreground/50 text-sm">Blog</span>
+                      </div>
+                    }
+                  />
                   <div className="p-5">
                     <p className="text-xs text-muted-foreground">{format(new Date(post.created_at), "MMM d, yyyy")}</p>
                     <h3 className="mt-2 text-lg font-semibold text-foreground leading-snug group-hover:text-primary transition-colors">
