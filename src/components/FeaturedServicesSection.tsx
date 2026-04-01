@@ -7,6 +7,7 @@ import { WhatsappLogo } from "@phosphor-icons/react";
 import * as PhosphorIcons from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
+import OptimizedImage from "./OptimizedImage";
 
 interface Service {
   id: string;

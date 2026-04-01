@@ -6,6 +6,7 @@ import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
+import OptimizedImage from "./OptimizedImage";
 
 interface Product {
   id: string;

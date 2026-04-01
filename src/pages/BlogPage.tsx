@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface BlogPost {
   id: string;

@@ -10,6 +10,7 @@ import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
 import TiltCard from "@/components/TiltCard";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface Service {
   id: string;
