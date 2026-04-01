@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface BlogPost {
   id: string;
