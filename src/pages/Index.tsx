@@ -1,22 +1,30 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, lazy, Suspense } from "react";
 import Preloader from "@/components/Preloader";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutPreview from "@/components/AboutPreview";
-import OurImpactSection from "@/components/OurImpactSection";
-import ServiceProcessSection from "@/components/ServiceProcessSection";
-import HowItWorksSection from "@/components/HowItWorksSection";
-import FeaturedServicesSection from "@/components/FeaturedServicesSection";
-import ProductsSection from "@/components/ProductsSection";
-import WhyChooseSection from "@/components/WhyChooseSection";
-import MiddleEastMapSection from "@/components/MiddleEastMapSection";
-import ReviewsSection from "@/components/ReviewsSection";
-import FAQSection from "@/components/FAQSection";
-import TrustedPartnersSlider from "@/components/TrustedPartnersSlider";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import WeChatButton from "@/components/WeChatButton";
 import CookieConsent from "@/components/CookieConsent";
+
+// Lazy-load below-the-fold sections
+const OurImpactSection = lazy(() => import("@/components/OurImpactSection"));
+const ServiceProcessSection = lazy(() => import("@/components/ServiceProcessSection"));
+const HowItWorksSection = lazy(() => import("@/components/HowItWorksSection"));
+const FeaturedServicesSection = lazy(() => import("@/components/FeaturedServicesSection"));
+const ProductsSection = lazy(() => import("@/components/ProductsSection"));
+const WhyChooseSection = lazy(() => import("@/components/WhyChooseSection"));
+const MiddleEastMapSection = lazy(() => import("@/components/MiddleEastMapSection"));
+const TrustedPartnersSlider = lazy(() => import("@/components/TrustedPartnersSlider"));
+const ReviewsSection = lazy(() => import("@/components/ReviewsSection"));
+const FAQSection = lazy(() => import("@/components/FAQSection"));
+
+const SectionFallback = () => (
+  <div className="h-40 flex items-center justify-center">
+    <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+  </div>
+);
 
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
@@ -33,16 +41,18 @@ const Index = () => {
         <main>
           <HeroSection />
           <AboutPreview />
-          <OurImpactSection />
-          <ServiceProcessSection />
-          <HowItWorksSection />
-          <FeaturedServicesSection />
-          <ProductsSection />
-          <WhyChooseSection />
-          <MiddleEastMapSection />
-          <TrustedPartnersSlider />
-          <ReviewsSection />
-          <FAQSection />
+          <Suspense fallback={<SectionFallback />}>
+            <OurImpactSection />
+            <ServiceProcessSection />
+            <HowItWorksSection />
+            <FeaturedServicesSection />
+            <ProductsSection />
+            <WhyChooseSection />
+            <MiddleEastMapSection />
+            <TrustedPartnersSlider />
+            <ReviewsSection />
+            <FAQSection />
+          </Suspense>
         </main>
         <Footer />
         <WhatsAppButton />

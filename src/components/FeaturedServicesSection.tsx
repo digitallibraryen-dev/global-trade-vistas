@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
-import * as PhosphorIcons from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
 import OptimizedImage from "./OptimizedImage";
@@ -51,10 +50,9 @@ const FeaturedServicesSection = () => {
     return `https://wa.me/${number}?text=${message}`;
   };
 
-  const getIcon = (iconName: string | null) => {
-    if (!iconName) return null;
-    const Icon = (PhosphorIcons as unknown as Record<string, React.ElementType>)[iconName];
-    return Icon ? <Icon size={18} weight="duotone" className="text-primary" /> : null;
+  const getIcon = (_iconName: string | null) => {
+    // Dynamic icon lookup removed to avoid importing entire icon library (~4MB)
+    return null;
   };
 
   return (
