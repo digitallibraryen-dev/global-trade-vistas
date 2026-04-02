@@ -50,10 +50,9 @@ const FeaturedServicesSection = () => {
     return `https://wa.me/${number}?text=${message}`;
   };
 
-  const getIcon = (iconName: string | null) => {
-    if (!iconName) return null;
-    const Icon = (PhosphorIcons as unknown as Record<string, React.ElementType>)[iconName];
-    return Icon ? <Icon size={18} weight="duotone" className="text-primary" /> : null;
+  const getIcon = (_iconName: string | null) => {
+    // Dynamic icon lookup removed to avoid importing entire icon library (~4MB)
+    return null;
   };
 
   return (
