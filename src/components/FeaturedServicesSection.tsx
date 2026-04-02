@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
-import * as PhosphorIcons from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
 import OptimizedImage from "./OptimizedImage";
