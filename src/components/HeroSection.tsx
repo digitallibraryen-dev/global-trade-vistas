@@ -1,19 +1,26 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useTranslation } from "react-i18next";
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
+  const [splineVisible, setSplineVisible] = useState(false);
 
   useEffect(() => {
+    // Delay Spline iframe load to prioritize critical content
+    const timer = setTimeout(() => setSplineVisible(true), 1500);
+    
     const ctx = gsap.context(() => {
       gsap.from(".hero-headline", { opacity: 0, y: 60, filter: "blur(10px)", duration: 1.2, ease: "power3.out", delay: 0.2 });
       gsap.from(".hero-sub", { opacity: 0, y: 40, duration: 1, ease: "power3.out", delay: 0.5 });
       gsap.from(".hero-cta", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out", delay: 0.8, stagger: 0.15 });
       gsap.from(".hero-spline", { opacity: 0, duration: 1.5, ease: "power2.out", delay: 0.3 });
     }, sectionRef);
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+    };
   }, []);
 
   const scrollTo = (id: string) => {
@@ -23,12 +30,14 @@ const HeroSection = () => {
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden max-w-[100vw]">
       <div className="hero-spline absolute inset-0 z-0 overflow-hidden">
-        <iframe
-          src="https://my.spline.design/herobannerfortransportandlogisticscompanygmw2425-GYw1Ka0Iu2NG1giJfqOEBM46/"
-          frameBorder="0" width="100%" height="100%"
-          className="pointer-events-none absolute inset-0 w-full h-full" title="3D Hero Background" loading="lazy"
-          style={{ minWidth: 0 }}
-        />
+        {splineVisible && (
+          <iframe
+            src="https://my.spline.design/herobannerfortransportandlogisticscompanygmw2425-GYw1Ka0Iu2NG1giJfqOEBM46/"
+            frameBorder="0" width="100%" height="100%"
+            className="pointer-events-none absolute inset-0 w-full h-full" title="3D Hero Background" loading="lazy"
+            style={{ minWidth: 0 }}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-transparent pointer-events-none z-[2]" />
         <div className="absolute bottom-0 right-0 w-[220px] h-[60px] pointer-events-none z-[5]" style={{ backgroundColor: "#003f7f" }} />
       </div>
