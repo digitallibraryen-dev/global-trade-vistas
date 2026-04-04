@@ -28,6 +28,8 @@ const FeaturedServicesSection = () => {
 
   const { data: services = [] } = useQuery({
     queryKey: ["public-services"],
+    staleTime: 10 * 60 * 1000,
+    gcTime: 20 * 60 * 1000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("services")

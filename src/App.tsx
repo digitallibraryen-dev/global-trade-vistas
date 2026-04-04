@@ -39,7 +39,16 @@ const ImportGuidePage = lazy(() => import("./pages/ImportGuidePage"));
 const SourcingGuidePage = lazy(() => import("./pages/SourcingGuidePage"));
 const AdminGuard = lazy(() => import("./components/AdminGuard"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,   // 5 minutes
+      gcTime: 15 * 60 * 1000,     // 15 minutes
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const PageFallback = () => (
   <div className="min-h-screen flex items-center justify-center">

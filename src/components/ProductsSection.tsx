@@ -27,6 +27,8 @@ const ProductsSection = () => {
 
   const { data: products = [] } = useQuery({
     queryKey: ["public-products"],
+    staleTime: 10 * 60 * 1000,
+    gcTime: 20 * 60 * 1000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
