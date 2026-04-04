@@ -197,7 +197,16 @@ const ServiceManager = () => {
         <div className="space-y-2">
           <Label>Image</Label>
           <div className="flex gap-3 items-center">
-            <Input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] || null)} />
+            <Input type="file" accept="image/*" onChange={(e) => {
+              const f = e.target.files?.[0] || null;
+              if (f && f.size > 5 * 1024 * 1024) {
+                toast({ title: "Image too large", description: "Please upload an image smaller than 5MB.", variant: "destructive" });
+                e.target.value = "";
+                return;
+              }
+              setImageFile(f);
+            }} />
+            {imageFile && <p className="text-xs text-muted-foreground mt-1">Original: {formatFileSize(imageFile.size)} → Will be optimized to WebP</p>}
             {(form.image_url || imageFile) && <Image size={20} className="text-primary" />}
           </div>
           {form.image_url && !imageFile && (

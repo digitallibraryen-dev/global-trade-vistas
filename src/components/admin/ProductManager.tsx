@@ -201,7 +201,16 @@ const ProductManager = () => {
 
           <div>
             <Label htmlFor="product-image">Product Image</Label>
-            <Input id="product-image" type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
+            <Input id="product-image" type="file" accept="image/*" onChange={(e) => {
+              const f = e.target.files?.[0] ?? null;
+              if (f && f.size > 5 * 1024 * 1024) {
+                toast({ title: "Image too large", description: "Please upload an image smaller than 5MB.", variant: "destructive" });
+                e.target.value = "";
+                return;
+              }
+              setImageFile(f);
+            }} />
+            {imageFile && <p className="text-xs text-muted-foreground mt-1">Original: {formatFileSize(imageFile.size)} → Will be optimized to WebP</p>}
           </div>
           <div className="flex gap-2">
             <Button onClick={() => saveMutation.mutate()} disabled={saving || !name.trim()}>
