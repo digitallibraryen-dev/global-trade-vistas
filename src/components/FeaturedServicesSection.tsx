@@ -71,7 +71,7 @@ const FeaturedServicesSection = () => {
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-center">{t("featuredServices.subtitle")}</p>
         </ScrollReveal>
         <ScrollReveal animation="card" delay={0.3} stagger={0.12} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => {
+          {services.map((s, i) => {
             const localTitle = loc(s, "title");
             const localDesc = loc(s, "description");
             return (
