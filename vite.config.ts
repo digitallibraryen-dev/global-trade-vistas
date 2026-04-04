@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => ({
           query: ["@tanstack/react-query"],
           supabase: ["@supabase/supabase-js"],
           gsap: ["gsap"],
+          motion: ["framer-motion"],
           i18n: ["i18next", "react-i18next", "i18next-browser-languagedetector"],
           ui: [
             "@radix-ui/react-accordion",
