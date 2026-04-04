@@ -106,6 +106,9 @@ const TrustedPartnersSlider = () => {
                 alt={`${p.name} logo`}
                 className="h-10 w-10 shrink-0 object-contain transition-all duration-300 group-hover:scale-110"
                 loading="lazy"
+                decoding="async"
+                width={40}
+                height={40}
               />
               <span className="whitespace-nowrap text-sm font-bold text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
                 {p.name}

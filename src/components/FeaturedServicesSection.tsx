@@ -7,6 +7,7 @@ import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
 import OptimizedImage from "./OptimizedImage";
+import { getServiceFallback } from "@/lib/fallbackImages";
 
 interface Service {
   id: string;
@@ -28,6 +29,8 @@ const FeaturedServicesSection = () => {
 
   const { data: services = [] } = useQuery({
     queryKey: ["public-services"],
+    staleTime: 10 * 60 * 1000,
+    gcTime: 20 * 60 * 1000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("services")
@@ -68,20 +71,20 @@ const FeaturedServicesSection = () => {
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-center">{t("featuredServices.subtitle")}</p>
         </ScrollReveal>
         <ScrollReveal animation="card" delay={0.3} stagger={0.12} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => {
+          {services.map((s, i) => {
             const localTitle = loc(s, "title");
             const localDesc = loc(s, "description");
             return (
               <TiltCard key={s.id} className="glass-strong rounded-xl overflow-hidden">
                 <OptimizedImage
-                  src={s.image_url}
+                  src={s.image_url || getServiceFallback(i)}
                   alt={localTitle}
                   className="w-full h-48 object-cover"
                   size="thumbnail"
+                  width={480}
+                  height={307}
                   fallback={
-                    <div className="w-full h-48 bg-muted flex items-center justify-center">
-                      <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
-                    </div>
+                    <img src={getServiceFallback(i)} alt={localTitle} className="w-full h-48 object-cover" loading="lazy" decoding="async" width={480} height={307} />
                   }
                 />
                 <div className="p-5 space-y-3">

@@ -7,6 +7,7 @@ import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 import TiltCard from "./TiltCard";
 import OptimizedImage from "./OptimizedImage";
+import { getProductFallback } from "@/lib/fallbackImages";
 
 interface Product {
   id: string;
@@ -27,6 +28,8 @@ const ProductsSection = () => {
 
   const { data: products = [] } = useQuery({
     queryKey: ["public-products"],
+    staleTime: 10 * 60 * 1000,
+    gcTime: 20 * 60 * 1000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
@@ -62,20 +65,20 @@ const ProductsSection = () => {
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-center">{t("products.subtitle")}</p>
         </ScrollReveal>
         <ScrollReveal animation="card" delay={0.3} stagger={0.12} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => {
+          {products.map((p, i) => {
             const localName = loc(p, "name");
             const localDesc = loc(p, "description");
             return (
               <TiltCard key={p.id} className="glass-strong rounded-xl overflow-hidden">
                 <OptimizedImage
-                  src={p.image_url}
+                  src={p.image_url || getProductFallback(i)}
                   alt={localName}
                   className="w-full h-48 object-cover"
                   size="thumbnail"
+                  width={480}
+                  height={307}
                   fallback={
-                    <div className="w-full h-48 bg-muted flex items-center justify-center">
-                      <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
-                    </div>
+                    <img src={getProductFallback(i)} alt={localName} className="w-full h-48 object-cover" loading="lazy" decoding="async" width={480} height={307} />
                   }
                 />
                 <div className="p-5 space-y-3">
