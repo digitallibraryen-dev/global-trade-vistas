@@ -49,11 +49,25 @@ const ProductManager = () => {
   });
 
   const uploadImage = async (file: File): Promise<string> => {
-    const ext = file.name.split(".").pop();
-    const path = `${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file);
-    if (error) throw error;
-    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+    // Optimize: compress, resize to 800px, convert to WebP + generate thumbnail
+    const optimized = await optimizeImageForUpload(file);
+    
+    // Upload main image
+    const mainPath = `products/${optimized.mainName}`;
+    const { error: mainErr } = await supabase.storage.from("product-images").upload(mainPath, optimized.main, { contentType: "image/webp" });
+    if (mainErr) throw mainErr;
+    
+    // Upload thumbnail
+    const thumbPath = `products/${optimized.thumbName}`;
+    await supabase.storage.from("product-images").upload(thumbPath, optimized.thumbnail, { contentType: "image/webp" });
+    
+    const { data } = supabase.storage.from("product-images").getPublicUrl(mainPath);
+    
+    toast({
+      title: "Image optimized",
+      description: `Main: ${formatFileSize(optimized.main.size)} · Thumb: ${formatFileSize(optimized.thumbnail.size)}`,
+    });
+    
     return data.publicUrl;
   };
 
