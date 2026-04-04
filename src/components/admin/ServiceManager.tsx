@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash, FloppyDisk, Image } from "@phosphor-icons/react";
+import { optimizeImageForUpload, formatFileSize } from "@/lib/imageOptimizer";
 
 const ICON_OPTIONS = [
   "Package", "Truck", "Airplane", "Anchor", "Factory", "Warehouse",
@@ -53,12 +54,29 @@ const ServiceManager = () => {
   useEffect(() => { fetchServices(); }, []);
 
   const uploadImage = async (file: File): Promise<string | null> => {
-    const ext = file.name.split(".").pop();
-    const path = `services/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file);
-    if (error) { toast({ title: "Upload failed", description: error.message, variant: "destructive" }); return null; }
-    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
-    return data.publicUrl;
+    try {
+      const optimized = await optimizeImageForUpload(file);
+      
+      const mainPath = `services/${optimized.mainName}`;
+      const { error: mainErr } = await supabase.storage.from("product-images").upload(mainPath, optimized.main, { contentType: "image/webp" });
+      if (mainErr) { toast({ title: "Upload failed", description: mainErr.message, variant: "destructive" }); return null; }
+      
+      // Upload thumbnail
+      const thumbPath = `services/${optimized.thumbName}`;
+      await supabase.storage.from("product-images").upload(thumbPath, optimized.thumbnail, { contentType: "image/webp" });
+      
+      const { data } = supabase.storage.from("product-images").getPublicUrl(mainPath);
+      
+      toast({
+        title: "Image optimized",
+        description: `Main: ${formatFileSize(optimized.main.size)} · Thumb: ${formatFileSize(optimized.thumbnail.size)}`,
+      });
+      
+      return data.publicUrl;
+    } catch (err: any) {
+      toast({ title: "Image error", description: err.message, variant: "destructive" });
+      return null;
+    }
   };
 
   const handleSave = async () => {
@@ -179,7 +197,16 @@ const ServiceManager = () => {
         <div className="space-y-2">
           <Label>Image</Label>
           <div className="flex gap-3 items-center">
-            <Input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] || null)} />
+            <Input type="file" accept="image/*" onChange={(e) => {
+              const f = e.target.files?.[0] || null;
+              if (f && f.size > 5 * 1024 * 1024) {
+                toast({ title: "Image too large", description: "Please upload an image smaller than 5MB.", variant: "destructive" });
+                e.target.value = "";
+                return;
+              }
+              setImageFile(f);
+            }} />
+            {imageFile && <p className="text-xs text-muted-foreground mt-1">Original: {formatFileSize(imageFile.size)} → Will be optimized to WebP</p>}
             {(form.image_url || imageFile) && <Image size={20} className="text-primary" />}
           </div>
           {form.image_url && !imageFile && (

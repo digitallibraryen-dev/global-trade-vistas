@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2, Pencil, Plus, ArrowUp, ArrowDown } from "lucide-react";
+import { optimizeImageForUpload, formatFileSize } from "@/lib/imageOptimizer";
 
 interface Product {
   id: string;
@@ -48,11 +49,25 @@ const ProductManager = () => {
   });
 
   const uploadImage = async (file: File): Promise<string> => {
-    const ext = file.name.split(".").pop();
-    const path = `${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file);
-    if (error) throw error;
-    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+    // Optimize: compress, resize to 800px, convert to WebP + generate thumbnail
+    const optimized = await optimizeImageForUpload(file);
+    
+    // Upload main image
+    const mainPath = `products/${optimized.mainName}`;
+    const { error: mainErr } = await supabase.storage.from("product-images").upload(mainPath, optimized.main, { contentType: "image/webp" });
+    if (mainErr) throw mainErr;
+    
+    // Upload thumbnail
+    const thumbPath = `products/${optimized.thumbName}`;
+    await supabase.storage.from("product-images").upload(thumbPath, optimized.thumbnail, { contentType: "image/webp" });
+    
+    const { data } = supabase.storage.from("product-images").getPublicUrl(mainPath);
+    
+    toast({
+      title: "Image optimized",
+      description: `Main: ${formatFileSize(optimized.main.size)} · Thumb: ${formatFileSize(optimized.thumbnail.size)}`,
+    });
+    
     return data.publicUrl;
   };
 
@@ -186,7 +201,16 @@ const ProductManager = () => {
 
           <div>
             <Label htmlFor="product-image">Product Image</Label>
-            <Input id="product-image" type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
+            <Input id="product-image" type="file" accept="image/*" onChange={(e) => {
+              const f = e.target.files?.[0] ?? null;
+              if (f && f.size > 5 * 1024 * 1024) {
+                toast({ title: "Image too large", description: "Please upload an image smaller than 5MB.", variant: "destructive" });
+                e.target.value = "";
+                return;
+              }
+              setImageFile(f);
+            }} />
+            {imageFile && <p className="text-xs text-muted-foreground mt-1">Original: {formatFileSize(imageFile.size)} → Will be optimized to WebP</p>}
           </div>
           <div className="flex gap-2">
             <Button onClick={() => saveMutation.mutate()} disabled={saving || !name.trim()}>
