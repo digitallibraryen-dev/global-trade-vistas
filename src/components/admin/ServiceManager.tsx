@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash, FloppyDisk, Image } from "@phosphor-icons/react";
+import { optimizeImageForUpload, formatFileSize } from "@/lib/imageOptimizer";
 
 const ICON_OPTIONS = [
   "Package", "Truck", "Airplane", "Anchor", "Factory", "Warehouse",
