@@ -77,14 +77,14 @@ const FeaturedServicesSection = () => {
             return (
               <TiltCard key={s.id} className="glass-strong rounded-xl overflow-hidden">
                 <OptimizedImage
-                  src={s.image_url}
+                  src={s.image_url || getServiceFallback(i)}
                   alt={localTitle}
                   className="w-full h-48 object-cover"
                   size="thumbnail"
+                  width={480}
+                  height={307}
                   fallback={
-                    <div className="w-full h-48 bg-muted flex items-center justify-center">
-                      <span className="text-muted-foreground text-sm">{t("products.noImage")}</span>
-                    </div>
+                    <img src={getServiceFallback(i)} alt={localTitle} className="w-full h-48 object-cover" loading="lazy" decoding="async" width={480} height={307} />
                   }
                 />
                 <div className="p-5 space-y-3">
