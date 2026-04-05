@@ -102,58 +102,7 @@
   }
 }
 
-/* Hero animated gradient background */
-.hero-gradient-bg {
-  background: linear-gradient(135deg, #003f7f 0%, #0a1628 30%, #002855 60%, #001a3a 100%);
-  animation: heroGradientShift 12s ease-in-out infinite alternate;
-}
-
-@keyframes heroGradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.hero-gradient-bg {
-  background-size: 200% 200%;
-}
-
-.hero-orb-1 {
-  background: radial-gradient(circle, hsl(200 90% 50% / 0.4) 0%, transparent 70%);
-  animation: heroFloat1 8s ease-in-out infinite alternate;
-}
-
-.hero-orb-2 {
-  background: radial-gradient(circle, hsl(215 80% 50% / 0.35) 0%, transparent 70%);
-  animation: heroFloat2 10s ease-in-out infinite alternate;
-}
-
-.hero-orb-3 {
-  background: radial-gradient(circle, hsl(190 70% 40% / 0.3) 0%, transparent 70%);
-  animation: heroFloat3 7s ease-in-out infinite alternate;
-}
-
-@keyframes heroFloat1 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(-30px, 20px) scale(1.05); }
-}
-
-@keyframes heroFloat2 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(20px, -25px) scale(1.08); }
-}
-
-@keyframes heroFloat3 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(-15px, -20px) scale(0.95); }
-}
-
-.hero-grid-overlay {
-  background-image:
-    linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
+/* Hero styles — concentric circles handled inline */
 
 /* Particle network styles removed — now canvas-based */
 
