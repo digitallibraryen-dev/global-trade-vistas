@@ -1,15 +1,14 @@
 import { useEffect, useRef, useCallback } from "react";
 
 /**
- * Theme-aware animated background with diamond particles
- * moving along predefined curved paths (orbital / magnetic field aesthetic).
- *
- * Reads CSS custom-property colors so it adapts to light / dark automatically.
+ * Theme-aware animated hero background with:
+ * - 3 concentric circles centered at bottom-center
+ * - 6 radial curved lines emanating from center
+ * - Blue diamond particles moving along all paths
  */
 
 /* ── helpers ─────────────────────────────────────────────── */
 
-/** Parse an HSL CSS variable value like "215 80% 50%" into an {h,s,l} object */
 function parseHSL(raw: string): { h: number; s: number; l: number } {
   const parts = raw.trim().split(/\s+/);
   return {
@@ -23,41 +22,63 @@ function hslStr(h: number, s: number, l: number, a = 1) {
   return `hsla(${h}, ${s}%, ${l}%, ${a})`;
 }
 
-/* ── path definitions ─────────────────────────────────────── */
+/* ── path building ────────────────────────────────────────── */
 
-interface CurvePath {
-  /** control-point arrays (cubic bezier segments) normalised 0-1 */
+interface PathDef {
   points: [number, number][];
 }
 
-/** Build a set of smooth curved paths that look like orbital / magnetic field lines */
-function buildPaths(w: number, h: number): CurvePath[] {
-  const raw: [number, number][][] = [
-    // large sweeping arcs
-    [[0, 0.25], [0.25, 0.1], [0.5, 0.15], [0.75, 0.05], [1, 0.2]],
-    [[0, 0.5], [0.2, 0.35], [0.5, 0.4], [0.8, 0.3], [1, 0.45]],
-    [[0, 0.75], [0.15, 0.6], [0.4, 0.65], [0.7, 0.55], [1, 0.7]],
-    [[0, 0.9], [0.3, 0.8], [0.6, 0.85], [0.9, 0.75], [1, 0.9]],
-    // crossing diagonals
-    [[0, 0.1], [0.3, 0.4], [0.6, 0.6], [1, 0.95]],
-    [[0, 0.95], [0.35, 0.65], [0.65, 0.35], [1, 0.1]],
-    // tighter curves
-    [[0.1, 0], [0.15, 0.3], [0.2, 0.6], [0.25, 1]],
-    [[0.5, 0], [0.45, 0.25], [0.55, 0.55], [0.5, 1]],
-    [[0.85, 0], [0.8, 0.35], [0.9, 0.7], [0.85, 1]],
-    // extra orbitals
-    [[0, 0.4], [0.2, 0.2], [0.5, 0.3], [0.8, 0.15], [1, 0.35]],
-    [[0, 0.6], [0.25, 0.75], [0.5, 0.7], [0.75, 0.8], [1, 0.6]],
+/** Build 3 concentric circles + 6 radial curves from center bottom */
+function buildPaths(w: number, h: number): PathDef[] {
+  const cx = w / 2;
+  const cy = h * 0.95; // center at bottom
+  const paths: PathDef[] = [];
+
+  // 3 concentric circles (approximated with many points)
+  const radii = [Math.min(w, h) * 0.35, Math.min(w, h) * 0.55, Math.min(w, h) * 0.8];
+  const circleSegments = 60;
+
+  for (const r of radii) {
+    const pts: [number, number][] = [];
+    for (let i = 0; i <= circleSegments; i++) {
+      const angle = (i / circleSegments) * Math.PI * 2;
+      pts.push([cx + Math.cos(angle) * r, cy + Math.sin(angle) * r]);
+    }
+    paths.push({ points: pts });
+  }
+
+  // 6 radial curved lines from center outward
+  const maxRadius = Math.max(w, h) * 0.9;
+  const radialAngles = [
+    -Math.PI / 6,       // 30° right
+    -Math.PI / 3,       // 60° right
+    -Math.PI / 2,       // straight up
+    -2 * Math.PI / 3,   // 60° left
+    -5 * Math.PI / 6,   // 30° left
+    -Math.PI,           // left
   ];
 
-  return raw.map((pts) => ({
-    points: pts.map(([x, y]) => [x * w, y * h] as [number, number]),
-  }));
+  for (const baseAngle of radialAngles) {
+    const pts: [number, number][] = [];
+    const segments = 40;
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments;
+      const r = t * maxRadius;
+      // Add subtle curve by oscillating the angle
+      const curveAmount = Math.sin(t * Math.PI) * 0.15;
+      const angle = baseAngle + curveAmount;
+      pts.push([cx + Math.cos(angle) * r, cy + Math.sin(angle) * r]);
+    }
+    paths.push({ points: pts });
+  }
+
+  return paths;
 }
 
-/** Evaluate a point on a polyline-smoothed path at t ∈ [0,1] using Catmull-Rom */
+/** Evaluate a point on a polyline at t ∈ [0,1] using Catmull-Rom */
 function evalPath(path: [number, number][], t: number): [number, number] {
   const n = path.length - 1;
+  if (n <= 0) return path[0] || [0, 0];
   const seg = Math.min(Math.floor(t * n), n - 1);
   const local = t * n - seg;
 
@@ -69,10 +90,7 @@ function evalPath(path: [number, number][], t: number): [number, number] {
   const catmull = (a: number, b: number, c: number, d: number, u: number) => {
     const u2 = u * u;
     const u3 = u2 * u;
-    return (
-      0.5 *
-      (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u2 + (-a + 3 * b - 3 * c + d) * u3)
-    );
+    return 0.5 * (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u2 + (-a + 3 * b - 3 * c + d) * u3);
   };
 
   return [
@@ -86,23 +104,22 @@ function evalPath(path: [number, number][], t: number): [number, number] {
 interface Particle {
   pathIdx: number;
   t: number;
-  speed: number; // units per frame (normalised 0-1 over path length)
+  speed: number;
   dir: 1 | -1;
   size: number;
   glowRadius: number;
 }
 
-const PARTICLE_COUNT = 45;
-const PATH_LINE_SEGMENTS = 80;
+const PARTICLE_COUNT = 30;
+const PATH_LINE_SEGMENTS = 120;
 
 const ParticleNetwork = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef(0);
-  const pathsRef = useRef<CurvePath[]>([]);
+  const pathsRef = useRef<PathDef[]>([]);
   const particlesRef = useRef<Particle[]>([]);
   const colorsRef = useRef({ bg: "", line: "", particle: "", glow: "" });
 
-  /* Read CSS variables from :root */
   const readThemeColors = useCallback(() => {
     const style = getComputedStyle(document.documentElement);
     const primary = parseHSL(style.getPropertyValue("--primary").trim() || "215 80% 50%");
@@ -111,9 +128,9 @@ const ParticleNetwork = () => {
 
     colorsRef.current = {
       bg: hslStr(bg.h, bg.s, bg.l),
-      line: hslStr(primary.h, primary.s, primary.l, 0.12),
+      line: hslStr(primary.h, primary.s, primary.l, 0.1),
       particle: hslStr(accent.h, accent.s, Math.min(accent.l + 10, 80)),
-      glow: hslStr(accent.h, accent.s, accent.l, 0.5),
+      glow: hslStr(accent.h, accent.s, accent.l, 0.45),
     };
   }, []);
 
@@ -123,10 +140,10 @@ const ParticleNetwork = () => {
       particles.push({
         pathIdx: Math.floor(Math.random() * pathCount),
         t: Math.random(),
-        speed: 0.0008 + Math.random() * 0.0012,
+        speed: 0.0006 + Math.random() * 0.001,
         dir: Math.random() > 0.5 ? 1 : -1,
-        size: 2.5 + Math.random() * 2,
-        glowRadius: 8 + Math.random() * 8,
+        size: 3 + Math.random() * 3,
+        glowRadius: 10 + Math.random() * 10,
       });
     }
     particlesRef.current = particles;
@@ -160,7 +177,6 @@ const ParticleNetwork = () => {
     readThemeColors();
     window.addEventListener("resize", resize);
 
-    // Observe theme changes (class toggle on <html>)
     const observer = new MutationObserver(() => readThemeColors());
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
@@ -169,15 +185,14 @@ const ParticleNetwork = () => {
       const h = canvas.height / dpr;
       const { bg, line, particle, glow } = colorsRef.current;
 
-      // Background
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
       const paths = pathsRef.current;
 
-      // Draw path lines (subtle grid)
+      // Draw path lines
       ctx.strokeStyle = line;
-      ctx.lineWidth = 0.8;
+      ctx.lineWidth = 0.7;
       for (const path of paths) {
         ctx.beginPath();
         for (let i = 0; i <= PATH_LINE_SEGMENTS; i++) {
@@ -189,18 +204,12 @@ const ParticleNetwork = () => {
         ctx.stroke();
       }
 
-      // Update & draw particles
+      // Update & draw particles as diamonds
       const particles = particlesRef.current;
       for (const p of particles) {
-        // Move
         p.t += p.speed * p.dir;
-        if (p.t >= 1) {
-          p.t = 1;
-          p.dir = -1;
-        } else if (p.t <= 0) {
-          p.t = 0;
-          p.dir = 1;
-        }
+        if (p.t >= 1) { p.t = 1; p.dir = -1; }
+        else if (p.t <= 0) { p.t = 0; p.dir = 1; }
 
         const path = paths[p.pathIdx];
         if (!path) continue;
@@ -213,7 +222,7 @@ const ParticleNetwork = () => {
         ctx.fillStyle = grad;
         ctx.fillRect(px - p.glowRadius, py - p.glowRadius, p.glowRadius * 2, p.glowRadius * 2);
 
-        // Diamond shape (rotated square)
+        // Diamond (rotated square)
         ctx.save();
         ctx.translate(px, py);
         ctx.rotate(Math.PI / 4);
