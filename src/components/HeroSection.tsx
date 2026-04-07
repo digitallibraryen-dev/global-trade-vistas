@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
-const ParticleNetwork = lazy(() => import("@/components/ParticleNetwork"));
+const OrbitalBackground = lazy(() => import("@/components/OrbitalBackground"));
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -28,9 +28,9 @@ const HeroSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden max-w-[100vw] bg-background">
-      {/* Animated particle background */}
+      {/* Orbital animated background */}
       <Suspense fallback={null}>
-        <ParticleNetwork />
+        <OrbitalBackground />
       </Suspense>
 
       {/* Content */}
@@ -47,17 +47,17 @@ const HeroSection = () => {
             {t("hero.subtitle")}
           </p>
 
-          <div className="mt-10 flex flex-col items-center gap-3 w-full max-w-xs sm:max-w-sm sm:flex-row sm:justify-center">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => scrollTo("#quote")}
-              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
+              className="hero-cta flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
             >
               {t("hero.cta1")}
               <ArrowUpRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => navigate("/contact")}
-              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
+              className="hero-cta flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
             >
               {t("hero.cta2")}
               <ArrowUpRight className="w-4 h-4" />
