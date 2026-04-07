@@ -33,17 +33,6 @@ const HeroSection = () => {
         <ParticleNetwork />
       </Suspense>
 
-      {/* Subtle orbital rings for depth */}
-      <div className="absolute inset-0 z-[2] flex items-center justify-center pointer-events-none">
-        {[340, 520, 700].map((size, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full border border-primary/[0.07]"
-            style={{ width: size, height: size }}
-          />
-        ))}
-      </div>
-
       {/* Content */}
       <div className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-20 pb-10">
         <div className="flex flex-col items-center text-center max-w-3xl">
@@ -58,17 +47,17 @@ const HeroSection = () => {
             {t("hero.subtitle")}
           </p>
 
-          <div className="mt-10 flex flex-col items-center gap-3 w-full max-w-xs sm:max-w-sm">
+          <div className="mt-10 flex flex-col items-center gap-3 w-full max-w-xs sm:max-w-sm sm:flex-row sm:justify-center">
             <button
               onClick={() => scrollTo("#quote")}
-              className="hero-cta w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
+              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
             >
               {t("hero.cta1")}
               <ArrowUpRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => navigate("/contact")}
-              className="hero-cta w-full flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
+              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
             >
               {t("hero.cta2")}
               <ArrowUpRight className="w-4 h-4" />
