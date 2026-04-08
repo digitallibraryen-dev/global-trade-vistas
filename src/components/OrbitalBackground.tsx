@@ -80,8 +80,8 @@ const getSvgMetrics = (svg: SVGSVGElement): SvgMetrics => {
 };
 
 const svgToScreen = (x: number, y: number, metrics: SvgMetrics) => ({
-  x: (x - metrics.offX) / metrics.scale,
-  y: (y - metrics.offY) / metrics.scale,
+  x: x * metrics.scale + metrics.offX,
+  y: y * metrics.scale + metrics.offY,
 });
 
 const isPointInsideRect = (clientX: number, clientY: number, rect: DOMRect) =>
