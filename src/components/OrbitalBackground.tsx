@@ -25,7 +25,7 @@ const ellipseToPath = (cx: number, cy: number, rx: number, ry: number) =>
 
 const DIAMOND_SIZE = 8;
 const DIAMONDS_PER_PATH = 4;
-const BURST_RADIUS = 30; // proximity threshold in SVG units
+const BURST_RADIUS = 45; // proximity threshold in SVG units
 const PARTICLE_COUNT = 12;
 
 const ELLIPSE_DEFS: Omit<EllipseDef, "id">[] = (() => {
@@ -45,12 +45,13 @@ const ELLIPSE_DEFS: Omit<EllipseDef, "id">[] = (() => {
   return defs;
 })();
 
-/** Get diamond position on ellipse at time t */
+/** Get diamond position on ellipse at time t — matches SVG animateMotion path direction */
 const getDiamondPos = (e: Omit<EllipseDef, "id">, time: number, offset: number) => {
   const t = ((time + offset) % e.duration) / e.duration;
   const angle = t * Math.PI * 2;
+  // SVG path starts at (cx-rx, cy) and sweeps clockwise (in screen coords)
   return {
-    x: e.cx + e.rx * Math.cos(angle),
+    x: e.cx - e.rx * Math.cos(angle),
     y: e.cy + e.ry * Math.sin(angle),
   };
 };
