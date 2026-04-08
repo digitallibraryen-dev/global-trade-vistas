@@ -110,6 +110,7 @@ const ScrollRow = ({ partners, direction, speed = 60 }: ScrollRowProps) => {
   return (
     <div
       className="overflow-hidden"
+      dir="ltr"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
