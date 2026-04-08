@@ -1,17 +1,5 @@
 import { useMemo } from "react";
 
-/**
- * Chargeflow-style orbital background with 3 clusters of concentric ellipses
- * and animated diamond markers on each path.
- *
- * Clusters:
- *  1. Top-Left  – 6 ellipses, center off-screen top-left
- *  2. Top-Right – 6 ellipses, center off-screen top-right (mirror)
- *  3. Bottom-Center – 6 ellipses, center off-screen bottom-center
- *
- * Each ellipse carries one animated blue diamond marker.
- */
-
 interface EllipseDef {
   cx: number;
   cy: number;
@@ -21,54 +9,31 @@ interface EllipseDef {
   duration: number;
 }
 
+/** Convert ellipse params to an SVG <path> d-string (two arcs) */
+const ellipseToPath = (cx: number, cy: number, rx: number, ry: number) =>
+  `M${cx - rx},${cy} A${rx},${ry} 0 1,1 ${cx + rx},${cy} A${rx},${ry} 0 1,1 ${cx - rx},${cy}Z`;
+
 const OrbitalBackground = () => {
   const ellipses = useMemo<EllipseDef[]>(() => {
     const defs: EllipseDef[] = [];
     let idx = 0;
 
-    // Cluster 1: Top-Left (center at roughly -15%, -10%)
-    const tlCx = -15;
-    const tlCy = -10;
+    // Cluster 1: Top-Left
     for (let i = 0; i < 6; i++) {
       const scale = 25 + i * 12;
-      defs.push({
-        cx: tlCx,
-        cy: tlCy,
-        rx: scale * 1.05,
-        ry: scale,
-        id: `orb-${idx++}`,
-        duration: 18 + i * 4 + (i % 2) * 3,
-      });
+      defs.push({ cx: -15, cy: -10, rx: scale * 1.05, ry: scale, id: `orb-${idx++}`, duration: 18 + i * 4 + (i % 2) * 3 });
     }
 
-    // Cluster 2: Top-Right (mirror, center at ~115%, -10%)
-    const trCx = 115;
-    const trCy = -10;
+    // Cluster 2: Top-Right
     for (let i = 0; i < 6; i++) {
       const scale = 25 + i * 12;
-      defs.push({
-        cx: trCx,
-        cy: trCy,
-        rx: scale * 1.05,
-        ry: scale,
-        id: `orb-${idx++}`,
-        duration: 20 + i * 4 + (i % 2) * 2,
-      });
+      defs.push({ cx: 115, cy: -10, rx: scale * 1.05, ry: scale, id: `orb-${idx++}`, duration: 20 + i * 4 + (i % 2) * 2 });
     }
 
-    // Cluster 3: Bottom-Center (center at 50%, 115%)
-    const bcCx = 50;
-    const bcCy = 115;
+    // Cluster 3: Bottom-Center
     for (let i = 0; i < 6; i++) {
       const scale = 30 + i * 14;
-      defs.push({
-        cx: bcCx,
-        cy: bcCy,
-        rx: scale * 1.15,
-        ry: scale,
-        id: `orb-${idx++}`,
-        duration: 22 + i * 5 + (i % 3) * 2,
-      });
+      defs.push({ cx: 50, cy: 115, rx: scale * 1.15, ry: scale, id: `orb-${idx++}`, duration: 22 + i * 5 + (i % 3) * 2 });
     }
 
     return defs;
@@ -84,19 +49,16 @@ const OrbitalBackground = () => {
       >
         <defs>
           {ellipses.map((e) => (
-            <ellipse
+            <path
               key={`path-def-${e.id}`}
               id={e.id}
-              cx={e.cx}
-              cy={e.cy}
-              rx={e.rx}
-              ry={e.ry}
+              d={ellipseToPath(e.cx, e.cy, e.rx, e.ry)}
               fill="none"
             />
           ))}
         </defs>
 
-        {/* Render visible strokes */}
+        {/* Visible strokes */}
         {ellipses.map((e) => (
           <use
             key={`stroke-${e.id}`}
@@ -111,59 +73,20 @@ const OrbitalBackground = () => {
         {/* Animated diamond markers */}
         {ellipses.map((e, i) => (
           <g key={`diamond-${e.id}`}>
-            {/* Glow layer */}
-            <rect
-              width="1.6"
-              height="1.6"
-              x="-0.8"
-              y="-0.8"
-              rx="0.1"
-              className="fill-primary/40"
-              style={{ filter: "blur(0.4px)" }}
-            >
-              <animateMotion
-                dur={`${e.duration}s`}
-                repeatCount="indefinite"
-                begin={`-${(i * 2.7) % e.duration}s`}
-                rotate="auto"
-              >
+            {/* Glow */}
+            <rect width="1.6" height="1.6" x="-0.8" y="-0.8" rx="0.1" className="fill-primary/40" style={{ filter: "blur(0.4px)" }}>
+              <animateMotion dur={`${e.duration}s`} repeatCount="indefinite" begin={`-${(i * 2.7) % e.duration}s`} rotate="auto">
                 <mpath href={`#${e.id}`} />
               </animateMotion>
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                from="0"
-                to="360"
-                dur={`${e.duration}s`}
-                repeatCount="indefinite"
-              />
+              <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur={`${e.duration}s`} repeatCount="indefinite" />
             </rect>
 
             {/* Solid diamond */}
-            <rect
-              width="1"
-              height="1"
-              x="-0.5"
-              y="-0.5"
-              rx="0.05"
-              className="fill-primary"
-            >
-              <animateMotion
-                dur={`${e.duration}s`}
-                repeatCount="indefinite"
-                begin={`-${(i * 2.7) % e.duration}s`}
-                rotate="auto"
-              >
+            <rect width="1" height="1" x="-0.5" y="-0.5" rx="0.05" className="fill-primary">
+              <animateMotion dur={`${e.duration}s`} repeatCount="indefinite" begin={`-${(i * 2.7) % e.duration}s`} rotate="auto">
                 <mpath href={`#${e.id}`} />
               </animateMotion>
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                from="45"
-                to="405"
-                dur={`${e.duration}s`}
-                repeatCount="indefinite"
-              />
+              <animateTransform attributeName="transform" type="rotate" from="45" to="405" dur={`${e.duration}s`} repeatCount="indefinite" />
             </rect>
           </g>
         ))}
