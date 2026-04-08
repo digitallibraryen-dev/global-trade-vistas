@@ -163,6 +163,7 @@ const OrbitalBackground = () => {
         maxLife: 1.0 + Math.random() * 0.5,
         size: 6 + Math.random() * 7,
         hue: 210 + Math.random() * 22,
+        trail: [],
       });
     }
   }, []);
