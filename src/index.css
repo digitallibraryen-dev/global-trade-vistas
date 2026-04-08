@@ -378,6 +378,52 @@
   perspective: 1200px;
   height: 340px;
   cursor: pointer;
+  position: relative;
+}
+
+/* Rotating glow border */
+.flip-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 0.85rem;
+  background: conic-gradient(
+    from var(--glow-angle),
+    transparent 0%,
+    hsl(var(--primary) / 0.6) 10%,
+    transparent 20%,
+    transparent 80%,
+    hsl(var(--primary) / 0.4) 90%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: glow-spin 3s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.flip-card:hover::before,
+.flip-card:has(.is-flipped)::before {
+  opacity: 1;
+}
+
+/* Outer glow shadow on hover */
+.flip-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 0.8rem;
+  box-shadow: 0 0 25px hsl(var(--primary) / 0.2), 0 0 50px hsl(var(--primary) / 0.08);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.flip-card:hover::after,
+.flip-card:has(.is-flipped)::after {
+  opacity: 1;
 }
 
 .flip-card-inner {
@@ -386,6 +432,7 @@
   height: 100%;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
+  z-index: 1;
 }
 
 .flip-card-inner.is-flipped {
@@ -408,23 +455,6 @@
 .flip-card-back {
   transform: rotateY(180deg);
   z-index: 1;
-}
-
-/* neon pulse on hover */
-.flip-card:hover .flip-card-front::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 0.75rem;
-  border: 1px solid hsl(var(--primary) / 0.5);
-  box-shadow: 0 0 20px hsl(var(--primary) / 0.15);
-  animation: neon-pulse 2s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes neon-pulse {
-  0%, 100% { box-shadow: 0 0 10px hsl(var(--primary) / 0.1); }
-  50% { box-shadow: 0 0 25px hsl(var(--primary) / 0.25); }
 }
 
 /* Scrollbar styling */
