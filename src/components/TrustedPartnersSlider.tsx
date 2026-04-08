@@ -75,25 +75,31 @@ const ScrollRow = ({ partners, direction, speed = 60 }: ScrollRowProps) => {
     const track = trackRef.current;
     if (!track) return;
 
-    const totalWidth = track.scrollWidth / 2;
+    const updateAnimation = () => {
+      const singleSetWidth = track.scrollWidth / 2;
+      if (!singleSetWidth) return;
 
-    tweenRef.current?.kill();
-    gsap.set(track, { x: 0 });
+      const startX = direction === "left" ? 0 : -singleSetWidth;
+      const endX = direction === "left" ? -singleSetWidth : 0;
 
-    tweenRef.current = gsap.to(track, {
-      x: direction === "left" ? -totalWidth : totalWidth,
-      duration: speed,
-      ease: "none",
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize((x: string) => {
-          const val = parseFloat(x);
-          return ((val % totalWidth) + totalWidth) % totalWidth * (direction === "left" ? -1 : 1);
-        }),
-      },
-    });
+      tweenRef.current?.kill();
+      gsap.set(track, { x: startX });
 
-    return () => { tweenRef.current?.kill(); };
+      tweenRef.current = gsap.to(track, {
+        x: endX,
+        duration: speed,
+        ease: "none",
+        repeat: -1,
+      });
+    };
+
+    updateAnimation();
+    window.addEventListener("resize", updateAnimation);
+
+    return () => {
+      window.removeEventListener("resize", updateAnimation);
+      tweenRef.current?.kill();
+    };
   }, [direction, speed]);
 
   const handleMouseEnter = () => tweenRef.current?.pause();
