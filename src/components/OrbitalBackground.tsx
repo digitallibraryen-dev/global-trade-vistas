@@ -18,6 +18,7 @@ interface Particle {
   maxLife: number;
   size: number;
   hue: number;
+  trail: { x: number; y: number }[];
 }
 
 interface Ripple {
