@@ -41,7 +41,7 @@ const row3: Partner[] = [
   { name: "CMA CGM", logo: "/logos/cma-cgm.png" },
   { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel-hd.png" },
   { name: "DB Schenker", logo: "/logos/dbschenker.svg" },
-  { name: "Evergreen", logo: "/logos/evergreen.svg" },
+  { name: "Evergreen", logo: "/logos/evergreen.png" },
 ];
 
 const PartnerCard = ({ partner }: { partner: Partner }) => (
