@@ -194,39 +194,46 @@ const OrbitalBackground = () => {
 
   const drawParticles = useCallback((ctx: CanvasRenderingContext2D, metrics: SvgMetrics) => {
     const particles = particlesRef.current;
+    const cos45 = 0.7071;
+    const sin45 = 0.7071;
+    let writeIdx = 0;
 
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const particle = particles[i];
-      particle.x += particle.vx;
-      particle.y += particle.vy;
-      particle.vx *= 0.95;
-      particle.vy *= 0.95;
-      particle.life -= 1 / 60 / particle.maxLife;
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.95;
+      p.vy *= 0.95;
+      p.life -= 1 / 60 / p.maxLife;
+      if (p.life <= 0) continue;
 
-      if (particle.life <= 0) {
-        particles.splice(i, 1);
-        continue;
-      }
+      const ptX = p.x * metrics.scale + metrics.offX;
+      const ptY = p.y * metrics.scale + metrics.offY;
+      const alpha = p.life * 0.95;
+      const size = (p.size / metrics.scale) * (0.7 + p.life * 0.65);
+      const hs = size / 2;
 
-      const point = svgToScreen(particle.x, particle.y, metrics);
-      const alpha = particle.life * 0.95;
-      const size = (particle.size / metrics.scale) * (0.7 + particle.life * 0.65);
-
-      ctx.save();
-      ctx.translate(point.x, point.y);
-      ctx.rotate(Math.PI / 4);
+      // Manual rotation matrix instead of ctx.save/translate/rotate/restore
+      ctx.setTransform(cos45, sin45, -sin45, cos45, ptX, ptY);
       ctx.globalAlpha = alpha;
-      ctx.shadowColor = `hsla(${particle.hue}, 100%, 60%, ${alpha})`;
-      ctx.shadowBlur = 12;
-      ctx.fillStyle = `hsla(${particle.hue}, 100%, 62%, ${alpha})`;
-      ctx.fillRect(-size / 2, -size / 2, size, size);
+      ctx.fillStyle = `hsla(${p.hue}, 100%, 62%, ${alpha})`;
+      ctx.fillRect(-hs, -hs, size, size);
 
-      ctx.shadowBlur = 0;
+      // Bright core
+      const cs = size * 0.42;
+      const hcs = cs / 2;
       ctx.globalAlpha = alpha * 0.85;
-      ctx.fillStyle = `hsla(${particle.hue}, 100%, 88%, ${alpha})`;
-      ctx.fillRect(-(size * 0.42) / 2, -(size * 0.42) / 2, size * 0.42, size * 0.42);
-      ctx.restore();
+      ctx.fillStyle = `hsla(${p.hue}, 100%, 88%, ${alpha})`;
+      ctx.fillRect(-hcs, -hcs, cs, cs);
+
+      if (writeIdx !== i) particles[writeIdx] = p;
+      writeIdx++;
     }
+    particles.length = writeIdx;
+
+    // Reset transform
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
 
   useEffect(() => {
