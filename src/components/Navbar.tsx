@@ -295,7 +295,7 @@ const Navbar = () => {
                     </button>
                     <button
                       onClick={() => { setMobileOpen(false); signOut(); }}
-                      className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                      className="btn-3d flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                     >
                       <SignOut size={16} /> {t("nav.signOut")}
                     </button>
