@@ -14,7 +14,7 @@ const ellipseToPath = (cx: number, cy: number, rx: number, ry: number) =>
   `M${cx - rx},${cy} A${rx},${ry} 0 1,1 ${cx + rx},${cy} A${rx},${ry} 0 1,1 ${cx - rx},${cy}Z`;
 
 const DIAMOND_SIZE = 8;
-const GLOW_SIZE = 14;
+const DIAMONDS_PER_PATH = 3;
 
 const OrbitalBackground = () => {
   const ellipses = useMemo<EllipseDef[]>(() => {
@@ -72,25 +72,28 @@ const OrbitalBackground = () => {
           />
         ))}
 
-        {/* Animated diamond markers */}
-        {ellipses.map((e, i) => (
-          <g key={`diamond-${e.id}`}>
-            {/* Solid diamond */}
-            <rect
-              width={DIAMOND_SIZE}
-              height={DIAMOND_SIZE}
-              x={-DIAMOND_SIZE / 2}
-              y={-DIAMOND_SIZE / 2}
-              rx="0.5"
-              className="fill-primary"
-            >
-              <animateMotion dur={`${e.duration}s`} repeatCount="indefinite" begin={`-${(i * 2.7) % e.duration}s`} rotate="auto">
-                <mpath href={`#${e.id}`} />
-              </animateMotion>
-              <animateTransform attributeName="transform" type="rotate" from="45" to="405" dur={`${e.duration}s`} repeatCount="indefinite" />
-            </rect>
-          </g>
-        ))}
+        {/* Animated diamond markers — 3 per path */}
+        {ellipses.map((e, i) =>
+          Array.from({ length: DIAMONDS_PER_PATH }).map((_, d) => {
+            const offset = (e.duration / DIAMONDS_PER_PATH) * d + (i * 1.3) % e.duration;
+            return (
+              <rect
+                key={`diamond-${e.id}-${d}`}
+                width={DIAMOND_SIZE}
+                height={DIAMOND_SIZE}
+                x={-DIAMOND_SIZE / 2}
+                y={-DIAMOND_SIZE / 2}
+                rx="0.5"
+                className="fill-primary"
+              >
+                <animateMotion dur={`${e.duration}s`} repeatCount="indefinite" begin={`-${offset}s`} rotate="auto">
+                  <mpath href={`#${e.id}`} />
+                </animateMotion>
+                <animateTransform attributeName="transform" type="rotate" from="45" to="405" dur={`${e.duration}s`} repeatCount="indefinite" />
+              </rect>
+            );
+          })
+        )}
       </svg>
     </div>
   );
