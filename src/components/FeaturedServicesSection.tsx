@@ -95,7 +95,6 @@ const FeaturedServicesSection = () => {
                     <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>
                   )}
                   <button
-                    href={getWhatsAppLink(localTitle)}
                     className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
                     onClick={() => window.open(getWhatsAppLink(localTitle), "_blank", "noopener,noreferrer")}
                   >
