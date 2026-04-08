@@ -29,6 +29,7 @@ const row2: Partner[] = [
   { name: "Best Express", logo: "/logos/best-express.png" },
   { name: "Cainiao", logo: "/logos/cainiao-hd.jpg" },
   { name: "EMS China", logo: "/logos/ems-china-hd.jpg" },
+  { name: "YTO Express", logo: "/logos/yto-express.png" },
 ];
 
 const row3: Partner[] = [
@@ -40,6 +41,7 @@ const row3: Partner[] = [
   { name: "CMA CGM", logo: "/logos/cma-cgm.png" },
   { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel-hd.png" },
   { name: "DB Schenker", logo: "/logos/dbschenker.svg" },
+  { name: "Evergreen", logo: "/logos/evergreen.png" },
 ];
 
 const PartnerCard = ({ partner }: { partner: Partner }) => (
