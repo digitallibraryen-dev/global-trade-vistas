@@ -25,7 +25,7 @@ const ellipseToPath = (cx: number, cy: number, rx: number, ry: number) =>
 
 const DIAMOND_SIZE = 8;
 const DIAMONDS_PER_PATH = 4;
-const BURST_RADIUS = 30; // proximity threshold in SVG units
+const BURST_RADIUS = 45; // proximity threshold in SVG units
 const PARTICLE_COUNT = 12;
 
 const ELLIPSE_DEFS: Omit<EllipseDef, "id">[] = (() => {
