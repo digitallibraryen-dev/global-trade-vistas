@@ -46,6 +46,8 @@ const row3: Partner[] = [
   { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel-hd.png" },
   { name: "DB Schenker", logo: "/logos/dbschenker.svg" },
   { name: "Evergreen", logo: "/logos/evergreen.png" },
+  { name: "SagePay", logo: "/logos/sagepay.avif" },
+  { name: "Magento", logo: "/logos/magento.avif" },
 ];
 
 const PartnerCard = ({ partner }: { partner: Partner }) => (
