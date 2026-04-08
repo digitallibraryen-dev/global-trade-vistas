@@ -113,7 +113,7 @@ const ScrollRow = ({ partners, direction, speed = 60 }: ScrollRowProps) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div ref={trackRef} className="flex w-max items-center gap-4 py-2">
+      <div ref={trackRef} className="flex w-max items-center gap-4 py-2" dir="ltr" style={{ direction: "ltr" }}>
         {logos.map((p, i) => (
           <PartnerCard key={`${p.name}-${i}`} partner={p} />
         ))}
