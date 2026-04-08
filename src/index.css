@@ -325,6 +325,18 @@
   }
 }
 
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes glow-spin {
+  to {
+    --glow-angle: 360deg;
+  }
+}
+
 @keyframes social-breathe {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
