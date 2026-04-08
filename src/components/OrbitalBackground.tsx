@@ -142,26 +142,25 @@ const OrbitalBackground = () => {
     const particles = particlesRef.current;
     const ripples = ripplesRef.current;
 
-    ripples.push({
-      x,
-      y,
-      radius: 6,
-      lineWidth: 2.5 + Math.random() * 1.5,
-      life: 1,
-      maxLife: 0.7 + Math.random() * 0.25,
-      hue: 214 + Math.random() * 18,
-    });
+    // Cap totals to prevent accumulation from rapid clicks
+    if (ripples.length < MAX_RIPPLES) {
+      ripples.push({
+        x, y, radius: 6,
+        lineWidth: 2.5 + Math.random() * 1.5,
+        life: 1, maxLife: 0.7 + Math.random() * 0.25,
+        hue: 214 + Math.random() * 18,
+      });
+    }
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const budget = Math.min(PARTICLE_COUNT, MAX_PARTICLES - particles.length);
+    for (let i = 0; i < budget; i++) {
       const angle = (Math.PI * 2 * i) / PARTICLE_COUNT + (Math.random() - 0.5) * 0.65;
       const speed = 3.5 + Math.random() * 5.5;
       particles.push({
-        x,
-        y,
+        x, y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        life: 1,
-        maxLife: 1.0 + Math.random() * 0.5,
+        life: 1, maxLife: 1.0 + Math.random() * 0.5,
         size: 6 + Math.random() * 7,
         hue: 210 + Math.random() * 22,
       });
