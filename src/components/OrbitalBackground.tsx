@@ -67,18 +67,16 @@ const ELLIPSE_DEFS: Omit<EllipseDef, "id">[] = (() => {
 
 const getSvgMetrics = (svg: SVGSVGElement): SvgMetrics => {
   const rect = svg.getBoundingClientRect();
-  const scaleX = VIEWBOX_WIDTH / rect.width;
-  const scaleY = VIEWBOX_HEIGHT / rect.height;
+  // For preserveAspectRatio="xMidYMid slice", the SVG scales to COVER the container
+  const scaleX = rect.width / VIEWBOX_WIDTH;
+  const scaleY = rect.height / VIEWBOX_HEIGHT;
   const scale = Math.max(scaleX, scaleY);
-  const visW = rect.width * scale;
-  const visH = rect.height * scale;
 
-  return {
-    rect,
-    scale,
-    offX: (VIEWBOX_WIDTH - visW) / 2,
-    offY: (VIEWBOX_HEIGHT - visH) / 2,
-  };
+  // Offset accounts for the clipped (overflowing) portion centered by "xMid YMid"
+  const offX = (rect.width - VIEWBOX_WIDTH * scale) / 2;
+  const offY = (rect.height - VIEWBOX_HEIGHT * scale) / 2;
+
+  return { rect, scale, offX, offY };
 };
 
 const svgToScreen = (x: number, y: number, metrics: SvgMetrics) => ({
