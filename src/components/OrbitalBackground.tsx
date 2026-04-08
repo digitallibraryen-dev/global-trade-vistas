@@ -45,7 +45,7 @@ const VIEWBOX_HEIGHT = 360;
 const OFFSCREEN_POINT = { x: -9999, y: -9999 };
 const DIAMOND_SIZE = 8;
 const DIAMONDS_PER_PATH = 4;
-const BURST_RADIUS = 56;
+const BURST_RADIUS = 80;
 const PARTICLE_COUNT = 18;
 
 const ELLIPSE_DEFS: Omit<EllipseDef, "id">[] = (() => {
