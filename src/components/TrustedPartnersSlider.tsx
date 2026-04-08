@@ -6,39 +6,66 @@ import ScrollReveal from "./ScrollReveal";
 interface Partner {
   name: string;
   logo: string;
-  category: "sourcing" | "logistics";
 }
 
-const partners: Partner[] = [
-  { name: "Alibaba", logo: "/logos/alibaba-hd.jpg", category: "sourcing" },
-  { name: "AliExpress", logo: "/logos/aliexpress-hd.jpg", category: "sourcing" },
-  { name: "Made-in-China", logo: "/logos/made-in-china.png", category: "sourcing" },
-  { name: "Global Sources", logo: "/logos/globalsources.png", category: "sourcing" },
-  { name: "Amazon", logo: "/logos/amazon-hd.png", category: "sourcing" },
-  { name: "DHgate", logo: "/logos/dhgate.svg", category: "sourcing" },
-  { name: "Taobao", logo: "/logos/taobao.svg", category: "sourcing" },
-  { name: "Tmall", logo: "/logos/tmall.svg", category: "sourcing" },
-  { name: "JD.com", logo: "/logos/jd.svg", category: "sourcing" },
-  { name: "Suning", logo: "/logos/suning.png", category: "sourcing" },
-  { name: "SF Express", logo: "/logos/sf-express-hd.jpg", category: "logistics" },
-  { name: "China Post / EMS", logo: "/logos/china-post-ems.svg", category: "logistics" },
-  { name: "Yunda Express", logo: "/logos/yunda.png", category: "logistics" },
-  { name: "ZTO Express", logo: "/logos/zto-express.svg", category: "logistics" },
-  { name: "Best Express", logo: "/logos/best-express.png", category: "logistics" },
-  { name: "Cainiao", logo: "/logos/cainiao-hd.jpg", category: "logistics" },
-  { name: "EMS China", logo: "/logos/ems-china-hd.jpg", category: "logistics" },
-  { name: "COSCO Shipping", logo: "/logos/cosco.svg", category: "logistics" },
-  { name: "DHL", logo: "/logos/dhl-hd.png", category: "logistics" },
-  { name: "FedEx", logo: "/logos/fedex.svg", category: "logistics" },
-  { name: "UPS", logo: "/logos/ups.svg", category: "logistics" },
-  { name: "Maersk", logo: "/logos/maersk.svg", category: "logistics" },
-  { name: "CMA CGM", logo: "/logos/cma-cgm.png", category: "logistics" },
-  { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel-hd.png", category: "logistics" },
-  { name: "DB Schenker", logo: "/logos/dbschenker.svg", category: "logistics" },
+const row1: Partner[] = [
+  { name: "Alibaba", logo: "/logos/alibaba-hd.jpg" },
+  { name: "AliExpress", logo: "/logos/aliexpress-hd.jpg" },
+  { name: "Made-in-China", logo: "/logos/made-in-china.png" },
+  { name: "Global Sources", logo: "/logos/globalsources.png" },
+  { name: "Amazon", logo: "/logos/amazon-hd.png" },
+  { name: "DHgate", logo: "/logos/dhgate.svg" },
+  { name: "Taobao", logo: "/logos/taobao.svg" },
+  { name: "Tmall", logo: "/logos/tmall.svg" },
+  { name: "JD.com", logo: "/logos/jd.svg" },
 ];
 
-const TrustedPartnersSlider = () => {
-  const { t, i18n } = useTranslation();
+const row2: Partner[] = [
+  { name: "Suning", logo: "/logos/suning.png" },
+  { name: "SF Express", logo: "/logos/sf-express-hd.jpg" },
+  { name: "China Post / EMS", logo: "/logos/china-post-ems.svg" },
+  { name: "Yunda Express", logo: "/logos/yunda.png" },
+  { name: "ZTO Express", logo: "/logos/zto-express.svg" },
+  { name: "Best Express", logo: "/logos/best-express.png" },
+  { name: "Cainiao", logo: "/logos/cainiao-hd.jpg" },
+  { name: "EMS China", logo: "/logos/ems-china-hd.jpg" },
+];
+
+const row3: Partner[] = [
+  { name: "COSCO Shipping", logo: "/logos/cosco.svg" },
+  { name: "DHL", logo: "/logos/dhl-hd.png" },
+  { name: "FedEx", logo: "/logos/fedex.svg" },
+  { name: "UPS", logo: "/logos/ups.svg" },
+  { name: "Maersk", logo: "/logos/maersk.svg" },
+  { name: "CMA CGM", logo: "/logos/cma-cgm.png" },
+  { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel-hd.png" },
+  { name: "DB Schenker", logo: "/logos/dbschenker.svg" },
+];
+
+const PartnerCard = ({ partner }: { partner: Partner }) => (
+  <div className="flex h-16 w-56 shrink-0 items-center justify-between rounded-2xl border border-border/50 bg-card px-5 py-3 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
+    <span className="whitespace-nowrap text-sm font-semibold text-muted-foreground">
+      {partner.name}
+    </span>
+    <img
+      src={partner.logo}
+      alt={`${partner.name} logo`}
+      className="h-8 w-8 shrink-0 object-contain"
+      loading="lazy"
+      decoding="async"
+      width={32}
+      height={32}
+    />
+  </div>
+);
+
+interface ScrollRowProps {
+  partners: Partner[];
+  direction: "left" | "right";
+  speed?: number;
+}
+
+const ScrollRow = ({ partners, direction, speed = 60 }: ScrollRowProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
@@ -46,32 +73,49 @@ const TrustedPartnersSlider = () => {
     const track = trackRef.current;
     if (!track) return;
 
-    const isRTL = document.documentElement.dir === "rtl";
     const totalWidth = track.scrollWidth / 2;
 
     tweenRef.current?.kill();
     gsap.set(track, { x: 0 });
 
     tweenRef.current = gsap.to(track, {
-      x: isRTL ? totalWidth : -totalWidth,
-      duration: 90,
+      x: direction === "left" ? -totalWidth : totalWidth,
+      duration: speed,
       ease: "none",
       repeat: -1,
       modifiers: {
         x: gsap.utils.unitize((x: string) => {
           const val = parseFloat(x);
-          return ((val % totalWidth) + totalWidth) % totalWidth * (isRTL ? 1 : -1);
+          return ((val % totalWidth) + totalWidth) % totalWidth * (direction === "left" ? -1 : 1);
         }),
       },
     });
 
     return () => { tweenRef.current?.kill(); };
-  }, [i18n.language]);
+  }, [direction, speed]);
 
   const handleMouseEnter = () => tweenRef.current?.pause();
   const handleMouseLeave = () => tweenRef.current?.resume();
 
   const logos = [...partners, ...partners];
+
+  return (
+    <div
+      className="overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div ref={trackRef} className="flex w-max items-center gap-4 py-2">
+        {logos.map((p, i) => (
+          <PartnerCard key={`${p.name}-${i}`} partner={p} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const TrustedPartnersSlider = () => {
+  const { t } = useTranslation();
 
   return (
     <section className="py-16 bg-muted/30 overflow-hidden">
@@ -87,35 +131,13 @@ const TrustedPartnersSlider = () => {
         </p>
       </ScrollReveal>
 
-      <div
-        className="relative"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div className="relative space-y-3">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
 
-        <div ref={trackRef} className="flex w-max items-center gap-6 px-5">
-          {logos.map((p, i) => (
-            <div
-              key={`${p.name}-${i}`}
-              className="group flex h-20 w-48 shrink-0 items-center gap-3 rounded-xl border border-border bg-card/80 px-5 py-3 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
-            >
-              <img
-                src={p.logo}
-                alt={`${p.name} logo`}
-                className="h-10 w-10 shrink-0 object-contain transition-all duration-300 group-hover:scale-110"
-                loading="lazy"
-                decoding="async"
-                width={40}
-                height={40}
-              />
-              <span className="whitespace-nowrap text-sm font-bold text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
-                {p.name}
-              </span>
-            </div>
-          ))}
-        </div>
+        <ScrollRow partners={row1} direction="left" speed={70} />
+        <ScrollRow partners={row2} direction="right" speed={80} />
+        <ScrollRow partners={row3} direction="left" speed={75} />
       </div>
     </section>
   );
