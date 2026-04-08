@@ -13,6 +13,9 @@ interface EllipseDef {
 const ellipseToPath = (cx: number, cy: number, rx: number, ry: number) =>
   `M${cx - rx},${cy} A${rx},${ry} 0 1,1 ${cx + rx},${cy} A${rx},${ry} 0 1,1 ${cx - rx},${cy}Z`;
 
+const DIAMOND_SIZE = 8;
+const GLOW_SIZE = 14;
+
 const OrbitalBackground = () => {
   const ellipses = useMemo<EllipseDef[]>(() => {
     const defs: EllipseDef[] = [];
@@ -20,20 +23,20 @@ const OrbitalBackground = () => {
 
     // Cluster 1: Top-Left
     for (let i = 0; i < 6; i++) {
-      const scale = 25 + i * 12;
-      defs.push({ cx: -15, cy: -10, rx: scale * 1.05, ry: scale, id: `orb-${idx++}`, duration: 18 + i * 4 + (i % 2) * 3 });
+      const scale = 80 + i * 45;
+      defs.push({ cx: -50, cy: -30, rx: scale * 1.05, ry: scale, id: `orb-${idx++}`, duration: 18 + i * 4 + (i % 2) * 3 });
     }
 
     // Cluster 2: Top-Right
     for (let i = 0; i < 6; i++) {
-      const scale = 25 + i * 12;
-      defs.push({ cx: 115, cy: -10, rx: scale * 1.05, ry: scale, id: `orb-${idx++}`, duration: 20 + i * 4 + (i % 2) * 2 });
+      const scale = 80 + i * 45;
+      defs.push({ cx: 450, cy: -30, rx: scale * 1.05, ry: scale, id: `orb-${idx++}`, duration: 20 + i * 4 + (i % 2) * 2 });
     }
 
     // Cluster 3: Bottom-Center
     for (let i = 0; i < 6; i++) {
-      const scale = 30 + i * 14;
-      defs.push({ cx: 50, cy: 115, rx: scale * 1.15, ry: scale, id: `orb-${idx++}`, duration: 22 + i * 5 + (i % 3) * 2 });
+      const scale = 100 + i * 50;
+      defs.push({ cx: 200, cy: 420, rx: scale * 1.15, ry: scale, id: `orb-${idx++}`, duration: 22 + i * 5 + (i % 3) * 2 });
     }
 
     return defs;
@@ -42,8 +45,8 @@ const OrbitalBackground = () => {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
       <svg
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
+        viewBox="0 0 400 360"
+        preserveAspectRatio="xMidYMid slice"
         className="absolute inset-0 w-full h-full"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -64,9 +67,8 @@ const OrbitalBackground = () => {
             key={`stroke-${e.id}`}
             href={`#${e.id}`}
             className="stroke-foreground/[0.08] dark:stroke-foreground/[0.1]"
-            strokeWidth="0.15"
+            strokeWidth="0.5"
             fill="none"
-            vectorEffect="non-scaling-stroke"
           />
         ))}
 
@@ -74,7 +76,15 @@ const OrbitalBackground = () => {
         {ellipses.map((e, i) => (
           <g key={`diamond-${e.id}`}>
             {/* Glow */}
-            <rect width="1.6" height="1.6" x="-0.8" y="-0.8" rx="0.1" className="fill-primary/40" style={{ filter: "blur(0.4px)" }}>
+            <rect
+              width={GLOW_SIZE}
+              height={GLOW_SIZE}
+              x={-GLOW_SIZE / 2}
+              y={-GLOW_SIZE / 2}
+              rx="1"
+              className="fill-primary/30"
+              style={{ filter: "blur(3px)" }}
+            >
               <animateMotion dur={`${e.duration}s`} repeatCount="indefinite" begin={`-${(i * 2.7) % e.duration}s`} rotate="auto">
                 <mpath href={`#${e.id}`} />
               </animateMotion>
@@ -82,7 +92,14 @@ const OrbitalBackground = () => {
             </rect>
 
             {/* Solid diamond */}
-            <rect width="1" height="1" x="-0.5" y="-0.5" rx="0.05" className="fill-primary">
+            <rect
+              width={DIAMOND_SIZE}
+              height={DIAMOND_SIZE}
+              x={-DIAMOND_SIZE / 2}
+              y={-DIAMOND_SIZE / 2}
+              rx="0.5"
+              className="fill-primary"
+            >
               <animateMotion dur={`${e.duration}s`} repeatCount="indefinite" begin={`-${(i * 2.7) % e.duration}s`} rotate="auto">
                 <mpath href={`#${e.id}`} />
               </animateMotion>

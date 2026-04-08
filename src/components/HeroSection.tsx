@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import { useSocialLinks } from "@/hooks/useSocialLinks";
 
 const OrbitalBackground = lazy(() => import("@/components/OrbitalBackground"));
 
@@ -10,6 +11,12 @@ const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { data: links = [] } = useSocialLinks();
+
+  const whatsappLink = links.find((l) => l.platform === "whatsapp" && l.enabled);
+  const whatsappHref = whatsappLink
+    ? `https://wa.me/${whatsappLink.value.replace(/[^0-9+]/g, "").replace("+", "")}`
+    : null;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -22,42 +29,44 @@ const HeroSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const scrollTo = useCallback((id: string) => {
-    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  const handleGetQuote = useCallback(() => {
+    if (whatsappHref) {
+      window.open(whatsappHref, "_blank", "noopener,noreferrer");
+    } else {
+      document.querySelector("#quote")?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [whatsappHref]);
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden max-w-[100vw] bg-background">
-      {/* Orbital animated background */}
       <Suspense fallback={null}>
         <OrbitalBackground />
       </Suspense>
 
-      {/* Content */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-20 pb-10">
-        <div className="flex flex-col items-center text-center max-w-3xl">
-          <h1 className="hero-headline text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-7xl uppercase">
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 sm:px-6 pt-20 pb-10">
+        <div className="flex flex-col items-center text-center max-w-3xl w-full">
+          <h1 className="hero-headline text-3xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-7xl uppercase">
             <span className="text-foreground">{t("hero.title1")} </span>
             <span className="text-primary">{t("hero.highlight")}</span>
             <br />
             <span className="text-foreground">{t("hero.title2")}</span>
           </h1>
 
-          <p className="hero-sub mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
+          <p className="hero-sub mt-4 sm:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-muted-foreground px-2">
             {t("hero.subtitle")}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
             <button
-              onClick={() => scrollTo("#quote")}
-              className="hero-cta flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
+              onClick={handleGetQuote}
+              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
             >
               {t("hero.cta1")}
               <ArrowUpRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => navigate("/contact")}
-              className="hero-cta flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
+              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
             >
               {t("hero.cta2")}
               <ArrowUpRight className="w-4 h-4" />
