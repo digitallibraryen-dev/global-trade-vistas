@@ -239,19 +239,38 @@ const OrbitalBackground = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const handlePointerMove = (event: PointerEvent) => {
-      setPointerPosition(event.clientX, event.clientY);
-    };
+    const handleClick = (event: MouseEvent | TouchEvent) => {
+      const clientX = 'touches' in event ? event.touches[0]?.clientX ?? 0 : (event as MouseEvent).clientX;
+      const clientY = 'touches' in event ? event.touches[0]?.clientY ?? 0 : (event as MouseEvent).clientY;
+      
+      const svg = svgRef.current;
+      if (!svg) return;
+      const metrics = getSvgMetrics(svg);
+      if (!isPointInsideRect(clientX, clientY, metrics.rect)) return;
 
-    const handleTouchMove = (event: TouchEvent) => {
-      const touch = event.touches[0];
-      if (touch) {
-        setPointerPosition(touch.clientX, touch.clientY);
+      const clickSvg = screenToSvg(clientX, clientY);
+      const now = performance.now() / 1000;
+      const elapsed = now - startTimeRef.current;
+
+      let bestDist = Infinity;
+      let bestPos = { x: 0, y: 0 };
+
+      for (let ei = 0; ei < ELLIPSE_DEFS.length; ei++) {
+        const ellipse = ELLIPSE_DEFS[ei];
+        for (let di = 0; di < DIAMONDS_PER_PATH; di++) {
+          const offset = (ellipse.duration / DIAMONDS_PER_PATH) * di + (ei * 1.3) % ellipse.duration;
+          const pos = getDiamondPos(ellipse, elapsed, offset);
+          const dist = Math.hypot(pos.x - clickSvg.x, pos.y - clickSvg.y);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestPos = pos;
+          }
+        }
       }
-    };
 
-    const clearPointer = () => {
-      mouseRef.current = OFFSCREEN_POINT;
+      if (bestDist < BURST_RADIUS) {
+        spawnBurst(bestPos.x, bestPos.y);
+      }
     };
 
     const resize = () => {
