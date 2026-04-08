@@ -38,7 +38,7 @@ const HeroSection = () => {
   }, [whatsappHref]);
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen overflow-hidden max-w-[100vw] bg-background">
+    <section ref={sectionRef} className="relative min-h-screen overflow-x-clip max-w-[100vw] bg-background">
       <Suspense fallback={null}>
         <OrbitalBackground />
       </Suspense>
