@@ -18,7 +18,6 @@ interface Particle {
   maxLife: number;
   size: number;
   hue: number;
-  trail: { x: number; y: number }[];
 }
 
 interface Ripple {
@@ -163,7 +162,6 @@ const OrbitalBackground = () => {
         maxLife: 1.0 + Math.random() * 0.5,
         size: 6 + Math.random() * 7,
         hue: 210 + Math.random() * 22,
-        trail: [],
       });
     }
   }, []);
@@ -200,11 +198,6 @@ const OrbitalBackground = () => {
 
     for (let i = particles.length - 1; i >= 0; i--) {
       const particle = particles[i];
-      
-      // Store trail position before moving
-      particle.trail.push({ x: particle.x, y: particle.y });
-      if (particle.trail.length > 6) particle.trail.shift();
-
       particle.x += particle.vx;
       particle.y += particle.vy;
       particle.vx *= 0.95;
@@ -216,28 +209,6 @@ const OrbitalBackground = () => {
         continue;
       }
 
-      // Draw glow trail
-      if (particle.trail.length >= 2) {
-        ctx.save();
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        for (let t = 1; t < particle.trail.length; t++) {
-          const p0 = svgToScreen(particle.trail[t - 1].x, particle.trail[t - 1].y, metrics);
-          const p1 = svgToScreen(particle.trail[t].x, particle.trail[t].y, metrics);
-          const trailAlpha = (t / particle.trail.length) * particle.life * 0.4;
-          const trailWidth = (particle.size / metrics.scale) * (t / particle.trail.length) * 0.6;
-          ctx.beginPath();
-          ctx.moveTo(p0.x, p0.y);
-          ctx.lineTo(p1.x, p1.y);
-          ctx.strokeStyle = `hsla(${particle.hue}, 100%, 65%, ${trailAlpha})`;
-          ctx.lineWidth = trailWidth;
-          ctx.shadowColor = `hsla(${particle.hue}, 100%, 60%, ${trailAlpha})`;
-          ctx.shadowBlur = 8;
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-
       const point = svgToScreen(particle.x, particle.y, metrics);
       const alpha = particle.life * 0.95;
       const size = (particle.size / metrics.scale) * (0.7 + particle.life * 0.65);
@@ -247,7 +218,7 @@ const OrbitalBackground = () => {
       ctx.rotate(Math.PI / 4);
       ctx.globalAlpha = alpha;
       ctx.shadowColor = `hsla(${particle.hue}, 100%, 60%, ${alpha})`;
-      ctx.shadowBlur = 14;
+      ctx.shadowBlur = 12;
       ctx.fillStyle = `hsla(${particle.hue}, 100%, 62%, ${alpha})`;
       ctx.fillRect(-size / 2, -size / 2, size, size);
 
