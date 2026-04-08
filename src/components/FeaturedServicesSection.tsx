@@ -5,8 +5,7 @@ import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
-import TiltCard from "./TiltCard";
-import OptimizedImage from "./OptimizedImage";
+import FlipCard from "./FlipCard";
 import { getServiceFallback } from "@/lib/fallbackImages";
 
 interface Service {
@@ -53,11 +52,6 @@ const FeaturedServicesSection = () => {
     return `https://wa.me/${number}?text=${message}`;
   };
 
-  const getIcon = (_iconName: string | null) => {
-    // Dynamic icon lookup removed to avoid importing entire icon library (~4MB)
-    return null;
-  };
-
   return (
     <section id="featured-services" className="section-padding gradient-dark">
       <div className="container-narrow">
@@ -75,35 +69,24 @@ const FeaturedServicesSection = () => {
             const localTitle = loc(s, "title");
             const localDesc = loc(s, "description");
             return (
-              <TiltCard key={s.id} className="glass-strong rounded-xl">
-                <div className="overflow-hidden rounded-t-xl">
-                  <OptimizedImage
-                    src={s.image_url || getServiceFallback(i)}
-                    alt={localTitle}
-                    className="w-full h-48 object-cover"
-                    size="thumbnail"
-                    width={480}
-                    height={307}
-                    fallback={
-                      <img src={getServiceFallback(i)} alt={localTitle} className="w-full h-48 object-cover" loading="lazy" decoding="async" width={480} height={307} />
-                    }
-                  />
-                </div>
-                <div className="p-5 space-y-3">
-                  <h3 className="text-lg font-semibold text-foreground">{localTitle}</h3>
-                  {localDesc && (
-                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>
-                  )}
+              <FlipCard
+                key={s.id}
+                frontImage={s.image_url || getServiceFallback(i)}
+                frontTitle={localTitle}
+                backDescription={localDesc || undefined}
+                backAction={
                   <button
-                    className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-                    onClick={() => window.open(getWhatsAppLink(localTitle), "_blank", "noopener,noreferrer")}
+                    className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(getWhatsAppLink(localTitle), "_blank", "noopener,noreferrer");
+                    }}
                   >
-                    {getIcon(s.icon)}
                     <WhatsappLogo size={16} weight="fill" data-icon />
                     {t("featuredServices.requestQuote")}
                   </button>
-                </div>
-              </TiltCard>
+                }
+              />
             );
           })}
         </ScrollReveal>
