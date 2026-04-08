@@ -251,7 +251,7 @@
     border-radius: inherit;
     padding: 2px;
     background: conic-gradient(
-      from 0deg,
+      from var(--glow-angle, 0deg),
       hsl(var(--primary) / 0) 0%,
       hsl(var(--glow-accent)) 12%,
       hsl(var(--primary)) 25%,
@@ -266,9 +266,6 @@
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: -1;
-    pointer-events: none;
-    transform-origin: center;
-    will-change: transform, opacity;
     animation: glow-spin 2.5s linear infinite;
   }
 
@@ -282,7 +279,7 @@
     inset: -4px;
     border-radius: inherit;
     background: conic-gradient(
-      from 0deg,
+      from var(--glow-angle, 0deg),
       hsl(var(--primary) / 0) 0%,
       hsl(var(--glow-accent) / 0.25) 12%,
       hsl(var(--primary) / 0.2) 25%,
@@ -294,9 +291,6 @@
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: -2;
-    pointer-events: none;
-    transform-origin: center;
-    will-change: transform, opacity;
     animation: glow-spin 2.5s linear infinite;
   }
 
@@ -329,9 +323,15 @@
   }
 }
 
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 @keyframes glow-spin {
   to {
-    transform: rotate(360deg);
+    --glow-angle: 360deg;
   }
 }
 
