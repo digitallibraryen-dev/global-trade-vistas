@@ -59,14 +59,14 @@ const HeroSection = () => {
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
             <button
               onClick={handleGetQuote}
-              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
+              className="hero-cta btn-3d w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors"
             >
               {t("hero.cta1")}
               <ArrowUpRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => navigate("/contact")}
-              className="hero-cta w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
+              className="hero-cta btn-3d w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-secondary hover:bg-secondary/80 border border-border px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-secondary-foreground transition-colors"
             >
               {t("hero.cta2")}
               <ArrowUpRight className="w-4 h-4" />
