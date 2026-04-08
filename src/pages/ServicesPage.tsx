@@ -75,18 +75,20 @@ const ServicesPage = () => {
                 const localTitle = loc(s, "title");
                 const localDesc = loc(s, "description");
                 return (
-                  <TiltCard key={s.id} className="glass rounded-2xl overflow-hidden">
-                    <OptimizedImage
-                      src={s.image_url}
-                      alt={localTitle}
-                      className="h-48 w-full object-cover"
-                      size="thumbnail"
-                      fallback={
-                        <div className="h-48 w-full flex items-center justify-center gradient-primary">
-                          <span className="text-primary-foreground/50 text-sm">Service</span>
-                        </div>
-                      }
-                    />
+                  <TiltCard key={s.id} className="glass rounded-2xl">
+                    <div className="overflow-hidden rounded-t-2xl">
+                      <OptimizedImage
+                        src={s.image_url}
+                        alt={localTitle}
+                        className="h-48 w-full object-cover"
+                        size="thumbnail"
+                        fallback={
+                          <div className="h-48 w-full flex items-center justify-center gradient-primary">
+                            <span className="text-primary-foreground/50 text-sm">Service</span>
+                          </div>
+                        }
+                      />
+                    </div>
                     <div className="p-5">
                       <h3 className="text-lg font-semibold text-foreground">{localTitle}</h3>
                       {localDesc && (
