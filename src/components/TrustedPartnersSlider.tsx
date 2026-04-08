@@ -18,6 +18,8 @@ const row1: Partner[] = [
   { name: "Taobao", logo: "/logos/taobao.svg" },
   { name: "Tmall", logo: "/logos/tmall.svg" },
   { name: "JD.com", logo: "/logos/jd.svg" },
+  { name: "Etsy", logo: "/logos/etsy.avif" },
+  { name: "AliPay", logo: "/logos/alipay.avif" },
 ];
 
 const row2: Partner[] = [
