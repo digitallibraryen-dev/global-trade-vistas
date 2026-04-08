@@ -14,7 +14,7 @@ const ellipseToPath = (cx: number, cy: number, rx: number, ry: number) =>
   `M${cx - rx},${cy} A${rx},${ry} 0 1,1 ${cx + rx},${cy} A${rx},${ry} 0 1,1 ${cx - rx},${cy}Z`;
 
 const DIAMOND_SIZE = 8;
-const GLOW_SIZE = 14;
+const DIAMONDS_PER_PATH = 3;
 
 const OrbitalBackground = () => {
   const ellipses = useMemo<EllipseDef[]>(() => {
