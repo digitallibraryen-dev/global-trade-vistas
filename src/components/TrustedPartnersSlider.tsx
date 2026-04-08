@@ -113,7 +113,7 @@ const ScrollRow = ({ partners, direction, speed = 60 }: ScrollRowProps) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div ref={trackRef} className="flex w-max items-center gap-4 py-2" dir="ltr" style={{ direction: "ltr" }}>
+      <div ref={trackRef} className="flex w-max items-center gap-4 py-2">
         {logos.map((p, i) => (
           <PartnerCard key={`${p.name}-${i}`} partner={p} />
         ))}
@@ -140,8 +140,8 @@ const TrustedPartnersSlider = () => {
       </ScrollReveal>
 
       <div className="relative space-y-3">
-        <div className="pointer-events-none absolute inset-y-0 start-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 end-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
 
         <ScrollRow partners={row1} direction="left" speed={70} />
         <ScrollRow partners={row2} direction="right" speed={80} />
