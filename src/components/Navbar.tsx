@@ -282,7 +282,7 @@ const Navbar = () => {
                     {isAdmin && (
                       <button
                         onClick={() => goTo("/admin")}
-                        className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                        className="btn-3d flex items-center gap-1.5 rounded-lg border border-primary/30 px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
                       >
                         <GearSix size={16} /> {t("nav.dashboard")}
                       </button>
