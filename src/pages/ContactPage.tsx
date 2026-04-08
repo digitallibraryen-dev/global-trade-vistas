@@ -74,14 +74,12 @@ const ContactPage = () => {
                 ))}
                 {whatsappLink && (
                   <ScrollReveal animation="fade-up" delay={0.4}>
-                    <a
-                      href={whatsappLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => window.open(whatsappLink, "_blank", "noopener,noreferrer")}
                       className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
                     >
                       <WhatsappLogo size={20} /> {t("contactPage.whatsappBtn")}
-                    </a>
+                    </button>
                   </ScrollReveal>
                 )}
               </div>
