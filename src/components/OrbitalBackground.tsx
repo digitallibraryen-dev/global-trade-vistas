@@ -169,29 +169,27 @@ const OrbitalBackground = () => {
 
   const drawRipples = useCallback((ctx: CanvasRenderingContext2D, metrics: SvgMetrics) => {
     const ripples = ripplesRef.current;
+    let writeIdx = 0;
 
-    for (let i = ripples.length - 1; i >= 0; i--) {
-      const ripple = ripples[i];
-      ripple.radius += 2.8;
-      ripple.life -= 1 / 60 / ripple.maxLife;
+    for (let i = 0; i < ripples.length; i++) {
+      const r = ripples[i];
+      r.radius += 2.8;
+      r.life -= 1 / 60 / r.maxLife;
+      if (r.life <= 0) continue;
 
-      if (ripple.life <= 0) {
-        ripples.splice(i, 1);
-        continue;
-      }
-
-      const point = svgToScreen(ripple.x, ripple.y, metrics);
-      const alpha = ripple.life * 0.75;
-
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.strokeStyle = `hsla(${ripple.hue}, 100%, 56%, ${alpha})`;
-      ctx.lineWidth = ripple.lineWidth;
+      const pt = svgToScreen(r.x, r.y, metrics);
+      const a = r.life * 0.75;
+      ctx.globalAlpha = a;
+      ctx.strokeStyle = `hsla(${r.hue}, 100%, 56%, ${a})`;
+      ctx.lineWidth = r.lineWidth;
       ctx.beginPath();
-      ctx.arc(point.x, point.y, ripple.radius / metrics.scale, 0, Math.PI * 2);
+      ctx.arc(pt.x, pt.y, r.radius / metrics.scale, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.restore();
+
+      if (writeIdx !== i) ripples[writeIdx] = r;
+      writeIdx++;
     }
+    ripples.length = writeIdx;
   }, []);
 
   const drawParticles = useCallback((ctx: CanvasRenderingContext2D, metrics: SvgMetrics) => {
