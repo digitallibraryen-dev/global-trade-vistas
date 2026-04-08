@@ -69,18 +69,20 @@ const ProductsSection = () => {
             const localName = loc(p, "name");
             const localDesc = loc(p, "description");
             return (
-              <TiltCard key={p.id} className="glass-strong rounded-xl overflow-hidden">
-                <OptimizedImage
-                  src={p.image_url || getProductFallback(i)}
-                  alt={localName}
-                  className="w-full h-48 object-cover"
-                  size="thumbnail"
-                  width={480}
-                  height={307}
-                  fallback={
-                    <img src={getProductFallback(i)} alt={localName} className="w-full h-48 object-cover" loading="lazy" decoding="async" width={480} height={307} />
-                  }
-                />
+              <TiltCard key={p.id} className="glass-strong rounded-xl">
+                <div className="overflow-hidden rounded-t-xl">
+                  <OptimizedImage
+                    src={p.image_url || getProductFallback(i)}
+                    alt={localName}
+                    className="w-full h-48 object-cover"
+                    size="thumbnail"
+                    width={480}
+                    height={307}
+                    fallback={
+                      <img src={getProductFallback(i)} alt={localName} className="w-full h-48 object-cover" loading="lazy" decoding="async" width={480} height={307} />
+                    }
+                  />
+                </div>
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-semibold text-foreground">{localName}</h3>
                   {localDesc && <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>}
