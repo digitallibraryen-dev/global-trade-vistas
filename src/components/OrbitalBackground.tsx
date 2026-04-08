@@ -282,11 +282,8 @@ const OrbitalBackground = () => {
 
     resize();
 
-    window.addEventListener("resize", resize);
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
-    window.addEventListener("pointerleave", clearPointer);
-    window.addEventListener("blur", clearPointer);
+    window.addEventListener("click", handleClick);
+    window.addEventListener("touchstart", handleClick, { passive: true });
 
     const animate = () => {
       const now = performance.now() / 1000;
