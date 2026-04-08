@@ -18,6 +18,8 @@ const row1: Partner[] = [
   { name: "Taobao", logo: "/logos/taobao.svg" },
   { name: "Tmall", logo: "/logos/tmall.svg" },
   { name: "JD.com", logo: "/logos/jd.svg" },
+  { name: "Etsy", logo: "/logos/etsy.avif" },
+  { name: "AliPay", logo: "/logos/alipay.avif" },
 ];
 
 const row2: Partner[] = [
@@ -30,6 +32,8 @@ const row2: Partner[] = [
   { name: "Cainiao", logo: "/logos/cainiao-hd.jpg" },
   { name: "EMS China", logo: "/logos/ems-china-hd.jpg" },
   { name: "YTO Express", logo: "/logos/yto-express.png" },
+  { name: "Shopify", logo: "/logos/shopify.png" },
+  { name: "eBay", logo: "/logos/ebay.avif" },
 ];
 
 const row3: Partner[] = [
@@ -42,6 +46,8 @@ const row3: Partner[] = [
   { name: "Kuehne+Nagel", logo: "/logos/kuehne-nagel-hd.png" },
   { name: "DB Schenker", logo: "/logos/dbschenker.svg" },
   { name: "Evergreen", logo: "/logos/evergreen.png" },
+  { name: "SagePay", logo: "/logos/sagepay.avif" },
+  { name: "Magento", logo: "/logos/magento.avif" },
 ];
 
 const PartnerCard = ({ partner }: { partner: Partner }) => (
