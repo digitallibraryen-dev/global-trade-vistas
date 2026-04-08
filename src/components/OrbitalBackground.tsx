@@ -75,22 +75,6 @@ const OrbitalBackground = () => {
         {/* Animated diamond markers */}
         {ellipses.map((e, i) => (
           <g key={`diamond-${e.id}`}>
-            {/* Glow */}
-            <rect
-              width={GLOW_SIZE}
-              height={GLOW_SIZE}
-              x={-GLOW_SIZE / 2}
-              y={-GLOW_SIZE / 2}
-              rx="1"
-              className="fill-primary/30"
-              style={{ filter: "blur(3px)" }}
-            >
-              <animateMotion dur={`${e.duration}s`} repeatCount="indefinite" begin={`-${(i * 2.7) % e.duration}s`} rotate="auto">
-                <mpath href={`#${e.id}`} />
-              </animateMotion>
-              <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur={`${e.duration}s`} repeatCount="indefinite" />
-            </rect>
-
             {/* Solid diamond */}
             <rect
               width={DIAMOND_SIZE}
