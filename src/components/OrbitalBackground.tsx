@@ -18,6 +18,7 @@ interface Particle {
   maxLife: number;
   size: number;
   hue: number;
+  trail: { x: number; y: number }[];
 }
 
 interface Ripple {
@@ -46,9 +47,7 @@ const OFFSCREEN_POINT = { x: -9999, y: -9999 };
 const DIAMOND_SIZE = 8;
 const DIAMONDS_PER_PATH = 4;
 const BURST_RADIUS = 80;
-const PARTICLE_COUNT = 20;
-const MAX_PARTICLES = 200;
-const MAX_RIPPLES = 10;
+const PARTICLE_COUNT = 28;
 
 const ELLIPSE_DEFS: Omit<EllipseDef, "id">[] = (() => {
   const defs: Omit<EllipseDef, "id">[] = [];
@@ -142,98 +141,122 @@ const OrbitalBackground = () => {
     const particles = particlesRef.current;
     const ripples = ripplesRef.current;
 
-    // Cap totals to prevent accumulation from rapid clicks
-    if (ripples.length < MAX_RIPPLES) {
-      ripples.push({
-        x, y, radius: 6,
-        lineWidth: 2.5 + Math.random() * 1.5,
-        life: 1, maxLife: 0.7 + Math.random() * 0.25,
-        hue: 214 + Math.random() * 18,
-      });
-    }
+    ripples.push({
+      x,
+      y,
+      radius: 6,
+      lineWidth: 2.5 + Math.random() * 1.5,
+      life: 1,
+      maxLife: 0.7 + Math.random() * 0.25,
+      hue: 214 + Math.random() * 18,
+    });
 
-    const budget = Math.min(PARTICLE_COUNT, MAX_PARTICLES - particles.length);
-    for (let i = 0; i < budget; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       const angle = (Math.PI * 2 * i) / PARTICLE_COUNT + (Math.random() - 0.5) * 0.65;
       const speed = 3.5 + Math.random() * 5.5;
       particles.push({
-        x, y,
+        x,
+        y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        life: 1, maxLife: 1.0 + Math.random() * 0.5,
+        life: 1,
+        maxLife: 1.0 + Math.random() * 0.5,
         size: 6 + Math.random() * 7,
         hue: 210 + Math.random() * 22,
+        trail: [],
       });
     }
   }, []);
 
   const drawRipples = useCallback((ctx: CanvasRenderingContext2D, metrics: SvgMetrics) => {
     const ripples = ripplesRef.current;
-    let writeIdx = 0;
 
-    for (let i = 0; i < ripples.length; i++) {
-      const r = ripples[i];
-      r.radius += 2.8;
-      r.life -= 1 / 60 / r.maxLife;
-      if (r.life <= 0) continue;
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const ripple = ripples[i];
+      ripple.radius += 2.8;
+      ripple.life -= 1 / 60 / ripple.maxLife;
 
-      const pt = svgToScreen(r.x, r.y, metrics);
-      const a = r.life * 0.75;
-      ctx.globalAlpha = a;
-      ctx.strokeStyle = `hsla(${r.hue}, 100%, 56%, ${a})`;
-      ctx.lineWidth = r.lineWidth;
+      if (ripple.life <= 0) {
+        ripples.splice(i, 1);
+        continue;
+      }
+
+      const point = svgToScreen(ripple.x, ripple.y, metrics);
+      const alpha = ripple.life * 0.75;
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = `hsla(${ripple.hue}, 100%, 56%, ${alpha})`;
+      ctx.lineWidth = ripple.lineWidth;
       ctx.beginPath();
-      ctx.arc(pt.x, pt.y, r.radius / metrics.scale, 0, Math.PI * 2);
+      ctx.arc(point.x, point.y, ripple.radius / metrics.scale, 0, Math.PI * 2);
       ctx.stroke();
-
-      if (writeIdx !== i) ripples[writeIdx] = r;
-      writeIdx++;
+      ctx.restore();
     }
-    ripples.length = writeIdx;
   }, []);
 
   const drawParticles = useCallback((ctx: CanvasRenderingContext2D, metrics: SvgMetrics) => {
     const particles = particlesRef.current;
-    const cos45 = 0.7071;
-    const sin45 = 0.7071;
-    let writeIdx = 0;
 
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vx *= 0.95;
-      p.vy *= 0.95;
-      p.life -= 1 / 60 / p.maxLife;
-      if (p.life <= 0) continue;
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const particle = particles[i];
+      
+      // Store trail position before moving
+      particle.trail.push({ x: particle.x, y: particle.y });
+      if (particle.trail.length > 6) particle.trail.shift();
 
-      const ptX = p.x * metrics.scale + metrics.offX;
-      const ptY = p.y * metrics.scale + metrics.offY;
-      const alpha = p.life * 0.95;
-      const size = (p.size / metrics.scale) * (0.7 + p.life * 0.65);
-      const hs = size / 2;
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      particle.vx *= 0.95;
+      particle.vy *= 0.95;
+      particle.life -= 1 / 60 / particle.maxLife;
 
-      // Manual rotation matrix instead of ctx.save/translate/rotate/restore
-      ctx.setTransform(cos45, sin45, -sin45, cos45, ptX, ptY);
+      if (particle.life <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      // Draw glow trail
+      if (particle.trail.length >= 2) {
+        ctx.save();
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        for (let t = 1; t < particle.trail.length; t++) {
+          const p0 = svgToScreen(particle.trail[t - 1].x, particle.trail[t - 1].y, metrics);
+          const p1 = svgToScreen(particle.trail[t].x, particle.trail[t].y, metrics);
+          const trailAlpha = (t / particle.trail.length) * particle.life * 0.4;
+          const trailWidth = (particle.size / metrics.scale) * (t / particle.trail.length) * 0.6;
+          ctx.beginPath();
+          ctx.moveTo(p0.x, p0.y);
+          ctx.lineTo(p1.x, p1.y);
+          ctx.strokeStyle = `hsla(${particle.hue}, 100%, 65%, ${trailAlpha})`;
+          ctx.lineWidth = trailWidth;
+          ctx.shadowColor = `hsla(${particle.hue}, 100%, 60%, ${trailAlpha})`;
+          ctx.shadowBlur = 8;
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      const point = svgToScreen(particle.x, particle.y, metrics);
+      const alpha = particle.life * 0.95;
+      const size = (particle.size / metrics.scale) * (0.7 + particle.life * 0.65);
+
+      ctx.save();
+      ctx.translate(point.x, point.y);
+      ctx.rotate(Math.PI / 4);
       ctx.globalAlpha = alpha;
-      ctx.fillStyle = `hsla(${p.hue}, 100%, 62%, ${alpha})`;
-      ctx.fillRect(-hs, -hs, size, size);
+      ctx.shadowColor = `hsla(${particle.hue}, 100%, 60%, ${alpha})`;
+      ctx.shadowBlur = 14;
+      ctx.fillStyle = `hsla(${particle.hue}, 100%, 62%, ${alpha})`;
+      ctx.fillRect(-size / 2, -size / 2, size, size);
 
-      // Bright core
-      const cs = size * 0.42;
-      const hcs = cs / 2;
+      ctx.shadowBlur = 0;
       ctx.globalAlpha = alpha * 0.85;
-      ctx.fillStyle = `hsla(${p.hue}, 100%, 88%, ${alpha})`;
-      ctx.fillRect(-hcs, -hcs, cs, cs);
-
-      if (writeIdx !== i) particles[writeIdx] = p;
-      writeIdx++;
+      ctx.fillStyle = `hsla(${particle.hue}, 100%, 88%, ${alpha})`;
+      ctx.fillRect(-(size * 0.42) / 2, -(size * 0.42) / 2, size * 0.42, size * 0.42);
+      ctx.restore();
     }
-    particles.length = writeIdx;
-
-    // Reset transform
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
 
   useEffect(() => {
