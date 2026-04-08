@@ -266,12 +266,11 @@
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: -1;
-    animation: glow-spin 2.5s linear infinite paused;
+    animation: glow-spin 2.5s linear infinite;
   }
 
   .btn-3d:hover::before {
     opacity: 1;
-    animation-play-state: running;
   }
 
   .btn-3d::after {
@@ -292,12 +291,11 @@
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: -2;
-    animation: glow-spin 2.5s linear infinite paused;
+    animation: glow-spin 2.5s linear infinite;
   }
 
   .btn-3d:hover::after {
     opacity: 1;
-    animation-play-state: running;
   }
 
   .btn-3d:hover {
