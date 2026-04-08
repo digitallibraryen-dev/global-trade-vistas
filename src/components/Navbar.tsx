@@ -123,7 +123,7 @@ const Navbar = () => {
           </button>
           <button
             onClick={() => goTo("/contact")}
-            className="rounded-lg gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-shadow hover:glow-primary"
+            className="btn-3d rounded-lg gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-shadow hover:glow-primary"
           >
             {t("nav.getQuote")}
           </button>
@@ -132,20 +132,20 @@ const Navbar = () => {
               {isAdmin && (
                 <button
                   onClick={() => navigate("/admin")}
-                  className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                  className="btn-3d flex items-center gap-1.5 rounded-lg border border-primary/30 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
                 >
                   <GearSix size={16} /> {t("nav.dashboard")}
                 </button>
               )}
               <button
                 onClick={() => navigate("/account")}
-                className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+                className="btn-3d flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
               >
                 <UserCircle size={16} />
               </button>
               <button
                 onClick={() => signOut()}
-                className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+                className="btn-3d flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
               >
                 <SignOut size={16} />
               </button>
@@ -153,7 +153,7 @@ const Navbar = () => {
           ) : (
             <button
               onClick={() => navigate("/login")}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
+              className="btn-3d flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"
             >
               <SignIn size={16} /> {t("nav.signIn")}
             </button>
@@ -273,7 +273,7 @@ const Navbar = () => {
               >
                 <button
                   onClick={() => goTo("/contact")}
-                  className="rounded-lg gradient-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+                  className="btn-3d rounded-lg gradient-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
                 >
                   {t("nav.getQuote")}
                 </button>
@@ -282,20 +282,20 @@ const Navbar = () => {
                     {isAdmin && (
                       <button
                         onClick={() => goTo("/admin")}
-                        className="flex items-center gap-1.5 rounded-lg border border-primary/30 px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                        className="btn-3d flex items-center gap-1.5 rounded-lg border border-primary/30 px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
                       >
                         <GearSix size={16} /> {t("nav.dashboard")}
                       </button>
                     )}
                     <button
                       onClick={() => goTo("/account")}
-                      className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                      className="btn-3d flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                     >
                       <UserCircle size={16} /> {t("nav.myAccount")}
                     </button>
                     <button
                       onClick={() => { setMobileOpen(false); signOut(); }}
-                      className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                      className="btn-3d flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                     >
                       <SignOut size={16} /> {t("nav.signOut")}
                     </button>
@@ -303,7 +303,7 @@ const Navbar = () => {
                 ) : (
                   <button
                     onClick={() => goTo("/login")}
-                    className="flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    className="btn-3d flex items-center gap-1.5 rounded-lg border border-border px-5 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                   >
                     <SignIn size={16} /> {t("nav.signIn")}
                   </button>
