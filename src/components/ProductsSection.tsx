@@ -86,15 +86,13 @@ const ProductsSection = () => {
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-semibold text-foreground">{localName}</h3>
                   {localDesc && <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>}
-                  <a
-                    href={getWhatsAppLink(localName)}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
                     className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                    onClick={() => window.open(getWhatsAppLink(localName), "_blank", "noopener,noreferrer")}
                   >
                     <WhatsappLogo size={16} weight="fill" data-icon />
                     {t("products.requestQuote")}
-                  </a>
+                  </button>
                 </div>
               </TiltCard>
             );

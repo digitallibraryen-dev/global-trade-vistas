@@ -94,16 +94,15 @@ const FeaturedServicesSection = () => {
                   {localDesc && (
                     <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>
                   )}
-                  <a
+                  <button
                     href={getWhatsAppLink(localTitle)}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                    onClick={() => window.open(getWhatsAppLink(localTitle), "_blank", "noopener,noreferrer")}
                   >
                     {getIcon(s.icon)}
                     <WhatsappLogo size={16} weight="fill" data-icon />
                     {t("featuredServices.requestQuote")}
-                  </a>
+                  </button>
                 </div>
               </TiltCard>
             );
