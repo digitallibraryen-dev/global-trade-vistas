@@ -281,7 +281,7 @@ const OrbitalBackground = () => {
     };
 
     resize();
-
+    window.addEventListener("resize", resize);
     window.addEventListener("click", handleClick);
     window.addEventListener("touchstart", handleClick, { passive: true });
 
