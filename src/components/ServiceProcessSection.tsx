@@ -10,7 +10,7 @@ const ServiceProcessSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="section-padding gradient-dark overflow-hidden">
+    <section className="section-padding gradient-dark overflow-x-clip">
       <div className="container-narrow">
         <ScrollReveal animation="headline" className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{t("serviceProcess.tag")}</p>
