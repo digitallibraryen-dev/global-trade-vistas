@@ -1,10 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
 
 const AboutPreview = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <section id="about" className="section-padding">
@@ -23,12 +24,12 @@ const AboutPreview = () => {
           </p>
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={0.5}>
-          <Link
-            to="/about-us"
+          <button
+            onClick={() => navigate("/about-us")}
             className="btn-3d btn-3d-outline group mt-8 inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-primary"
           >
             {t("aboutPreview.learnMore")} <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" data-icon />
-          </Link>
+          </button>
         </ScrollReveal>
       </div>
     </section>
