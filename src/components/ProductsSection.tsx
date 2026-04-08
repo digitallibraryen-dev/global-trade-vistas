@@ -5,8 +5,7 @@ import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
-import TiltCard from "./TiltCard";
-import OptimizedImage from "./OptimizedImage";
+import FlipCard from "./FlipCard";
 import { getProductFallback } from "@/lib/fallbackImages";
 
 interface Product {
@@ -69,32 +68,24 @@ const ProductsSection = () => {
             const localName = loc(p, "name");
             const localDesc = loc(p, "description");
             return (
-              <TiltCard key={p.id} className="glass-strong rounded-xl">
-                <div className="overflow-hidden rounded-t-xl">
-                  <OptimizedImage
-                    src={p.image_url || getProductFallback(i)}
-                    alt={localName}
-                    className="w-full h-48 object-cover"
-                    size="thumbnail"
-                    width={480}
-                    height={307}
-                    fallback={
-                      <img src={getProductFallback(i)} alt={localName} className="w-full h-48 object-cover" loading="lazy" decoding="async" width={480} height={307} />
-                    }
-                  />
-                </div>
-                <div className="p-5 space-y-3">
-                  <h3 className="text-lg font-semibold text-foreground">{localName}</h3>
-                  {localDesc && <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">{localDesc}</p>}
+              <FlipCard
+                key={p.id}
+                frontImage={p.image_url || getProductFallback(i)}
+                frontTitle={localName}
+                backDescription={localDesc || undefined}
+                backAction={
                   <button
-                    className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-                    onClick={() => window.open(getWhatsAppLink(localName), "_blank", "noopener,noreferrer")}
+                    className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(getWhatsAppLink(localName), "_blank", "noopener,noreferrer");
+                    }}
                   >
                     <WhatsappLogo size={16} weight="fill" data-icon />
                     {t("products.requestQuote")}
                   </button>
-                </div>
-              </TiltCard>
+                }
+              />
             );
           })}
         </ScrollReveal>
