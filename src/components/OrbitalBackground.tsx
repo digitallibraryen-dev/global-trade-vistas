@@ -239,38 +239,17 @@ const OrbitalBackground = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const handleClick = (event: MouseEvent | TouchEvent) => {
-      const clientX = 'touches' in event ? event.touches[0]?.clientX ?? 0 : (event as MouseEvent).clientX;
-      const clientY = 'touches' in event ? event.touches[0]?.clientY ?? 0 : (event as MouseEvent).clientY;
-      
-      const svg = svgRef.current;
-      if (!svg) return;
-      const metrics = getSvgMetrics(svg);
-      if (!isPointInsideRect(clientX, clientY, metrics.rect)) return;
+    const handlePointerMove = (event: PointerEvent) => {
+      setPointerPosition(event.clientX, event.clientY);
+    };
 
-      const clickSvg = screenToSvg(clientX, clientY);
-      const now = performance.now() / 1000;
-      const elapsed = now - startTimeRef.current;
+    const handleTouchMove = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (touch) setPointerPosition(touch.clientX, touch.clientY);
+    };
 
-      let bestDist = Infinity;
-      let bestPos = { x: 0, y: 0 };
-
-      for (let ei = 0; ei < ELLIPSE_DEFS.length; ei++) {
-        const ellipse = ELLIPSE_DEFS[ei];
-        for (let di = 0; di < DIAMONDS_PER_PATH; di++) {
-          const offset = (ellipse.duration / DIAMONDS_PER_PATH) * di + (ei * 1.3) % ellipse.duration;
-          const pos = getDiamondPos(ellipse, elapsed, offset);
-          const dist = Math.hypot(pos.x - clickSvg.x, pos.y - clickSvg.y);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestPos = pos;
-          }
-        }
-      }
-
-      if (bestDist < BURST_RADIUS) {
-        spawnBurst(bestPos.x, bestPos.y);
-      }
+    const clearPointer = () => {
+      mouseRef.current = OFFSCREEN_POINT;
     };
 
     const resize = () => {
@@ -282,8 +261,10 @@ const OrbitalBackground = () => {
 
     resize();
     window.addEventListener("resize", resize);
-    window.addEventListener("click", handleClick);
-    window.addEventListener("touchstart", handleClick, { passive: true });
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("pointerleave", clearPointer);
+    window.addEventListener("blur", clearPointer);
 
     const animate = () => {
       const now = performance.now() / 1000;
@@ -291,6 +272,27 @@ const OrbitalBackground = () => {
       const width = canvas.offsetWidth;
       const height = canvas.offsetHeight;
       ctx.clearRect(0, 0, width, height);
+
+      const mouse = mouseRef.current;
+      const cooldowns = burstCooldowns.current;
+
+      for (let ei = 0; ei < ELLIPSE_DEFS.length; ei++) {
+        const ellipse = ELLIPSE_DEFS[ei];
+        for (let di = 0; di < DIAMONDS_PER_PATH; di++) {
+          const offset = (ellipse.duration / DIAMONDS_PER_PATH) * di + (ei * 1.3) % ellipse.duration;
+          const position = getDiamondPos(ellipse, elapsed, offset);
+          const dx = position.x - mouse.x;
+          const dy = position.y - mouse.y;
+          const distance = Math.hypot(dx, dy);
+          const key = `${ei}-${di}`;
+
+          if (distance < BURST_RADIUS && !cooldowns.has(key)) {
+            cooldowns.add(key);
+            spawnBurst(position.x, position.y);
+            window.setTimeout(() => cooldowns.delete(key), 520);
+          }
+        }
+      }
 
       const svg = svgRef.current;
       if (svg) {
@@ -307,10 +309,12 @@ const OrbitalBackground = () => {
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("click", handleClick);
-      window.removeEventListener("touchstart", handleClick);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("pointerleave", clearPointer);
+      window.removeEventListener("blur", clearPointer);
     };
-  }, [drawParticles, drawRipples, screenToSvg, spawnBurst]);
+  }, [drawParticles, drawRipples, setPointerPosition, spawnBurst]);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
