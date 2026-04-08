@@ -115,8 +115,8 @@ const OrbitalBackground = () => {
 
     const metrics = getSvgMetrics(svg);
     return {
-      x: (clientX - metrics.rect.left) * metrics.scale + metrics.offX,
-      y: (clientY - metrics.rect.top) * metrics.scale + metrics.offY,
+      x: (clientX - metrics.rect.left - metrics.offX) / metrics.scale,
+      y: (clientY - metrics.rect.top - metrics.offY) / metrics.scale,
     };
   }, []);
 
