@@ -25,9 +25,9 @@ const AboutPreview = () => {
         <ScrollReveal animation="fade-up" delay={0.5}>
           <Link
             to="/about-us"
-            className="btn-3d mt-8 inline-flex items-center gap-2 rounded-lg bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary"
+            className="btn-3d btn-3d-outline group mt-8 inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-primary"
           >
-            {t("aboutPreview.learnMore")} <ArrowRight size={16} data-icon />
+            {t("aboutPreview.learnMore")} <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" data-icon />
           </Link>
         </ScrollReveal>
       </div>

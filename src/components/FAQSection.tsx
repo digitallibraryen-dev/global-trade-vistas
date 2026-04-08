@@ -38,7 +38,7 @@ const FAQSection = () => {
         <ScrollReveal animation="fade-up" delay={0.4} className="mt-12 text-center">
           <Link
             to="/faq"
-            className="btn-3d group inline-flex items-center gap-2 rounded-xl border border-primary/30 bg-transparent px-6 py-3 text-sm font-semibold text-primary"
+            className="btn-3d btn-3d-outline group inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-primary"
           >
             {t("aboutPreview.learnMore")}
             <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" data-icon />
