@@ -123,7 +123,7 @@ const Navbar = () => {
           </button>
           <button
             onClick={() => goTo("/contact")}
-            className="rounded-lg gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-shadow hover:glow-primary"
+            className="btn-3d rounded-lg gradient-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-shadow hover:glow-primary"
           >
             {t("nav.getQuote")}
           </button>
