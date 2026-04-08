@@ -292,27 +292,6 @@ const OrbitalBackground = () => {
       const height = canvas.offsetHeight;
       ctx.clearRect(0, 0, width, height);
 
-      const mouse = mouseRef.current;
-      const cooldowns = burstCooldowns.current;
-
-      for (let ellipseIndex = 0; ellipseIndex < ELLIPSE_DEFS.length; ellipseIndex++) {
-        const ellipse = ELLIPSE_DEFS[ellipseIndex];
-        for (let diamondIndex = 0; diamondIndex < DIAMONDS_PER_PATH; diamondIndex++) {
-          const offset = (ellipse.duration / DIAMONDS_PER_PATH) * diamondIndex + (ellipseIndex * 1.3) % ellipse.duration;
-          const position = getDiamondPos(ellipse, elapsed, offset);
-          const dx = position.x - mouse.x;
-          const dy = position.y - mouse.y;
-          const distance = Math.hypot(dx, dy);
-          const key = `${ellipseIndex}-${diamondIndex}`;
-
-          if (distance < BURST_RADIUS && !cooldowns.has(key)) {
-            cooldowns.add(key);
-            spawnBurst(position.x, position.y);
-            window.setTimeout(() => cooldowns.delete(key), 520);
-          }
-        }
-      }
-
       const svg = svgRef.current;
       if (svg) {
         const metrics = getSvgMetrics(svg);
@@ -328,12 +307,10 @@ const OrbitalBackground = () => {
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("pointerleave", clearPointer);
-      window.removeEventListener("blur", clearPointer);
+      window.removeEventListener("click", handleClick);
+      window.removeEventListener("touchstart", handleClick);
     };
-  }, [drawParticles, drawRipples, setPointerPosition, spawnBurst]);
+  }, [drawParticles, drawRipples, screenToSvg, spawnBurst]);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
