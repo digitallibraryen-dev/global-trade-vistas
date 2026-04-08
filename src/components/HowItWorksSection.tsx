@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PaperPlaneTilt, MagnifyingGlass, ShieldCheck, Handshake, Truck, ArrowRight } from "@phosphor-icons/react";
 import { useTranslation } from "react-i18next";
 import ScrollReveal from "./ScrollReveal";
@@ -8,6 +8,7 @@ const stepIcons = [PaperPlaneTilt, MagnifyingGlass, ShieldCheck, Handshake, Truc
 
 const HowItWorksSection = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <section id="how-it-works" className="section-padding gradient-dark">
@@ -35,13 +36,13 @@ const HowItWorksSection = () => {
         </ScrollReveal>
         <ScrollReveal animation="fade-up" delay={0.5} className="mt-12 text-center">
           <p className="text-sm text-muted-foreground mb-4">{t("howItWorks.learnMoreHint")}</p>
-          <Link
-            to="/how-it-works"
+          <button
+            onClick={() => navigate("/how-it-works")}
             className="btn-3d btn-3d-outline group inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-primary"
           >
             {t("aboutPreview.learnMore")}
             <ArrowRight size={16} weight="bold" className="transition-transform duration-300 group-hover:translate-x-1" data-icon />
-          </Link>
+          </button>
         </ScrollReveal>
       </div>
     </section>
