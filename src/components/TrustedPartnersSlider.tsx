@@ -29,6 +29,7 @@ const row2: Partner[] = [
   { name: "Best Express", logo: "/logos/best-express.png" },
   { name: "Cainiao", logo: "/logos/cainiao-hd.jpg" },
   { name: "EMS China", logo: "/logos/ems-china-hd.jpg" },
+  { name: "YTO Express", logo: "/logos/yto-express.png" },
 ];
 
 const row3: Partner[] = [
