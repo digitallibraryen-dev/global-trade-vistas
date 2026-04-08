@@ -46,7 +46,9 @@ const OFFSCREEN_POINT = { x: -9999, y: -9999 };
 const DIAMOND_SIZE = 8;
 const DIAMONDS_PER_PATH = 4;
 const BURST_RADIUS = 80;
-const PARTICLE_COUNT = 28;
+const PARTICLE_COUNT = 20;
+const MAX_PARTICLES = 200;
+const MAX_RIPPLES = 10;
 
 const ELLIPSE_DEFS: Omit<EllipseDef, "id">[] = (() => {
   const defs: Omit<EllipseDef, "id">[] = [];
