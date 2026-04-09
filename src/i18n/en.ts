@@ -539,6 +539,18 @@ const en = {
     accept: "Accept",
     decline: "Decline",
   },
+  carousel3d: {
+    tag: "Our Expertise",
+    title: "What We Deliver",
+    subtitle: "From sourcing to delivery — a complete trade ecosystem built on trust and precision.",
+    slides: [
+      { title: "Global Shipping", desc: "End-to-end logistics from China to the Middle East with real-time tracking and customs clearance." },
+      { title: "Factory Sourcing", desc: "Direct access to verified manufacturers across China's top industrial regions." },
+      { title: "Quality Control", desc: "Rigorous multi-stage inspection ensuring every product meets international standards." },
+      { title: "Strategic Partnerships", desc: "Building long-term supplier relationships that drive better pricing and reliability." },
+      { title: "Warehouse & Fulfillment", desc: "Modern warehousing with smart inventory management and fast order processing." },
+    ],
+  },
 };
 
 export default en;

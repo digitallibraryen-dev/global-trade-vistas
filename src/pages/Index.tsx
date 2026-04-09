@@ -14,6 +14,7 @@ const ServiceProcessSection = lazy(() => import("@/components/ServiceProcessSect
 const BentoGridSection = lazy(() => import("@/components/BentoGridSection"));
 const HowItWorksSection = lazy(() => import("@/components/HowItWorksSection"));
 const FeaturedServicesSection = lazy(() => import("@/components/FeaturedServicesSection"));
+const Carousel3DSection = lazy(() => import("@/components/Carousel3DSection"));
 const ProductsSection = lazy(() => import("@/components/ProductsSection"));
 const WhyChooseSection = lazy(() => import("@/components/WhyChooseSection"));
 const MiddleEastMapSection = lazy(() => import("@/components/MiddleEastMapSection"));
@@ -48,6 +49,7 @@ const Index = () => {
             <BentoGridSection />
             <HowItWorksSection />
             <FeaturedServicesSection />
+            <Carousel3DSection />
             <ProductsSection />
             <WhyChooseSection />
             <MiddleEastMapSection />
