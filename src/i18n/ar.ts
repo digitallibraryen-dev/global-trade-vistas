@@ -235,6 +235,7 @@ const ar = {
     error: "خطأ",
     verified: "موثّق",
     viewAll: "عرض جميع التقييمات",
+    viewMore: "عرض المزيد",
   },
   faq: {
     tag: "الأسئلة الشائعة",
