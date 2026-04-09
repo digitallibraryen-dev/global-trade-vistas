@@ -524,18 +524,6 @@ const en = {
     title: "Trusted Platforms & Logistics Partners",
     subtitle: "Connecting you with reliable suppliers and seamless shipping solutions from China to the world.",
   },
-  bento: {
-    tag: "Why Partner With Us",
-    title: "Built for Global Scale",
-    subtitle: "End-to-end trade infrastructure designed for speed, reliability, and growth.",
-    countries: "Countries Served",
-    accuracy: "Order Accuracy",
-    faster: "Faster Delivery",
-    shipments: "Shipments Handled",
-    ctaTitle: "Ready to Scale Your Imports?",
-    ctaDesc: "Explore our full range of services.",
-    ctaBtn: "View Services",
-  },
   cookies: {
     message: "We use cookies to improve your experience.",
     privacyPolicy: "Privacy Policy",

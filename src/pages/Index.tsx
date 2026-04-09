@@ -11,7 +11,6 @@ import CookieConsent from "@/components/CookieConsent";
 // Lazy-load below-the-fold sections
 const OurImpactSection = lazy(() => import("@/components/OurImpactSection"));
 const ServiceProcessSection = lazy(() => import("@/components/ServiceProcessSection"));
-const BentoGridSection = lazy(() => import("@/components/BentoGridSection"));
 const HowItWorksSection = lazy(() => import("@/components/HowItWorksSection"));
 const FeaturedServicesSection = lazy(() => import("@/components/FeaturedServicesSection"));
 const ProductsSection = lazy(() => import("@/components/ProductsSection"));
@@ -45,7 +44,6 @@ const Index = () => {
           <Suspense fallback={<SectionFallback />}>
             <OurImpactSection />
             <ServiceProcessSection />
-            <BentoGridSection />
             <HowItWorksSection />
             <FeaturedServicesSection />
             <ProductsSection />
