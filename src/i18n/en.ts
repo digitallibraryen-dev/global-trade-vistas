@@ -566,6 +566,12 @@ const en = {
     tag: "Guide",
     title: "China Sourcing Guide",
     subtitle: "Expert tips and strategies for sourcing products from China effectively and safely.",
+    splitTag: "Expert Knowledge",
+    splitTitle: "Source Smarter, Not Harder",
+    splitText: "China is the world's largest manufacturing hub. Our sourcing guide gives you insider knowledge to navigate this complex landscape with confidence.",
+    knowledgeTag: "Deep Dive",
+    knowledgeTitle: "Essential Sourcing Knowledge",
+    ctaTitle: "Start sourcing from China today",
     sections: [
       { title: "Understanding the China Sourcing Landscape", content: "China is the world's largest manufacturing hub, producing everything from electronics to textiles. Key manufacturing regions include Guangdong (electronics, consumer goods), Zhejiang (textiles, small commodities), Jiangsu (machinery, chemicals), and Fujian (shoes, stone products)." },
       { title: "Choosing Between Trading Companies & Factories", content: "Factories offer lower prices but higher MOQs and less flexibility. Trading companies provide wider product ranges and better communication but at slightly higher prices. For small orders or multiple product categories, a sourcing agent like Almonesi offers the best of both worlds." },
