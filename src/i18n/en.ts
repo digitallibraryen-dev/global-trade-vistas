@@ -235,6 +235,7 @@ const en = {
     error: "Error",
     verified: "Verified",
     viewAll: "View All Reviews",
+    viewMore: "View More",
   },
   faq: {
     tag: "FAQ",
