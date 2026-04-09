@@ -510,6 +510,13 @@ const en = {
     title: "Markets We Serve",
     subtitle: "Almonesi connects Chinese manufacturers with businesses across the Middle East and beyond.",
     intro: "With years of experience serving diverse markets, we understand the unique requirements, regulations, and business cultures of each region. Our localized expertise ensures smooth trade operations wherever you are.",
+    statsArab: "Arab Markets",
+    statsTotal: "Countries Total",
+    statsActiveClients: "Active Clients",
+    statsYearsRegion: "Years in Region",
+    gridTag: "Regional Coverage",
+    gridTitle: "Markets We Serve",
+    ctaTitle: "Ready to reach new markets?",
     markets: [
       { name: "Saudi Arabia", desc: "One of our largest markets. We support importers in Riyadh, Jeddah, and Dammam with construction materials, electronics, textiles, and consumer goods." },
       { name: "United Arab Emirates", desc: "A major trade hub. We serve businesses in Dubai, Abu Dhabi, and Sharjah with a wide range of products for re-export and local consumption." },
