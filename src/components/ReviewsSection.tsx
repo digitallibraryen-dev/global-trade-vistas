@@ -64,8 +64,10 @@ const ReviewsSection = () => {
       description: r.comment,
       date: r.created_at,
       profile_image: r.profiles?.avatar_url || undefined,
+      verified: true,
     }));
-    return [...dbMapped, ...staticReviewsSorted];
+    const staticMapped = staticReviewsSorted.map((r) => ({ ...r, verified: false }));
+    return [...dbMapped, ...staticMapped];
   }, [dbReviews]);
 
   // Pick top-rated reviews for the cinematic display
