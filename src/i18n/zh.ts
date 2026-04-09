@@ -524,6 +524,22 @@ const zh = {
     title: "可信赖的平台与物流合作伙伴",
     subtitle: "为您连接可靠的供应商，提供从中国到全球的无缝物流解决方案。",
   },
+  bento: {
+    heroTag: "全球贸易卓越",
+    heroTitle: "您的无缝\n采购之门",
+    heroDesc: "从采购、质量控制到物流——一站式服务。",
+    features: [
+      { title: "全球网络", desc: "覆盖中国30多个省份的供应商。" },
+      { title: "认证供应商", desc: "每个合作伙伴都经过质量审核。" },
+      { title: "快速交付", desc: "精简流程，快速完成订单。" },
+      { title: "安全包装", desc: "每批货物均采用行业标准包装。" },
+      { title: "专属顾问", desc: "全天候贸易顾问为您服务。" },
+    ],
+    statLabel: "客户满意率",
+    ctaTitle: "准备好扩展了吗？",
+    ctaDesc: "让我们的专家处理采购，您专注业务增长。",
+    ctaBtn: "立即开始",
+  },
   cookies: {
     message: "我们使用Cookie来改善您的体验。",
     privacyPolicy: "隐私政策",
