@@ -252,8 +252,8 @@ const ReviewsSection = () => {
           </button>
         </div>
 
-        {/* CTA */}
-        <div data-reveal className="mt-10">
+        {/* CTA buttons */}
+        <div data-reveal className="mt-10 flex flex-wrap items-center justify-center gap-3">
           {user ? (
             <Button
               onClick={() => setShowForm((v) => !v)}
@@ -273,7 +273,50 @@ const ReviewsSection = () => {
               {t("reviews.signInToReview")}
             </Button>
           )}
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={() => setShowAll((v) => !v)}
+            className="text-primary hover:text-primary/80"
+          >
+            {showAll ? "▲" : "▼"} {t("reviews.viewAll")} ({allReviews.length})
+          </Button>
         </div>
+
+        {/* All reviews grid */}
+        {showAll && (
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto animate-fade-in">
+            {allReviews.map((r) => (
+              <div
+                key={r.id}
+                className="bg-background/40 backdrop-blur-md border border-border/30 rounded-xl p-4 text-left"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  {r.profile_image ? (
+                    <img src={r.profile_image} alt={r.user} className="h-8 w-8 rounded-full object-cover ring-1 ring-primary/20" />
+                  ) : (
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary ring-1 ring-primary/20">
+                      {r.user?.[0]?.toUpperCase()}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-foreground truncate flex items-center gap-1">
+                      {r.user?.replace(/_/g, " ")} {r.country}
+                      {r.verified && (
+                        <span title={t("reviews.verified")}>
+                          <SealCheck size={13} weight="fill" className="text-primary shrink-0" />
+                        </span>
+                      )}
+                    </p>
+                    <StarRating rating={r.rating} readonly size={10} />
+                  </div>
+                </div>
+                {r.title && <p className="text-sm font-semibold text-foreground mb-1">"{r.title}"</p>}
+                <p className="text-xs text-muted-foreground line-clamp-3">{r.description}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Review form */}
         {showForm && user && (
