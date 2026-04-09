@@ -1,12 +1,14 @@
 import { useTranslation } from "react-i18next";
-import { TrendUp, ChartBar, Lightbulb, Target, Strategy } from "@phosphor-icons/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
-
-const icons = [TrendUp, ChartBar, Lightbulb, Target, Strategy];
+import CinematicHero from "@/components/premium/CinematicHero";
+import ProcessTimeline from "@/components/premium/ProcessTimeline";
+import SplitSection from "@/components/premium/SplitSection";
+import FullWidthCTA from "@/components/premium/FullWidthCTA";
+import heroImg from "@/assets/pages/hero-research.jpg";
+import qualityImg from "@/assets/pages/hero-quality.jpg";
 
 const ProductResearchPage = () => {
   const { t } = useTranslation();
@@ -15,30 +17,46 @@ const ProductResearchPage = () => {
   return (
     <>
       <Navbar />
-      <PageHeader tag={t("productResearchPage.tag")} title={t("productResearchPage.title")} subtitle={t("productResearchPage.subtitle")} />
-      <main className="section-padding">
+      <CinematicHero
+        tag={t("productResearchPage.tag")}
+        title={t("productResearchPage.title")}
+        subtitle={t("productResearchPage.subtitle")}
+        image={heroImg}
+      />
+
+      <SplitSection
+        tag="Data-Driven"
+        title="Find Winning Products"
+        text={t("productResearchPage.intro")}
+        image={qualityImg}
+      />
+
+      {/* Key metrics */}
+      <section className="section-padding gradient-dark">
         <div className="container-narrow">
-          <ScrollReveal animation="headline" className="mb-10">
-            <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-center">{t("productResearchPage.intro")}</p>
-          </ScrollReveal>
-          <ScrollReveal animation="card" stagger={0.12} className="space-y-6">
-            {steps?.map((s, i) => {
-              const Icon = icons[i % icons.length];
-              return (
-                <div key={i} className="glass rounded-2xl p-6 flex gap-5 items-start">
-                  <div className="shrink-0 rounded-xl bg-primary/10 p-3">
-                    <Icon size={28} weight="duotone" className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
+          <ScrollReveal animation="card" stagger={0.12} className="grid gap-6 sm:grid-cols-3">
+            {[
+              { val: "1000+", label: "Products Analyzed Monthly" },
+              { val: "95%", label: "Market Fit Success" },
+              { val: "48h", label: "Research Turnaround" },
+            ].map((s, i) => (
+              <div key={i} className="text-center glass-strong rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300">
+                <span className="text-4xl font-extrabold text-primary">{s.val}</span>
+                <span className="block mt-2 text-sm text-muted-foreground">{s.label}</span>
+              </div>
+            ))}
           </ScrollReveal>
         </div>
-      </main>
+      </section>
+
+      <ProcessTimeline
+        tag="Research Methodology"
+        title="Our Research Process"
+        subtitle="A systematic approach to finding profitable products."
+        steps={steps?.map((s) => ({ title: s.title, desc: s.desc })) || []}
+      />
+
+      <FullWidthCTA title="Find your next winning product" buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

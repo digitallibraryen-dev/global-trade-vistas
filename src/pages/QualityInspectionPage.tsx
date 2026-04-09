@@ -1,12 +1,14 @@
 import { useTranslation } from "react-i18next";
-import { Eye, ListChecks, Camera, Scales, SealCheck } from "@phosphor-icons/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
-
-const icons = [Eye, ListChecks, Camera, Scales, SealCheck];
+import CinematicHero from "@/components/premium/CinematicHero";
+import ProcessTimeline from "@/components/premium/ProcessTimeline";
+import SplitSection from "@/components/premium/SplitSection";
+import FullWidthCTA from "@/components/premium/FullWidthCTA";
+import heroImg from "@/assets/pages/hero-quality.jpg";
+import servicesImg from "@/assets/pages/hero-services.jpg";
 
 const QualityInspectionPage = () => {
   const { t } = useTranslation();
@@ -15,26 +17,45 @@ const QualityInspectionPage = () => {
   return (
     <>
       <Navbar />
-      <PageHeader tag={t("qualityInspectionPage.tag")} title={t("qualityInspectionPage.title")} subtitle={t("qualityInspectionPage.subtitle")} />
-      <main className="section-padding">
+      <CinematicHero
+        tag={t("qualityInspectionPage.tag")}
+        title={t("qualityInspectionPage.title")}
+        subtitle={t("qualityInspectionPage.subtitle")}
+        image={heroImg}
+      />
+
+      <SplitSection
+        tag="Why Quality Matters"
+        title="Zero Defects. Zero Surprises."
+        text={t("qualityInspectionPage.intro")}
+        image={servicesImg}
+      />
+
+      <ProcessTimeline
+        tag="Inspection Stages"
+        title="Our Quality Control Process"
+        subtitle="Comprehensive checks at every stage of production."
+        steps={steps?.map((s) => ({ title: s.title, desc: s.desc })) || []}
+      />
+
+      <section className="section-padding gradient-dark">
         <div className="container-narrow">
-          <ScrollReveal animation="headline" className="mb-10">
-            <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-center">{t("qualityInspectionPage.intro")}</p>
-          </ScrollReveal>
-          <ScrollReveal animation="card" stagger={0.12} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {steps?.map((s, i) => {
-              const Icon = icons[i % icons.length];
-              return (
-                <div key={i} className="glass rounded-2xl p-6 text-center">
-                  <Icon size={36} weight="duotone" className="text-primary mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                </div>
-              );
-            })}
+          <ScrollReveal animation="card" stagger={0.1} className="grid gap-6 sm:grid-cols-3">
+            {[
+              { val: "100%", label: "Pre-shipment Check" },
+              { val: "AQL", label: "Sampling Standards" },
+              { val: "24h", label: "Report Delivery" },
+            ].map((s, i) => (
+              <div key={i} className="text-center glass-strong rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300">
+                <span className="text-4xl font-extrabold text-primary">{s.val}</span>
+                <span className="block mt-2 text-sm text-muted-foreground">{s.label}</span>
+              </div>
+            ))}
           </ScrollReveal>
         </div>
-      </main>
+      </section>
+
+      <FullWidthCTA title="Ensure product quality before shipping" buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

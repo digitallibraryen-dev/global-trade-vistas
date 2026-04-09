@@ -1,12 +1,17 @@
 import { useTranslation } from "react-i18next";
-import { Boat, Airplane, Train, Warehouse, MapTrifold } from "@phosphor-icons/react";
+import { Boat, Airplane, Train, Warehouse, FileText } from "@phosphor-icons/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
+import CinematicHero from "@/components/premium/CinematicHero";
+import SplitSection from "@/components/premium/SplitSection";
+import StatsBar from "@/components/premium/StatsBar";
+import FullWidthCTA from "@/components/premium/FullWidthCTA";
+import heroImg from "@/assets/pages/hero-logistics.jpg";
+import aboutImg from "@/assets/pages/hero-about.jpg";
 
-const icons = [Boat, Airplane, Train, Warehouse, MapTrifold];
+const icons = [Boat, Airplane, Train, Warehouse, FileText];
 
 const LogisticsShippingPage = () => {
   const { t } = useTranslation();
@@ -15,26 +20,56 @@ const LogisticsShippingPage = () => {
   return (
     <>
       <Navbar />
-      <PageHeader tag={t("logisticsShippingPage.tag")} title={t("logisticsShippingPage.title")} subtitle={t("logisticsShippingPage.subtitle")} />
-      <main className="section-padding">
+      <CinematicHero
+        tag={t("logisticsShippingPage.tag")}
+        title={t("logisticsShippingPage.title")}
+        subtitle={t("logisticsShippingPage.subtitle")}
+        image={heroImg}
+      />
+
+      <SplitSection
+        tag="End-to-End"
+        title="Factory Floor to Your Door"
+        text={t("logisticsShippingPage.intro")}
+        image={aboutImg}
+      />
+
+      <StatsBar stats={[
+        { value: 50, suffix: "+", label: "Countries Served" },
+        { value: 5, suffix: "-10", label: "Days (Air)" },
+        { value: 25, suffix: "-40", label: "Days (Sea)" },
+        { value: 15, suffix: "-20", label: "Days (Rail)" },
+      ]} />
+
+      {/* Shipping Methods */}
+      <section className="section-padding">
         <div className="container-narrow">
-          <ScrollReveal animation="headline" className="mb-10">
-            <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-center">{t("logisticsShippingPage.intro")}</p>
+          <ScrollReveal animation="headline" className="text-center mb-16">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Shipping Solutions</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Choose Your Method</h2>
           </ScrollReveal>
-          <ScrollReveal animation="card" stagger={0.1} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-6">
             {services?.map((s, i) => {
               const Icon = icons[i % icons.length];
               return (
-                <div key={i} className="glass rounded-2xl p-6 text-center">
-                  <Icon size={36} weight="duotone" className="text-primary mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                </div>
+                <ScrollReveal key={i} animation={i % 2 === 0 ? "slide-right" : "slide-left"} delay={i * 0.08}>
+                  <div className="glass-strong rounded-2xl p-8 flex flex-col sm:flex-row gap-6 items-start hover:-translate-y-1 transition-transform duration-300">
+                    <div className="shrink-0 h-16 w-16 rounded-2xl gradient-primary flex items-center justify-center">
+                      <Icon size={30} weight="light" className="text-primary-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-foreground">{s.title}</h3>
+                      <p className="mt-2 text-muted-foreground leading-relaxed">{s.desc}</p>
+                    </div>
+                  </div>
+                </ScrollReveal>
               );
             })}
-          </ScrollReveal>
+          </div>
         </div>
-      </main>
+      </section>
+
+      <FullWidthCTA title="Ship from China with confidence" buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>
