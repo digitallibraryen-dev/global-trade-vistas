@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollReveal from "./ScrollReveal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import img1 from "@/assets/carousel-1.jpg";
 import img2 from "@/assets/carousel-2.jpg";
@@ -26,7 +27,6 @@ const slides: SlideData[] = [
   { image: img5, titleKey: "carousel3d.slides.4.title", descKey: "carousel3d.slides.4.desc" },
 ];
 
-const RADIUS = 340;
 const AUTO_SPEED = 0.15; // degrees per frame
 
 const Carousel3DSection = () => {
