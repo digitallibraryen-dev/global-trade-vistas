@@ -28,25 +28,24 @@ const LogisticsShippingPage = () => {
       />
 
       <SplitSection
-        tag="End-to-End"
-        title="Factory Floor to Your Door"
+        tag={t("logisticsShippingPage.splitTag")}
+        title={t("logisticsShippingPage.splitTitle")}
         text={t("logisticsShippingPage.intro")}
         image={aboutImg}
       />
 
       <StatsBar stats={[
-        { value: 50, suffix: "+", label: "Countries Served" },
-        { value: 5, suffix: "-10", label: "Days (Air)" },
-        { value: 25, suffix: "-40", label: "Days (Sea)" },
-        { value: 15, suffix: "-20", label: "Days (Rail)" },
+        { value: 50, suffix: "+", label: t("logisticsShippingPage.statsCountries") },
+        { value: 5, suffix: "-10", label: t("logisticsShippingPage.statsAir") },
+        { value: 25, suffix: "-40", label: t("logisticsShippingPage.statsSea") },
+        { value: 15, suffix: "-20", label: t("logisticsShippingPage.statsRail") },
       ]} />
 
-      {/* Shipping Methods */}
       <section className="section-padding">
         <div className="container-narrow">
           <ScrollReveal animation="headline" className="text-center mb-16">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Shipping Solutions</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Choose Your Method</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">{t("logisticsShippingPage.methodsTag")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("logisticsShippingPage.methodsTitle")}</h2>
           </ScrollReveal>
           <div className="space-y-6">
             {services?.map((s, i) => {
@@ -69,7 +68,7 @@ const LogisticsShippingPage = () => {
         </div>
       </section>
 
-      <FullWidthCTA title="Ship from China with confidence" buttonLabel={t("hero.cta1")} href="/contact" />
+      <FullWidthCTA title={t("logisticsShippingPage.ctaTitle")} buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

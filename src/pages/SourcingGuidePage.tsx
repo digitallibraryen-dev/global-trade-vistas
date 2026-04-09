@@ -27,17 +27,17 @@ const SourcingGuidePage = () => {
       />
 
       <SplitSection
-        tag="Expert Knowledge"
-        title="Source Smarter, Not Harder"
-        text="China is the world's largest manufacturing hub. Our sourcing guide gives you insider knowledge to navigate this complex landscape with confidence."
+        tag={t("sourcingGuidePage.splitTag")}
+        title={t("sourcingGuidePage.splitTitle")}
+        text={t("sourcingGuidePage.splitText")}
         image={logisticsImg}
       />
 
       <section className="section-padding gradient-dark">
         <div className="container-narrow max-w-3xl mx-auto">
           <ScrollReveal animation="headline" className="text-center mb-16">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Deep Dive</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Essential Sourcing Knowledge</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">{t("sourcingGuidePage.knowledgeTag")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("sourcingGuidePage.knowledgeTitle")}</h2>
           </ScrollReveal>
           <div className="space-y-4">
             {sections?.map((s, i) => (
@@ -69,7 +69,7 @@ const SourcingGuidePage = () => {
         </div>
       </section>
 
-      <FullWidthCTA title="Start sourcing from China today" buttonLabel={t("hero.cta1")} href="/contact" />
+      <FullWidthCTA title={t("sourcingGuidePage.ctaTitle")} buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

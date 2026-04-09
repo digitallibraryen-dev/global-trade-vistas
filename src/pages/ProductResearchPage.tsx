@@ -25,20 +25,19 @@ const ProductResearchPage = () => {
       />
 
       <SplitSection
-        tag="Data-Driven"
-        title="Find Winning Products"
+        tag={t("productResearchPage.splitTag")}
+        title={t("productResearchPage.splitTitle")}
         text={t("productResearchPage.intro")}
         image={qualityImg}
       />
 
-      {/* Key metrics */}
       <section className="section-padding gradient-dark">
         <div className="container-narrow">
           <ScrollReveal animation="card" stagger={0.12} className="grid gap-6 sm:grid-cols-3">
             {[
-              { val: "1000+", label: "Products Analyzed Monthly" },
-              { val: "95%", label: "Market Fit Success" },
-              { val: "48h", label: "Research Turnaround" },
+              { val: "1000+", label: t("productResearchPage.statsProducts") },
+              { val: "95%", label: t("productResearchPage.statsSuccess") },
+              { val: "48h", label: t("productResearchPage.statsTurnaround") },
             ].map((s, i) => (
               <div key={i} className="text-center glass-strong rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300">
                 <span className="text-4xl font-extrabold text-primary">{s.val}</span>
@@ -50,13 +49,13 @@ const ProductResearchPage = () => {
       </section>
 
       <ProcessTimeline
-        tag="Research Methodology"
-        title="Our Research Process"
-        subtitle="A systematic approach to finding profitable products."
+        tag={t("productResearchPage.processTag")}
+        title={t("productResearchPage.processTitle")}
+        subtitle={t("productResearchPage.processSubtitle")}
         steps={steps?.map((s) => ({ title: s.title, desc: s.desc })) || []}
       />
 
-      <FullWidthCTA title="Find your next winning product" buttonLabel={t("hero.cta1")} href="/contact" />
+      <FullWidthCTA title={t("productResearchPage.ctaTitle")} buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>
