@@ -233,6 +233,8 @@ const zh = {
     submittedDesc: "您的评价将在管理员批准后显示。",
     deleted: "评价已删除",
     error: "错误",
+    verified: "已认证",
+    viewAll: "查看所有评价",
   },
   faq: {
     tag: "常见问题",

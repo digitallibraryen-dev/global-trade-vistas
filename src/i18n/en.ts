@@ -233,6 +233,8 @@ const en = {
     submittedDesc: "Your review will appear after admin approval.",
     deleted: "Review deleted",
     error: "Error",
+    verified: "Verified",
+    viewAll: "View All Reviews",
   },
   faq: {
     tag: "FAQ",
