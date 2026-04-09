@@ -75,7 +75,7 @@ const Carousel3DSection = () => {
 
     const animate = () => {
       if (!pausedRef.current) {
-        angleRef.current += AUTO_SPEED;
+        angleRef.current += isMobile ? AUTO_SPEED_MOBILE : AUTO_SPEED_DESKTOP;
       }
       items.forEach((el, i) => {
         const style = getItemStyle(i, angleRef.current);
