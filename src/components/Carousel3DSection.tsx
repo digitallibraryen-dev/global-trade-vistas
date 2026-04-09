@@ -161,8 +161,8 @@ const Carousel3DSection = () => {
 
         {/* 3D Carousel */}
         <div
-          className="relative mt-16 mx-auto select-none"
-          style={{ perspective: "1200px", height: "420px" }}
+          className="relative mt-10 sm:mt-16 mx-auto select-none"
+          style={{ perspective: isMobile ? "800px" : "1200px", height: `${containerH}px` }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -179,7 +179,7 @@ const Carousel3DSection = () => {
                 <div
                   key={i}
                   className="carousel-item absolute cursor-pointer transition-shadow duration-500"
-                  style={{ width: "260px", height: "360px", willChange: "transform, opacity, filter" }}
+                  style={{ width: `${cardW}px`, height: `${cardH}px`, willChange: "transform, opacity, filter" }}
                   onClick={() => handleClick(i)}
                 >
                   <div
