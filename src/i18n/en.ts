@@ -533,6 +533,20 @@ const en = {
     quoteBody: "From factory floors in Shenzhen to storefronts across the Middle East, we handle every detail so your business never misses a beat.",
     cta: "Start Your Journey",
   },
+  carousel3d: {
+    tag: "Showcase",
+    title: "A Glimpse Into Our World",
+    subtitle: "Explore the key pillars of our global trade operations.",
+    clickToClose: "Click again to close",
+    items: [
+      { title: "Global Shipping", desc: "Connecting continents through world-class port operations." },
+      { title: "Warehousing", desc: "State-of-the-art storage and distribution facilities." },
+      { title: "Quality Inspection", desc: "Rigorous quality control at every stage of production." },
+      { title: "Private Labeling", desc: "Premium packaging and branding tailored to your vision." },
+      { title: "Strategic Partnerships", desc: "Building lasting relationships that drive mutual growth." },
+      { title: "Trade Networks", desc: "An interconnected web of global trade routes and markets." },
+    ],
+  },
   cookies: {
     message: "We use cookies to improve your experience.",
     privacyPolicy: "Privacy Policy",

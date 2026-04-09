@@ -533,6 +533,20 @@ const zh = {
     quoteBody: "从深圳的工厂到中东的店面，我们处理每一个细节，让您的业务永不停歇。",
     cta: "开始您的旅程",
   },
+  carousel3d: {
+    tag: "展示",
+    title: "走进我们的世界",
+    subtitle: "探索我们全球贸易运营的核心支柱。",
+    clickToClose: "再次点击关闭",
+    items: [
+      { title: "全球航运", desc: "通过世界级港口运营连接各大洲。" },
+      { title: "仓储物流", desc: "先进的存储和配送设施。" },
+      { title: "质量检验", desc: "在生产的每个阶段进行严格的质量控制。" },
+      { title: "自有品牌", desc: "根据您的愿景定制的高端包装和品牌。" },
+      { title: "战略伙伴", desc: "建立推动共同增长的持久合作关系。" },
+      { title: "贸易网络", desc: "全球贸易路线和市场的互联网络。" },
+    ],
+  },
   cookies: {
     message: "我们使用Cookie来改善您的体验。",
     privacyPolicy: "隐私政策",
