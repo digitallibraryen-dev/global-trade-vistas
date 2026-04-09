@@ -447,6 +447,12 @@ const en = {
     title: "Private Labeling & OEM",
     subtitle: "Build your own brand with custom-manufactured products from China's top factories.",
     intro: "Private labeling allows you to sell high-quality products under your own brand name. We manage the entire process — from product customization and packaging design to regulatory compliance and final delivery.",
+    splitTag: "Your Brand, Our Expertise",
+    splitTitle: "From Concept to Shelf",
+    processTag: "The Journey",
+    processTitle: "How We Build Your Brand",
+    processSubtitle: "A complete private labeling workflow from design to delivery.",
+    ctaTitle: "Launch your own brand from China",
     steps: [
       { title: "Product Selection & Customization", desc: "We help you identify the right product category and work with manufacturers to customize specifications, materials, colors, and features to match your brand vision." },
       { title: "Brand Design & Packaging", desc: "Our team coordinates logo placement, label design, packaging artwork, and printing to create professional branded packaging that stands out on shelves." },
