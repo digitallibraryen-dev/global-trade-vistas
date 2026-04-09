@@ -7,7 +7,7 @@ import {
   Globe,
   ShieldCheck,
   Lightning,
-  TrendingUp,
+  TrendUp,
   Package,
   Handshake,
 } from "@phosphor-icons/react";
