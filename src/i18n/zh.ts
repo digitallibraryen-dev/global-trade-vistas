@@ -235,6 +235,7 @@ const zh = {
     error: "错误",
     verified: "已认证",
     viewAll: "查看所有评价",
+    viewMore: "查看更多",
   },
   faq: {
     tag: "常见问题",
