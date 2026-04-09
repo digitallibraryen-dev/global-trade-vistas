@@ -31,6 +31,7 @@ const AUTO_SPEED = 0.15; // degrees per frame
 
 const Carousel3DSection = () => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const angleRef = useRef(0);
   const rafRef = useRef<number>(0);
@@ -40,14 +41,18 @@ const Carousel3DSection = () => {
 
   const count = slides.length;
   const step = 360 / count;
+  const radius = isMobile ? 180 : 340;
+  const cardW = isMobile ? 180 : 260;
+  const cardH = isMobile ? 250 : 360;
+  const containerH = isMobile ? 320 : 420;
 
   const getItemStyle = useCallback(
     (index: number, currentAngle: number) => {
       const itemAngle = currentAngle + index * step;
       const rad = (itemAngle * Math.PI) / 180;
-      const x = Math.sin(rad) * RADIUS;
-      const z = Math.cos(rad) * RADIUS;
-      const normalizedZ = (z + RADIUS) / (2 * RADIUS); // 0 (back) to 1 (front)
+      const x = Math.sin(rad) * radius;
+      const z = Math.cos(rad) * radius;
+      const normalizedZ = (z + radius) / (2 * radius);
       const scale = 0.55 + normalizedZ * 0.45;
       const opacity = 0.3 + normalizedZ * 0.7;
       const blur = Math.max(0, (1 - normalizedZ) * 4);
@@ -59,7 +64,7 @@ const Carousel3DSection = () => {
         zIndex: Math.round(normalizedZ * 100),
       };
     },
-    [step]
+    [step, radius]
   );
 
   // Animation loop
