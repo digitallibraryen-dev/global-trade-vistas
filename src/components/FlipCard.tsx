@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useTranslation } from "react-i18next";
 
 interface FlipCardProps {
   frontImage: string;
@@ -18,15 +16,13 @@ const FlipCard: React.FC<FlipCardProps> = ({
   className = "",
 }) => {
   const [flipped, setFlipped] = useState(false);
-  const isMobile = useIsMobile();
-  const { t } = useTranslation();
 
   return (
     <div
       className={`flip-card group ${className}`}
-      onMouseEnter={() => !isMobile && setFlipped(true)}
-      onMouseLeave={() => !isMobile && setFlipped(false)}
-      onClick={() => isMobile && setFlipped((f) => !f)}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped((f) => !f)}
     >
       <div className={`flip-card-inner ${flipped ? "is-flipped" : ""}`}>
         {/* ── FRONT ── */}
@@ -47,7 +43,7 @@ const FlipCard: React.FC<FlipCardProps> = ({
               {frontTitle}
             </h3>
             <p className="mt-1 text-xs font-medium uppercase tracking-widest text-primary opacity-80">
-              {isMobile ? (t("flipCard.tapHint", "Tap to flip ↻")) : (t("flipCard.hoverHint", "Hover to explore →"))}
+              Hover to explore →
             </p>
           </div>
         </div>
@@ -72,11 +68,6 @@ const FlipCard: React.FC<FlipCardProps> = ({
               </p>
             )}
             {backAction}
-            {isMobile && (
-              <p className="text-[10px] uppercase tracking-widest text-primary/60 mt-1">
-                {t("flipCard.tapBack", "Tap to flip back ↻")}
-              </p>
-            )}
           </div>
         </div>
       </div>
