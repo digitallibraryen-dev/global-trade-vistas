@@ -524,6 +524,22 @@ const en = {
     title: "Trusted Platforms & Logistics Partners",
     subtitle: "Connecting you with reliable suppliers and seamless shipping solutions from China to the world.",
   },
+  bento: {
+    heroTag: "Global Trade Excellence",
+    heroTitle: "Your Gateway to\nSeamless Sourcing",
+    heroDesc: "End-to-end procurement, quality control, and logistics — all under one roof.",
+    features: [
+      { title: "Worldwide Network", desc: "Access suppliers across 30+ provinces in China." },
+      { title: "Verified Suppliers", desc: "Every partner is audited for quality and reliability." },
+      { title: "Fast Turnaround", desc: "Streamlined processes for rapid order fulfillment." },
+      { title: "Secure Packaging", desc: "Industry-grade packing standards for every shipment." },
+      { title: "Dedicated Support", desc: "Personal trade advisors available around the clock." },
+    ],
+    statLabel: "Client Satisfaction Rate",
+    ctaTitle: "Ready to Scale?",
+    ctaDesc: "Let our experts handle procurement so you can focus on growth.",
+    ctaBtn: "Get Started",
+  },
   cookies: {
     message: "We use cookies to improve your experience.",
     privacyPolicy: "Privacy Policy",

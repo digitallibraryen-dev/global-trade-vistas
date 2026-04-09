@@ -45,6 +45,7 @@ const Index = () => {
           <Suspense fallback={<SectionFallback />}>
             <OurImpactSection />
             <ServiceProcessSection />
+            <BentoGridSection />
             <HowItWorksSection />
             <FeaturedServicesSection />
             <ProductsSection />

@@ -122,7 +122,7 @@ const BentoGridSection = () => {
           {/* ─── Stat card (medium, spans 2 cols) ─── */}
           <div className="bento-card glass-strong rounded-2xl p-6 sm:col-span-2 flex items-center gap-6 transition-all duration-500 hover:shadow-[0_4px_24px_-4px_hsl(var(--primary)/0.25)] hover:-translate-y-1">
             <div className="shrink-0">
-              <TrendingUp size={40} weight="duotone" className="text-primary" />
+              <TrendUp size={40} weight="duotone" className="text-primary" />
             </div>
             <div>
               <p className="text-3xl sm:text-4xl font-bold text-foreground">
