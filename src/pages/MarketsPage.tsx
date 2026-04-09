@@ -23,7 +23,6 @@ const MarketsPage = () => {
         image={heroImg}
       />
 
-      {/* Intro */}
       <section className="section-padding">
         <div className="container-narrow">
           <ScrollReveal animation="headline" className="text-center">
@@ -33,18 +32,17 @@ const MarketsPage = () => {
       </section>
 
       <StatsBar stats={[
-        { value: 22, suffix: "+", label: "Arab Markets" },
-        { value: 50, suffix: "+", label: "Countries Total" },
-        { value: 500, suffix: "+", label: "Active Clients" },
-        { value: 15, suffix: "+", label: "Years in Region" },
+        { value: 22, suffix: "+", label: t("marketsPage.statsArab") },
+        { value: 50, suffix: "+", label: t("marketsPage.statsTotal") },
+        { value: 500, suffix: "+", label: t("marketsPage.statsActiveClients") },
+        { value: 15, suffix: "+", label: t("marketsPage.statsYearsRegion") },
       ]} />
 
-      {/* Markets Grid */}
       <section className="section-padding">
         <div className="container-narrow">
           <ScrollReveal animation="headline" className="text-center mb-16">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Regional Coverage</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Markets We Serve</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">{t("marketsPage.gridTag")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("marketsPage.gridTitle")}</h2>
           </ScrollReveal>
           <ScrollReveal animation="card" stagger={0.04} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {markets?.map((m, i) => (
@@ -62,7 +60,7 @@ const MarketsPage = () => {
         </div>
       </section>
 
-      <FullWidthCTA title="Ready to reach new markets?" buttonLabel={t("hero.cta2")} href="/contact" />
+      <FullWidthCTA title={t("marketsPage.ctaTitle")} buttonLabel={t("hero.cta2")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

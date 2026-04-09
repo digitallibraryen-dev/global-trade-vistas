@@ -12,15 +12,7 @@ import heroImg from "@/assets/pages/hero-whyus.jpg";
 const WhyUsPage = () => {
   const { t } = useTranslation();
   const reasons = t("whyUsPage.reasons", { returnObjects: true }) as { title: string; desc: string }[];
-
-  const comparison = [
-    { feature: "Verified Supplier Network", us: true, others: false },
-    { feature: "On-site Factory Audits", us: true, others: false },
-    { feature: "Transparent Pricing", us: true, others: false },
-    { feature: "24/7 Support", us: true, others: false },
-    { feature: "End-to-End Process", us: true, others: false },
-    { feature: "50+ Countries Coverage", us: true, others: false },
-  ];
+  const comparisonItems = t("whyUsPage.comparisonItems", { returnObjects: true }) as string[];
 
   return (
     <>
@@ -33,18 +25,18 @@ const WhyUsPage = () => {
       />
 
       <StatsBar stats={[
-        { value: 15, suffix: "+", label: "Years Experience" },
-        { value: 500, suffix: "+", label: "Clients Served" },
-        { value: 50, suffix: "+", label: "Countries" },
-        { value: 98, suffix: "%", label: "Satisfaction Rate" },
+        { value: 15, suffix: "+", label: t("whyUsPage.statsYears") },
+        { value: 500, suffix: "+", label: t("whyUsPage.statsClients") },
+        { value: 50, suffix: "+", label: t("whyUsPage.statsCountries") },
+        { value: 98, suffix: "%", label: t("whyUsPage.statsSatisfaction") },
       ]} />
 
       {/* Strength blocks */}
       <section className="section-padding">
         <div className="container-narrow">
           <ScrollReveal animation="headline" className="text-center mb-16">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Our Advantages</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">What Sets Us Apart</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">{t("whyUsPage.advantagesTag")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("whyUsPage.advantagesTitle")}</h2>
           </ScrollReveal>
           <div className="space-y-8">
             {reasons?.map((r, i) => (
@@ -66,18 +58,18 @@ const WhyUsPage = () => {
       <section className="section-padding gradient-dark">
         <div className="container-narrow">
           <ScrollReveal animation="headline" className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Almonesi vs. Others</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("whyUsPage.comparisonTitle")}</h2>
           </ScrollReveal>
           <ScrollReveal animation="scale-in">
             <div className="glass-strong rounded-2xl overflow-hidden max-w-2xl mx-auto">
               <div className="grid grid-cols-3 text-center p-4 border-b border-border/30">
-                <span className="text-sm font-medium text-muted-foreground">Feature</span>
-                <span className="text-sm font-bold text-primary">Almonesi</span>
-                <span className="text-sm font-medium text-muted-foreground">Others</span>
+                <span className="text-sm font-medium text-muted-foreground">{t("whyUsPage.comparisonFeature")}</span>
+                <span className="text-sm font-bold text-primary">{t("whyUsPage.comparisonUs")}</span>
+                <span className="text-sm font-medium text-muted-foreground">{t("whyUsPage.comparisonOthers")}</span>
               </div>
-              {comparison.map((c, i) => (
+              {comparisonItems?.map((feature, i) => (
                 <div key={i} className="grid grid-cols-3 text-center p-4 border-b border-border/10 last:border-0 hover:bg-primary/5 transition-colors">
-                  <span className="text-sm text-foreground text-left pl-2">{c.feature}</span>
+                  <span className="text-sm text-foreground text-left pl-2">{feature}</span>
                   <CheckCircle size={22} weight="fill" className="text-primary mx-auto" />
                   <XCircle size={22} weight="fill" className="text-muted-foreground/40 mx-auto" />
                 </div>
@@ -96,7 +88,7 @@ const WhyUsPage = () => {
         </div>
       </section>
 
-      <FullWidthCTA title="Ready to work with the best?" buttonLabel={t("hero.cta2")} href="/contact" />
+      <FullWidthCTA title={t("whyUsPage.ctaTitle")} buttonLabel={t("hero.cta2")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

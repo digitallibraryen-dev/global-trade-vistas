@@ -44,7 +44,6 @@ const AboutUsPage = () => {
         image={heroImg}
       />
 
-      {/* Mission & Vision split */}
       <SplitSection
         tag={t("aboutPage.missionTitle")}
         title={t("aboutPage.missionTitle")}
@@ -59,12 +58,11 @@ const AboutUsPage = () => {
         reverse
       />
 
-      {/* Stats */}
       <StatsBar stats={[
-        { value: 15, suffix: "+", label: t("whyChoose.items.experience.title").split(" ")[0] + " Years" },
-        { value: 50, suffix: "+", label: "Countries" },
-        { value: 500, suffix: "+", label: "Clients" },
-        { value: 98, suffix: "%", label: "Satisfaction" },
+        { value: 15, suffix: "+", label: t("aboutPage.statsYears") },
+        { value: 50, suffix: "+", label: t("aboutPage.statsCountries") },
+        { value: 500, suffix: "+", label: t("aboutPage.statsClients") },
+        { value: 98, suffix: "%", label: t("aboutPage.statsSatisfaction") },
       ]} />
 
       {/* Core Values */}

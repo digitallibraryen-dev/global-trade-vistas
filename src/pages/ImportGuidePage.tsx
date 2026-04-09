@@ -27,8 +27,8 @@ const ImportGuidePage = () => {
       <section className="section-padding">
         <div className="container-narrow max-w-3xl mx-auto">
           <ScrollReveal animation="headline" className="text-center mb-16">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Step by Step</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Your Import Journey</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">{t("importGuidePage.stepsTag")}</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">{t("importGuidePage.stepsTitle")}</h2>
           </ScrollReveal>
           <div className="space-y-4">
             {sections?.map((s, i) => (
@@ -60,7 +60,7 @@ const ImportGuidePage = () => {
         </div>
       </section>
 
-      <FullWidthCTA title="Need help importing from China?" buttonLabel={t("hero.cta1")} href="/contact" />
+      <FullWidthCTA title={t("importGuidePage.ctaTitle")} buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

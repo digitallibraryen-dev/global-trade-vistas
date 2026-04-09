@@ -23,7 +23,6 @@ const SupplierVerificationPage = () => {
         image={heroImg}
       />
 
-      {/* Intro */}
       <section className="section-padding">
         <div className="container-narrow">
           <ScrollReveal animation="headline" className="text-center">
@@ -33,20 +32,20 @@ const SupplierVerificationPage = () => {
       </section>
 
       <StatsBar stats={[
-        { value: 100, suffix: "%", label: "Verified Suppliers" },
-        { value: 500, suffix: "+", label: "Factory Audits" },
-        { value: 15, suffix: "+", label: "Years Experience" },
-        { value: 0, prefix: "<", suffix: ".5%", label: "Fraud Rate" },
+        { value: 100, suffix: "%", label: t("supplierVerificationPage.statsVerified") },
+        { value: 500, suffix: "+", label: t("supplierVerificationPage.statsAudits") },
+        { value: 15, suffix: "+", label: t("supplierVerificationPage.statsExperience") },
+        { value: 0, prefix: "<", suffix: ".5%", label: t("supplierVerificationPage.statsFraud") },
       ]} />
 
       <ProcessTimeline
-        tag="Our Process"
-        title="Verification Steps"
-        subtitle="Every supplier goes through our rigorous multi-step verification process."
+        tag={t("supplierVerificationPage.processTag")}
+        title={t("supplierVerificationPage.processTitle")}
+        subtitle={t("supplierVerificationPage.processSubtitle")}
         steps={steps?.map((s) => ({ title: s.title, desc: s.desc })) || []}
       />
 
-      <FullWidthCTA title="Need a verified supplier?" buttonLabel={t("hero.cta1")} href="/contact" />
+      <FullWidthCTA title={t("supplierVerificationPage.ctaTitle")} buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

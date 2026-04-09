@@ -24,20 +24,20 @@ const PrivateLabelingPage = () => {
       />
 
       <SplitSection
-        tag="Your Brand, Our Expertise"
-        title="From Concept to Shelf"
+        tag={t("privateLabelingPage.splitTag")}
+        title={t("privateLabelingPage.splitTitle")}
         text={t("privateLabelingPage.intro")}
         image={qualityImg}
       />
 
       <ProcessTimeline
-        tag="The Journey"
-        title="How We Build Your Brand"
-        subtitle="A complete private labeling workflow from design to delivery."
+        tag={t("privateLabelingPage.processTag")}
+        title={t("privateLabelingPage.processTitle")}
+        subtitle={t("privateLabelingPage.processSubtitle")}
         steps={steps?.map((s) => ({ title: s.title, desc: s.desc })) || []}
       />
 
-      <FullWidthCTA title="Launch your own brand from China" buttonLabel={t("hero.cta1")} href="/contact" />
+      <FullWidthCTA title={t("privateLabelingPage.ctaTitle")} buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>
