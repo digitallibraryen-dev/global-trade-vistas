@@ -1,17 +1,21 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { SealCheck, PencilSimple } from "@phosphor-icons/react";
+import { Quotes, ArrowLeft, ArrowRight, PencilSimple } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import ScrollReveal from "./ScrollReveal";
 import { staticReviewsSorted, type StaticReview } from "@/data/staticReviews";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { getCountryFlag } from "@/lib/countryFlag";
+import reviewsBg from "@/assets/reviews-bg.jpg";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface DbReview {
   id: string;
@@ -22,15 +26,16 @@ interface DbReview {
   profiles: { full_name: string | null; country: string | null; avatar_url: string | null } | null;
 }
 
-const INITIAL_COUNT = 4;
-const LOAD_MORE_COUNT = 10;
-
 const ReviewsSection = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const [activeIndex, setActiveIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [rating, setRating] = useState(5);
   const [title, setTitle] = useState("");
@@ -49,9 +54,8 @@ const ReviewsSection = () => {
 
   useEffect(() => { fetchDbReviews(); }, []);
 
-  // Merge DB reviews (shown first) with static reviews
   const allReviews = useMemo(() => {
-    const dbMapped = dbReviews.map((r, i) => ({
+    const dbMapped = dbReviews.map((r) => ({
       id: r.id,
       user: r.profiles?.full_name || "User",
       country: getCountryFlag(r.profiles?.country),
@@ -64,8 +68,72 @@ const ReviewsSection = () => {
     return [...dbMapped, ...staticReviewsSorted];
   }, [dbReviews]);
 
-  const visibleReviews = allReviews.slice(0, visibleCount);
-  const hasMore = visibleCount < allReviews.length;
+  // Pick top-rated reviews for the cinematic display
+  const featuredReviews = useMemo(() => {
+    return allReviews.filter((r) => r.rating >= 4).slice(0, 8);
+  }, [allReviews]);
+
+  const current = featuredReviews[activeIndex] || featuredReviews[0];
+
+  const goNext = useCallback(() => {
+    setActiveIndex((i) => (i + 1) % featuredReviews.length);
+  }, [featuredReviews.length]);
+
+  const goPrev = useCallback(() => {
+    setActiveIndex((i) => (i - 1 + featuredReviews.length) % featuredReviews.length);
+  }, [featuredReviews.length]);
+
+  // Auto-advance
+  useEffect(() => {
+    const timer = setInterval(goNext, 6000);
+    return () => clearInterval(timer);
+  }, [goNext]);
+
+  // GSAP scroll animations
+  useEffect(() => {
+    const section = sectionRef.current;
+    const bg = bgRef.current;
+    const content = contentRef.current;
+    if (!section || !bg || !content) return;
+
+    const ctx = gsap.context(() => {
+      // Background zoom
+      gsap.fromTo(bg,
+        { scale: 1.15 },
+        {
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+
+      // Content reveal
+      const elements = content.querySelectorAll("[data-reveal]");
+      gsap.fromTo(elements,
+        { y: 60, opacity: 0, filter: "blur(12px)" },
+        {
+          y: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "power3.out",
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 75%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
 
   const avgRating =
     allReviews.length > 0
@@ -73,35 +141,135 @@ const ReviewsSection = () => {
       : "0";
 
   return (
-    <section id="reviews" className="section-padding gradient-dark">
-      <div className="container-narrow">
-        <ScrollReveal animation="headline" className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">{t("reviews.title")}</h2>
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <StarRating rating={Math.round(Number(avgRating))} readonly size={24} />
-            <span className="text-xl font-semibold text-foreground">{avgRating}</span>
-            <span className="text-sm text-muted-foreground">({allReviews.length} {t("reviews.reviews")})</span>
-          </div>
-          <p className="text-muted-foreground max-w-lg mx-auto">{t("reviews.subtitle")}</p>
-          <div className="mt-4">
-            {user ? (
-              <Button onClick={() => setShowForm((v) => !v)} className="gap-2">
-                <PencilSimple size={16} weight="bold" />
-                {t("reviews.writeReview")}
-              </Button>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                <button onClick={() => navigate("/login")} className="text-primary underline hover:text-primary/80">
-                  {t("reviews.signInToReview")}
-                </button>{" "}
-                {t("reviews.signInToReviewSuffix")}
+    <section
+      ref={sectionRef}
+      id="reviews"
+      className="relative min-h-[90vh] flex items-center justify-center overflow-hidden"
+    >
+      {/* Background image with overlay */}
+      <div ref={bgRef} className="absolute inset-0 z-0 will-change-transform">
+        <img
+          src={reviewsBg}
+          alt=""
+          className="w-full h-full object-cover"
+          loading="lazy"
+          width={1920}
+          height={1080}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
+      </div>
+
+      {/* Content */}
+      <div ref={contentRef} className="relative z-10 w-full max-w-4xl mx-auto px-6 py-20 text-center">
+        {/* Section header */}
+        <div data-reveal>
+          <p className="text-xs uppercase tracking-[0.3em] text-primary font-medium mb-4">
+            {t("reviews.title")}
+          </p>
+        </div>
+
+        <div data-reveal className="flex items-center justify-center gap-3 mb-10">
+          <StarRating rating={Math.round(Number(avgRating))} readonly size={20} />
+          <span className="text-lg font-semibold text-foreground">{avgRating}</span>
+          <span className="text-sm text-muted-foreground">
+            ({allReviews.length} {t("reviews.reviews")})
+          </span>
+        </div>
+
+        {/* Quote icon */}
+        <div data-reveal className="mb-6">
+          <Quotes
+            size={48}
+            weight="fill"
+            className="text-primary/30 mx-auto"
+          />
+        </div>
+
+        {/* Testimonial */}
+        <div data-reveal className="min-h-[160px] flex flex-col items-center justify-center">
+          <blockquote
+            key={current?.id}
+            className="animate-fade-in"
+          >
+            {current?.title && (
+              <p className="text-lg sm:text-xl font-semibold text-foreground mb-3">
+                "{current.title}"
               </p>
             )}
-          </div>
-        </ScrollReveal>
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto italic">
+              "{current?.description}"
+            </p>
+          </blockquote>
 
+          <div className="mt-6 flex items-center gap-3 justify-center animate-fade-in">
+            {current?.profile_image ? (
+              <img
+                src={current.profile_image}
+                alt={current.user}
+                className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/30"
+              />
+            ) : (
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary ring-2 ring-primary/30">
+                {current?.user?.[0]?.toUpperCase()}
+              </div>
+            )}
+            <div className="text-left">
+              <p className="text-sm font-medium text-foreground">
+                {current?.user?.replace(/_/g, " ")} {current?.country}
+              </p>
+              <StarRating rating={current?.rating || 5} readonly size={12} />
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation arrows */}
+        <div data-reveal className="flex items-center justify-center gap-4 mt-8">
+          <button
+            onClick={goPrev}
+            className="h-10 w-10 rounded-full border border-primary/20 flex items-center justify-center text-foreground hover:bg-primary/10 transition-colors"
+            aria-label="Previous review"
+          >
+            <ArrowLeft size={18} />
+          </button>
+          <span className="text-xs text-muted-foreground tabular-nums">
+            {activeIndex + 1} / {featuredReviews.length}
+          </span>
+          <button
+            onClick={goNext}
+            className="h-10 w-10 rounded-full border border-primary/20 flex items-center justify-center text-foreground hover:bg-primary/10 transition-colors"
+            aria-label="Next review"
+          >
+            <ArrowRight size={18} />
+          </button>
+        </div>
+
+        {/* CTA */}
+        <div data-reveal className="mt-10">
+          {user ? (
+            <Button
+              onClick={() => setShowForm((v) => !v)}
+              size="lg"
+              className="gap-2 shadow-[0_0_30px_hsl(var(--primary)/0.3)]"
+            >
+              <PencilSimple size={18} weight="bold" />
+              {t("reviews.writeReview")}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => navigate("/login")}
+              variant="outline"
+              size="lg"
+              className="shadow-[0_0_20px_hsl(var(--primary)/0.15)]"
+            >
+              {t("reviews.signInToReview")}
+            </Button>
+          )}
+        </div>
+
+        {/* Review form */}
         {showForm && user && (
-          <div className="glass-strong rounded-xl p-5 mb-8 space-y-4 max-w-lg mx-auto">
+          <div className="mt-8 bg-background/60 backdrop-blur-xl border border-primary/20 rounded-2xl p-6 space-y-4 max-w-lg mx-auto text-left animate-fade-in">
             <div>
               <label className="text-sm font-medium text-foreground mb-1 block">{t("reviews.ratingLabel")}</label>
               <StarRating rating={rating} onChange={setRating} size={24} />
@@ -141,46 +309,6 @@ const ReviewsSection = () => {
               </Button>
               <Button variant="outline" onClick={() => setShowForm(false)}>{t("reviews.cancel")}</Button>
             </div>
-          </div>
-        )}
-
-        <ScrollReveal animation="card" stagger={0.08} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleReviews.map((r) => (
-            <div key={r.id} className="glass-strong rounded-xl p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {r.profile_image ? (
-                    <img src={r.profile_image} alt={r.user} className="h-8 w-8 rounded-full object-cover" loading="lazy" />
-                  ) : (
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
-                      {r.user[0].toUpperCase()}
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm font-medium text-foreground flex items-center gap-1">
-                      {r.user.replace(/_/g, " ")}
-                      <span title={r.country}>{r.country}</span>
-                      <SealCheck size={14} className="text-primary" weight="fill" />
-                    </p>
-                  </div>
-                </div>
-                <StarRating rating={r.rating} readonly size={14} />
-              </div>
-              {r.title && <p className="font-semibold text-foreground text-sm">{r.title}</p>}
-              <p className="text-sm text-muted-foreground leading-relaxed">{r.description}</p>
-              <p className="text-xs text-muted-foreground/60">{new Date(r.date).toLocaleDateString()}</p>
-            </div>
-          ))}
-        </ScrollReveal>
-
-        {hasMore && (
-          <div className="text-center mt-8">
-            <Button
-              variant="outline"
-              onClick={() => setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, allReviews.length))}
-            >
-              {t("reviews.loadMore", "Load More")} ({allReviews.length - visibleCount} {t("reviews.remaining", "remaining")})
-            </Button>
           </div>
         )}
       </div>
