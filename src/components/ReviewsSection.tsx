@@ -221,7 +221,9 @@ const ReviewsSection = () => {
               <p className="text-sm font-medium text-foreground flex items-center gap-1.5">
                 {current?.user?.replace(/_/g, " ")} {current?.country}
                 {current?.verified && (
-                  <SealCheck size={16} weight="fill" className="text-primary shrink-0" title={t("reviews.verified")} />
+                  <span title={t("reviews.verified")}>
+                    <SealCheck size={16} weight="fill" className="text-primary shrink-0" />
+                  </span>
                 )}
               </p>
               <StarRating rating={current?.rating || 5} readonly size={12} />
