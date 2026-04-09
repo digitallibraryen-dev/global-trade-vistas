@@ -75,6 +75,10 @@ const zh = {
       transparent: "透明的佣金结构",
       secure: "安全的全球物流合作",
     },
+    statsYears: "年",
+    statsCountries: "国家",
+    statsClients: "客户",
+    statsSatisfaction: "满意度",
   },
   featuredServices: {
     tag: "我们的服务",

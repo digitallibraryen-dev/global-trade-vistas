@@ -75,6 +75,10 @@ const ar = {
       transparent: "هيكل عمولات شفاف",
       secure: "شراكات لوجستية عالمية آمنة",
     },
+    statsYears: "سنوات",
+    statsCountries: "دولة",
+    statsClients: "عميل",
+    statsSatisfaction: "رضا العملاء",
   },
   featuredServices: {
     tag: "خدماتنا",
