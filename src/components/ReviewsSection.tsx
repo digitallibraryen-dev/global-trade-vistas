@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Quotes, ArrowLeft, ArrowRight, PencilSimple } from "@phosphor-icons/react";
+import { Quotes, ArrowLeft, ArrowRight, PencilSimple, SealCheck } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
