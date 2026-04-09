@@ -524,6 +524,18 @@ const zh = {
     title: "可信赖的平台与物流合作伙伴",
     subtitle: "为您连接可靠的供应商，提供从中国到全球的无缝物流解决方案。",
   },
+  bento: {
+    tag: "为什么选择我们",
+    title: "为全球规模而生",
+    subtitle: "端到端的贸易基础设施，专为速度、可靠性和增长而设计。",
+    countries: "服务国家",
+    accuracy: "订单准确率",
+    faster: "更快交付",
+    shipments: "处理货运",
+    ctaTitle: "准备扩大您的进口业务？",
+    ctaDesc: "探索我们的全方位服务。",
+    ctaBtn: "查看服务",
+  },
   cookies: {
     message: "我们使用Cookie来改善您的体验。",
     privacyPolicy: "隐私政策",
