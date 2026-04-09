@@ -277,7 +277,7 @@ const ReviewsSection = () => {
           <Button
             variant="ghost"
             size="lg"
-            onClick={() => setShowAll((v) => !v)}
+            onClick={() => { setShowAll((v) => !v); setVisibleCount(10); }}
             className="text-primary hover:text-primary/80"
           >
             {showAll ? "▲" : "▼"} {t("reviews.viewAll")} ({allReviews.length})
