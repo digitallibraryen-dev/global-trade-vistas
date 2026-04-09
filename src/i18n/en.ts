@@ -548,6 +548,9 @@ const en = {
     tag: "Guide",
     title: "Complete Import Guide",
     subtitle: "A step-by-step guide to importing from China successfully — from product selection to delivery.",
+    stepsTag: "Step by Step",
+    stepsTitle: "Your Import Journey",
+    ctaTitle: "Need help importing from China?",
     sections: [
       { title: "Define Your Product Requirements", content: "Start by clearly defining what you want to import — product type, specifications, quantity, quality standards, and target price. The more detailed your requirements, the better results you'll get from suppliers." },
       { title: "Find & Verify Suppliers", content: "Research potential suppliers through trade platforms, industry exhibitions, or sourcing agents like Almonesi. Always verify supplier credentials, factory capabilities, and export history before placing orders." },
