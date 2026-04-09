@@ -49,6 +49,7 @@ const Index = () => {
             <BentoGridSection />
             <HowItWorksSection />
             <FeaturedServicesSection />
+            <Carousel3DSection />
             <ProductsSection />
             <WhyChooseSection />
             <MiddleEastMapSection />
