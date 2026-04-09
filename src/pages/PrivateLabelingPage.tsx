@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { Tag, PaintBrush, Package, Barcode, Storefront } from "@phosphor-icons/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import ScrollReveal from "@/components/ScrollReveal";
-
-const icons = [Tag, PaintBrush, Package, Barcode, Storefront];
+import CinematicHero from "@/components/premium/CinematicHero";
+import ProcessTimeline from "@/components/premium/ProcessTimeline";
+import SplitSection from "@/components/premium/SplitSection";
+import FullWidthCTA from "@/components/premium/FullWidthCTA";
+import heroImg from "@/assets/pages/hero-privatelabel.jpg";
+import qualityImg from "@/assets/pages/hero-quality.jpg";
 
 const PrivateLabelingPage = () => {
   const { t } = useTranslation();
@@ -15,30 +16,28 @@ const PrivateLabelingPage = () => {
   return (
     <>
       <Navbar />
-      <PageHeader tag={t("privateLabelingPage.tag")} title={t("privateLabelingPage.title")} subtitle={t("privateLabelingPage.subtitle")} />
-      <main className="section-padding">
-        <div className="container-narrow">
-          <ScrollReveal animation="headline" className="mb-10">
-            <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-center">{t("privateLabelingPage.intro")}</p>
-          </ScrollReveal>
-          <ScrollReveal animation="card" stagger={0.12} className="space-y-6">
-            {steps?.map((s, i) => {
-              const Icon = icons[i % icons.length];
-              return (
-                <div key={i} className="glass rounded-2xl p-6 flex gap-5 items-start">
-                  <div className="shrink-0 rounded-xl bg-primary/10 p-3">
-                    <Icon size={28} weight="duotone" className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </ScrollReveal>
-        </div>
-      </main>
+      <CinematicHero
+        tag={t("privateLabelingPage.tag")}
+        title={t("privateLabelingPage.title")}
+        subtitle={t("privateLabelingPage.subtitle")}
+        image={heroImg}
+      />
+
+      <SplitSection
+        tag="Your Brand, Our Expertise"
+        title="From Concept to Shelf"
+        text={t("privateLabelingPage.intro")}
+        image={qualityImg}
+      />
+
+      <ProcessTimeline
+        tag="The Journey"
+        title="How We Build Your Brand"
+        subtitle="A complete private labeling workflow from design to delivery."
+        steps={steps?.map((s) => ({ title: s.title, desc: s.desc })) || []}
+      />
+
+      <FullWidthCTA title="Launch your own brand from China" buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

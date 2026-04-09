@@ -1,30 +1,75 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CaretDown } from "@phosphor-icons/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
+import CinematicHero from "@/components/premium/CinematicHero";
+import SplitSection from "@/components/premium/SplitSection";
+import FullWidthCTA from "@/components/premium/FullWidthCTA";
+import heroImg from "@/assets/pages/hero-services.jpg";
+import logisticsImg from "@/assets/pages/hero-logistics.jpg";
 
 const SourcingGuidePage = () => {
   const { t } = useTranslation();
   const sections = t("sourcingGuidePage.sections", { returnObjects: true }) as { title: string; content: string }[];
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
     <>
       <Navbar />
-      <PageHeader tag={t("sourcingGuidePage.tag")} title={t("sourcingGuidePage.title")} subtitle={t("sourcingGuidePage.subtitle")} />
-      <main className="section-padding">
+      <CinematicHero
+        tag={t("sourcingGuidePage.tag")}
+        title={t("sourcingGuidePage.title")}
+        subtitle={t("sourcingGuidePage.subtitle")}
+        image={heroImg}
+      />
+
+      <SplitSection
+        tag="Expert Knowledge"
+        title="Source Smarter, Not Harder"
+        text="China is the world's largest manufacturing hub. Our sourcing guide gives you insider knowledge to navigate this complex landscape with confidence."
+        image={logisticsImg}
+      />
+
+      <section className="section-padding gradient-dark">
         <div className="container-narrow max-w-3xl mx-auto">
-          <ScrollReveal animation="card" stagger={0.1} className="space-y-8">
-            {sections?.map((s, i) => (
-              <div key={i} className="glass rounded-2xl p-6">
-                <h2 className="text-lg font-semibold text-foreground mb-2">{i + 1}. {s.title}</h2>
-                <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">{s.content}</p>
-              </div>
-            ))}
+          <ScrollReveal animation="headline" className="text-center mb-16">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Deep Dive</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Essential Sourcing Knowledge</h2>
           </ScrollReveal>
+          <div className="space-y-4">
+            {sections?.map((s, i) => (
+              <ScrollReveal key={i} animation="card" delay={i * 0.05}>
+                <div className="glass-strong rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg">
+                  <button
+                    onClick={() => setOpen(open === i ? null : i)}
+                    className="w-full flex items-center justify-between p-6 text-left"
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="text-2xl font-extrabold text-primary/30">{String(i + 1).padStart(2, "0")}</span>
+                      <h3 className="text-lg font-bold text-foreground">{s.title}</h3>
+                    </div>
+                    <CaretDown
+                      size={20}
+                      weight="bold"
+                      className={`text-primary shrink-0 transition-transform duration-300 ${open === i ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-500 ease-out ${open === i ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+                    <div className="px-6 pb-6 pl-16">
+                      <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">{s.content}</p>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      <FullWidthCTA title="Start sourcing from China today" buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>

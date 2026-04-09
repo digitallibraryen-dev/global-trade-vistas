@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { MagnifyingGlass, Factory, Certificate, FileText, Handshake } from "@phosphor-icons/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PageHeader from "@/components/PageHeader";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollReveal from "@/components/ScrollReveal";
-
-const icons = [MagnifyingGlass, Factory, Certificate, FileText, Handshake];
+import CinematicHero from "@/components/premium/CinematicHero";
+import ProcessTimeline from "@/components/premium/ProcessTimeline";
+import StatsBar from "@/components/premium/StatsBar";
+import FullWidthCTA from "@/components/premium/FullWidthCTA";
+import heroImg from "@/assets/pages/hero-quality.jpg";
 
 const SupplierVerificationPage = () => {
   const { t } = useTranslation();
@@ -15,30 +16,37 @@ const SupplierVerificationPage = () => {
   return (
     <>
       <Navbar />
-      <PageHeader tag={t("supplierVerificationPage.tag")} title={t("supplierVerificationPage.title")} subtitle={t("supplierVerificationPage.subtitle")} />
-      <main className="section-padding">
+      <CinematicHero
+        tag={t("supplierVerificationPage.tag")}
+        title={t("supplierVerificationPage.title")}
+        subtitle={t("supplierVerificationPage.subtitle")}
+        image={heroImg}
+      />
+
+      {/* Intro */}
+      <section className="section-padding">
         <div className="container-narrow">
-          <ScrollReveal animation="headline" className="mb-10">
-            <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto text-center">{t("supplierVerificationPage.intro")}</p>
-          </ScrollReveal>
-          <ScrollReveal animation="card" stagger={0.12} className="space-y-6">
-            {steps?.map((s, i) => {
-              const Icon = icons[i % icons.length];
-              return (
-                <div key={i} className="glass rounded-2xl p-6 flex gap-5 items-start">
-                  <div className="shrink-0 rounded-xl bg-primary/10 p-3">
-                    <Icon size={28} weight="duotone" className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
+          <ScrollReveal animation="headline" className="text-center">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">{t("supplierVerificationPage.intro")}</p>
           </ScrollReveal>
         </div>
-      </main>
+      </section>
+
+      <StatsBar stats={[
+        { value: 100, suffix: "%", label: "Verified Suppliers" },
+        { value: 500, suffix: "+", label: "Factory Audits" },
+        { value: 15, suffix: "+", label: "Years Experience" },
+        { value: 0, prefix: "<", suffix: ".5%", label: "Fraud Rate" },
+      ]} />
+
+      <ProcessTimeline
+        tag="Our Process"
+        title="Verification Steps"
+        subtitle="Every supplier goes through our rigorous multi-step verification process."
+        steps={steps?.map((s) => ({ title: s.title, desc: s.desc })) || []}
+      />
+
+      <FullWidthCTA title="Need a verified supplier?" buttonLabel={t("hero.cta1")} href="/contact" />
       <Footer />
       <WhatsAppButton />
     </>
