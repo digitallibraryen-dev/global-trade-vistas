@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollReveal from "./ScrollReveal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import img1 from "@/assets/carousel-1.jpg";
 import img2 from "@/assets/carousel-2.jpg";
@@ -26,11 +27,11 @@ const slides: SlideData[] = [
   { image: img5, titleKey: "carousel3d.slides.4.title", descKey: "carousel3d.slides.4.desc" },
 ];
 
-const RADIUS = 340;
 const AUTO_SPEED = 0.15; // degrees per frame
 
 const Carousel3DSection = () => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const angleRef = useRef(0);
   const rafRef = useRef<number>(0);
@@ -40,14 +41,18 @@ const Carousel3DSection = () => {
 
   const count = slides.length;
   const step = 360 / count;
+  const radius = isMobile ? 180 : 340;
+  const cardW = isMobile ? 180 : 260;
+  const cardH = isMobile ? 250 : 360;
+  const containerH = isMobile ? 320 : 420;
 
   const getItemStyle = useCallback(
     (index: number, currentAngle: number) => {
       const itemAngle = currentAngle + index * step;
       const rad = (itemAngle * Math.PI) / 180;
-      const x = Math.sin(rad) * RADIUS;
-      const z = Math.cos(rad) * RADIUS;
-      const normalizedZ = (z + RADIUS) / (2 * RADIUS); // 0 (back) to 1 (front)
+      const x = Math.sin(rad) * radius;
+      const z = Math.cos(rad) * radius;
+      const normalizedZ = (z + radius) / (2 * radius);
       const scale = 0.55 + normalizedZ * 0.45;
       const opacity = 0.3 + normalizedZ * 0.7;
       const blur = Math.max(0, (1 - normalizedZ) * 4);
@@ -59,7 +64,7 @@ const Carousel3DSection = () => {
         zIndex: Math.round(normalizedZ * 100),
       };
     },
-    [step]
+    [step, radius]
   );
 
   // Animation loop
@@ -156,8 +161,8 @@ const Carousel3DSection = () => {
 
         {/* 3D Carousel */}
         <div
-          className="relative mt-16 mx-auto select-none"
-          style={{ perspective: "1200px", height: "420px" }}
+          className="relative mt-10 sm:mt-16 mx-auto select-none"
+          style={{ perspective: isMobile ? "800px" : "1200px", height: `${containerH}px` }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -174,7 +179,7 @@ const Carousel3DSection = () => {
                 <div
                   key={i}
                   className="carousel-item absolute cursor-pointer transition-shadow duration-500"
-                  style={{ width: "260px", height: "360px", willChange: "transform, opacity, filter" }}
+                  style={{ width: `${cardW}px`, height: `${cardH}px`, willChange: "transform, opacity, filter" }}
                   onClick={() => handleClick(i)}
                 >
                   <div
