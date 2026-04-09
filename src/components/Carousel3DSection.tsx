@@ -27,7 +27,8 @@ const slides: SlideData[] = [
   { image: img5, titleKey: "carousel3d.slides.4.title", descKey: "carousel3d.slides.4.desc" },
 ];
 
-const AUTO_SPEED = 0.15; // degrees per frame
+const AUTO_SPEED_DESKTOP = 0.15;
+const AUTO_SPEED_MOBILE = 0.25;
 
 const Carousel3DSection = () => {
   const { t } = useTranslation();
