@@ -5,7 +5,7 @@ import { useSocialLinks } from "@/hooks/useSocialLinks";
 import { useLocalizedField } from "@/hooks/useLocalizedField";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import ScrollReveal from "./ScrollReveal";
-import CinematicCard from "./CinematicCard";
+import FlipCard from "./FlipCard";
 import { getProductFallback } from "@/lib/fallbackImages";
 
 interface Product {
@@ -45,7 +45,9 @@ const ProductsSection = () => {
   const getWhatsAppLink = (productName: string) => {
     if (!whatsapp) return "#";
     const number = whatsapp.value.replace(/[^0-9+]/g, "").replace("+", "");
-    const message = encodeURIComponent(t("whatsappMessages.product", { name: productName }));
+    const message = encodeURIComponent(
+      t("whatsappMessages.product", { name: productName })
+    );
     return `https://wa.me/${number}?text=${message}`;
   };
 
@@ -66,12 +68,12 @@ const ProductsSection = () => {
             const localName = loc(p, "name");
             const localDesc = loc(p, "description");
             return (
-              <CinematicCard
+              <FlipCard
                 key={p.id}
-                image={p.image_url || getProductFallback(i)}
-                title={localName}
-                description={localDesc || undefined}
-                action={
+                frontImage={p.image_url || getProductFallback(i)}
+                frontTitle={localName}
+                backDescription={localDesc || undefined}
+                backAction={
                   <button
                     className="btn-3d inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
                     onClick={(e) => {

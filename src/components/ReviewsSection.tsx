@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { SealCheck, PencilSimple, Quotes } from "@phosphor-icons/react";
+import { SealCheck, PencilSimple } from "@phosphor-icons/react";
 import StarRating from "./StarRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,9 +24,6 @@ interface DbReview {
 
 const INITIAL_COUNT = 4;
 const LOAD_MORE_COUNT = 10;
-
-/* Deterministic accent colors for review cards */
-const ACCENT_HUES = [210, 260, 330, 170, 30, 290];
 
 const ReviewsSection = () => {
   const { t } = useTranslation();
@@ -52,8 +49,9 @@ const ReviewsSection = () => {
 
   useEffect(() => { fetchDbReviews(); }, []);
 
+  // Merge DB reviews (shown first) with static reviews
   const allReviews = useMemo(() => {
-    const dbMapped = dbReviews.map((r) => ({
+    const dbMapped = dbReviews.map((r, i) => ({
       id: r.id,
       user: r.profiles?.full_name || "User",
       country: getCountryFlag(r.profiles?.country),
@@ -146,78 +144,33 @@ const ReviewsSection = () => {
           </div>
         )}
 
-        <ScrollReveal animation="card" stagger={0.08} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleReviews.map((r, idx) => {
-            const hue = ACCENT_HUES[idx % ACCENT_HUES.length];
-            return (
-              <div
-                key={r.id}
-                className="review-cinematic-card group relative rounded-xl overflow-hidden border border-primary/10 hover:border-primary/30 transition-all duration-500"
-                style={{
-                  background: `linear-gradient(135deg, hsl(${hue} 40% 8% / 0.5), hsl(var(--background)) 60%)`,
-                }}
-              >
-                {/* Decorative quote icon */}
-                <Quotes
-                  size={64}
-                  weight="fill"
-                  className="absolute top-3 right-3 text-primary/[0.07] group-hover:text-primary/[0.15] transition-colors duration-500"
-                />
-
-                {/* Glow accent line at top */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-[2px] opacity-60 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(90deg, transparent, hsl(var(--primary)), transparent)`,
-                  }}
-                />
-
-                <div className="relative z-10 p-5 space-y-4">
-                  {/* Header: avatar + name + rating */}
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      {r.profile_image ? (
-                        <img
-                          src={r.profile_image}
-                          alt={r.user}
-                          className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-sm font-bold text-primary ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
-                          {r.user[0].toUpperCase()}
-                        </div>
-                      )}
-                      <div>
-                        <p className="text-sm font-semibold text-foreground flex items-center gap-1.5">
-                          {r.user.replace(/_/g, " ")}
-                          <span title={r.country}>{r.country}</span>
-                          <SealCheck size={14} className="text-primary" weight="fill" />
-                        </p>
-                        <p className="text-xs text-muted-foreground/60 mt-0.5">
-                          {new Date(r.date).toLocaleDateString()}
-                        </p>
-                      </div>
+        <ScrollReveal animation="card" stagger={0.08} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {visibleReviews.map((r) => (
+            <div key={r.id} className="glass-strong rounded-xl p-5 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {r.profile_image ? (
+                    <img src={r.profile_image} alt={r.user} className="h-8 w-8 rounded-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                      {r.user[0].toUpperCase()}
                     </div>
-                    <StarRating rating={r.rating} readonly size={14} />
-                  </div>
-
-                  {/* Title */}
-                  {r.title && (
-                    <p className="font-semibold text-foreground text-sm leading-snug">{r.title}</p>
                   )}
-
-                  {/* Comment */}
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
-                    {r.description}
-                  </p>
+                  <div>
+                    <p className="text-sm font-medium text-foreground flex items-center gap-1">
+                      {r.user.replace(/_/g, " ")}
+                      <span title={r.country}>{r.country}</span>
+                      <SealCheck size={14} className="text-primary" weight="fill" />
+                    </p>
+                  </div>
                 </div>
-
-                {/* Hover glow */}
-                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none shadow-[inset_0_0_40px_hsl(var(--primary)/0.04),0_0_30px_hsl(var(--primary)/0.06)]" />
+                <StarRating rating={r.rating} readonly size={14} />
               </div>
-            );
-          })}
+              {r.title && <p className="font-semibold text-foreground text-sm">{r.title}</p>}
+              <p className="text-sm text-muted-foreground leading-relaxed">{r.description}</p>
+              <p className="text-xs text-muted-foreground/60">{new Date(r.date).toLocaleDateString()}</p>
+            </div>
+          ))}
         </ScrollReveal>
 
         {hasMore && (

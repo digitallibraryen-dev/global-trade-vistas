@@ -373,13 +373,15 @@
   50% { opacity: 1; }
 }
 
-/* ===== FLIP CARD (legacy) ===== */
+/* ===== FLIP CARD ===== */
 .flip-card {
   perspective: 1200px;
   height: 340px;
   cursor: pointer;
   position: relative;
 }
+
+/* Rotating glow border */
 .flip-card::before {
   content: '';
   position: absolute;
@@ -400,10 +402,13 @@
   z-index: 0;
   pointer-events: none;
 }
+
 .flip-card:hover::before,
 .flip-card:has(.is-flipped)::before {
   opacity: 1;
 }
+
+/* Outer glow shadow on hover */
 .flip-card::after {
   content: '';
   position: absolute;
@@ -415,10 +420,12 @@
   z-index: 0;
   pointer-events: none;
 }
+
 .flip-card:hover::after,
 .flip-card:has(.is-flipped)::after {
   opacity: 1;
 }
+
 .flip-card-inner {
   position: relative;
   width: 100%;
@@ -427,9 +434,11 @@
   transform-style: preserve-3d;
   z-index: 1;
 }
+
 .flip-card-inner.is-flipped {
   transform: rotateY(180deg);
 }
+
 .flip-card-face {
   position: absolute;
   inset: 0;
@@ -438,67 +447,14 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+
 .flip-card-front {
   z-index: 2;
 }
+
 .flip-card-back {
   transform: rotateY(180deg);
   z-index: 1;
-}
-
-/* ===== CINEMATIC OVERLAY CARD ===== */
-.cinematic-card {
-  position: relative;
-  height: 380px;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  cursor: pointer;
-  isolation: isolate;
-}
-
-.cinematic-card-reveal {
-  max-height: 0;
-  opacity: 0;
-  filter: blur(8px);
-  transform: translateY(12px);
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.5s ease,
-              filter 0.5s ease,
-              transform 0.5s ease;
-  overflow: hidden;
-}
-
-.cinematic-card:hover .cinematic-card-reveal {
-  max-height: 200px;
-  opacity: 1;
-  filter: blur(0);
-  transform: translateY(0);
-}
-
-/* Rotating glow border on hover */
-.cinematic-card::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 0.85rem;
-  background: conic-gradient(
-    from var(--glow-angle),
-    transparent 0%,
-    hsl(var(--primary) / 0.5) 10%,
-    transparent 20%,
-    transparent 80%,
-    hsl(var(--primary) / 0.35) 90%,
-    transparent 100%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  animation: glow-spin 3s linear infinite;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.cinematic-card:hover::before {
-  opacity: 1;
 }
 
 /* Scrollbar styling */
