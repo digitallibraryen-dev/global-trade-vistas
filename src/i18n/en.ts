@@ -75,6 +75,10 @@ const en = {
       transparent: "Transparent Commission Structure",
       secure: "Secure Global Logistics Partnerships",
     },
+    statsYears: "Years",
+    statsCountries: "Countries",
+    statsClients: "Clients",
+    statsSatisfaction: "Satisfaction",
   },
   featuredServices: {
     tag: "Our Services",
